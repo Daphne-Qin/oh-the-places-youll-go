@@ -1,0 +1,14 @@
+{
+	"lorax_greeting": {
+		"id": "lorax_greeting",
+		"speaker": "Lorax",
+		"text": "I am the Lorax. I speak for the trees.",
+		"responses": []
+	},
+	"lorax_warning": {
+		"id": "lorax_warning",
+		"speaker": "Lorax",
+		"text": "Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.",
+		"responses": []
+	}
+}
