@@ -1,7 +1,44 @@
 {
-	"example_topic": {
-		"riddle": "I speak for the trees, but what am I?",
-		"answer": "The Lorax",
-		"topic": "example_topic"
-	}
+	"riddles": [
+		{
+			"riddle": "I turn sunlight into food for myself and clean the air you breathe. Without me, life would struggle. What am I?",
+			"answer": "tree"
+		},
+		{
+			"riddle": "I'm a home for countless creatures, from tiny insects to large birds. I prevent floods and erosion. What am I?",
+			"answer": "forest"
+		},
+		{
+			"riddle": "I absorb carbon dioxide and release oxygen, fighting climate change with every breath. What am I?",
+			"answer": "tree"
+		},
+		{
+			"riddle": "I'm a natural water filter, cleaning rain as it flows through me. I also prevent soil from washing away. What am I?",
+			"answer": "forest"
+		},
+		{
+			"riddle": "I provide shade that cools the earth, reduce noise pollution, and create habitats for wildlife. What am I?",
+			"answer": "tree"
+		},
+		{
+			"riddle": "I'm a living air purifier, removing harmful pollutants and making the atmosphere breathable. What am I?",
+			"answer": "tree"
+		},
+		{
+			"riddle": "I store carbon in my trunk and roots, helping to reduce greenhouse gases in the atmosphere. What am I?",
+			"answer": "tree"
+		},
+		{
+			"riddle": "I'm a natural barrier against wind and storms, protecting the land behind me. I also produce fruits and nuts. What am I?",
+			"answer": "tree"
+		},
+		{
+			"riddle": "I create a complex ecosystem where plants, animals, and fungi all work together in harmony. What am I?",
+			"answer": "forest"
+		},
+		{
+			"riddle": "I recycle nutrients from dead matter back into the soil, making the earth fertile for new life. What am I?",
+			"answer": "forest"
+		}
+	]
 }

@@ -14,6 +14,8 @@ func play_cutscene(cutscene_id: String) -> void:
 		return
 	
 	is_playing = true
+	# Disable player movement during cutscene
+	GameState.disable_movement()
 	cutscene_started.emit(cutscene_id)
 	
 	# Cutscene logic will be implemented here
@@ -28,6 +30,10 @@ func end_cutscene(cutscene_id: String) -> void:
 	cutscene_ended.emit(cutscene_id)
 	current_cutscene.clear()
 	is_playing = false
+	
+	# Re-enable player movement if no more cutscenes
+	if cutscene_queue.size() == 0:
+		GameState.enable_movement()
 	
 	# Play next cutscene in queue if any
 	if cutscene_queue.size() > 0:

@@ -12,18 +12,23 @@ config_version=5
 
 config/name="oh-the-places-youll-go"
 run/main_scene="res://scenes/MainMenu.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameState="*res://scripts/game_state.gd"
+APIManager="*res://scripts/api_manager.gd"
+
+[application/config]
+
+api/gemini_api_key="AIzaSyCwsby7zG31YB_LKjFxHdxcxAeDrpcvrSs"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=true
-
-[input]
 
 [rendering]
 
-renderer/rendering_method="forward_plus"
 textures/canvas_textures/default_texture_filter=2
