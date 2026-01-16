@@ -82,14 +82,23 @@ func _get_api_key() -> String:
 	"""
 	print("[API KEY CHECK] Checking for API key...")
 	
-	# Try project settings first
-	if ProjectSettings.has_setting("api/gemini_api_key"):
-		var key = ProjectSettings.get_setting("api/gemini_api_key")
-		if key != null and key != "":
-			print("[API KEY CHECK] Found in Project Settings")
-			return str(key)
-		else:
-			print("[API KEY CHECK] Project Settings key is empty")
+	# Try project settings - check both possible paths
+	var possible_paths = ["api/gemini_api_key", "config/api/gemini_api_key", "application/config/api/gemini_api_key"]
+	
+	for path in possible_paths:
+		if ProjectSettings.has_setting(path):
+			var key = ProjectSettings.get_setting(path)
+			if key != null and key != "":
+				print("[API KEY CHECK] Found in Project Settings at: ", path)
+				return str(key)
+			else:
+				print("[API KEY CHECK] Project Settings key at ", path, " is empty")
+	
+	# Also try direct access (sometimes needed after project.godot changes)
+	var direct_key = ProjectSettings.get_setting("api/gemini_api_key", "")
+	if direct_key != "":
+		print("[API KEY CHECK] Found via direct access")
+		return str(direct_key)
 	
 	# Fallback to environment variable
 	var env_key = OS.get_environment("GEMINI_API_KEY")
@@ -99,8 +108,15 @@ func _get_api_key() -> String:
 	else:
 		print("[API KEY CHECK] Not found in Environment Variable")
 	
+	# TEMPORARY: Hardcoded key for testing (remove after fixing ProjectSettings)
+	var hardcoded_key = "AIzaSyCwsby7zG31YB_LKjFxHdxcxAeDrpcvrSs"
+	if hardcoded_key != "":
+		print("[API KEY CHECK] Using hardcoded API key (temporary)")
+		return hardcoded_key
+	
 	# Return empty string if not found
 	print("[API KEY CHECK] No API key found!")
+	print("[API KEY CHECK] Available settings starting with 'api': ", _list_api_settings())
 	return ""
 
 func _check_rate_limit() -> bool:
@@ -401,6 +417,16 @@ func clear_conversation() -> void:
 	"""Clear the conversation history."""
 	conversation_history.clear()
 	print("[LORAX CHAT] Conversation history cleared")
+
+func _list_api_settings() -> String:
+	"""Debug function to list all settings containing 'api'."""
+	var api_settings = []
+	var settings_list = ProjectSettings.get_property_list()
+	for prop in settings_list:
+		var name = prop.get("name", "")
+		if "api" in name.to_lower():
+			api_settings.append(name)
+	return str(api_settings)
 
 func _on_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	"""Handle HTTP request completion."""
