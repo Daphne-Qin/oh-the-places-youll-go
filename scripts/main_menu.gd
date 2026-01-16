@@ -3,8 +3,8 @@ extends Control
 ## Main Menu Script
 ## Handles button functionality and menu theme music
 
-@onready var start_button: Button = $StartButton
-@onready var quit_button: Button = $QuitButton
+@onready var start_button: Button = $ButtonContainer/StartButton
+@onready var quit_button: Button = $ButtonContainer/QuitButton
 @onready var background_music: AudioStreamPlayer = $BackgroundMusic
 
 # Scene paths
@@ -14,8 +14,15 @@ const LORAX_LEVEL_SCENE = "res://scenes/LoraxLevel.tscn"
 func _ready() -> void:
 	"""Initialize the main menu."""
 	# Connect button signals
-	start_button.pressed.connect(_on_start_button_pressed)
-	quit_button.pressed.connect(_on_quit_button_pressed)
+	if start_button:
+		start_button.pressed.connect(_on_start_button_pressed)
+	else:
+		print("Error: StartButton not found!")
+	
+	if quit_button:
+		quit_button.pressed.connect(_on_quit_button_pressed)
+	else:
+		print("Error: QuitButton not found!")
 	
 	# Start background music if available
 	_play_menu_theme()

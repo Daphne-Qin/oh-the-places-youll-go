@@ -90,7 +90,11 @@ func _load_fallback_riddles() -> void:
 	
 	var data = json.data
 	if data.has("riddles") and data["riddles"] is Array:
-		fallback_riddles = data["riddles"]
+		var riddles_array = data["riddles"] as Array
+		fallback_riddles.clear()
+		for riddle in riddles_array:
+			if riddle is Dictionary:
+				fallback_riddles.append(riddle)
 		print("Loaded ", fallback_riddles.size(), " fallback riddles from JSON.")
 	else:
 		_create_default_fallback_riddles()
@@ -144,7 +148,11 @@ func _load_riddle_cache() -> void:
 	
 	var data = json.data
 	if data.has("riddles") and data["riddles"] is Array:
-		riddle_cache = data["riddles"]
+		var riddles_array = data["riddles"] as Array
+		riddle_cache.clear()
+		for riddle in riddles_array:
+			if riddle is Dictionary:
+				riddle_cache.append(riddle)
 		print("Loaded ", riddle_cache.size(), " riddles into cache.")
 	else:
 		print("Warning: Riddle cache JSON has invalid format.")
