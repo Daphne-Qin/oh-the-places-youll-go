@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=9 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
+[ext_resource type="Script" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="Texture2D" uid="uid://cpy6om2m2013o" path="res://assets/background/truffula_forest.png" id="1_lhcfs"]
 [ext_resource type="Texture2D" uid="uid://tuq1y3jqc2vr" path="res://icon.svg" id="2_1"]
 [ext_resource type="Texture2D" uid="uid://drrbgblia2bj" path="res://assets/sprites/lorax/angry-walk-0.png" id="4_toeh4"]
@@ -24,6 +25,7 @@ animations = [{
 }]
 
 [node name="LoraxLevel" type="Node2D"]
+script = ExtResource("2_lorax_level")
 
 [node name="Background2" type="Sprite2D" parent="."]
 position = Vector2(593.99994, 364.00003)
@@ -66,6 +68,7 @@ position_smoothing_enabled = true
 
 [node name="LoraxArea" type="Area2D" parent="Interactables"]
 position = Vector2(1014, 1075)
+monitorable = false
 
 [node name="Lorax" type="AnimatedSprite2D" parent="Interactables/LoraxArea"]
 position = Vector2(-495.0001, -250)

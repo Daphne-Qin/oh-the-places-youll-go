@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://lresojblyp2w"]
+[gd_scene load_steps=3 format=3 uid="uid://lresojblyp2w"]
 
 [ext_resource type="Script" uid="uid://cnyxwqh425hn4" path="res://scripts/main_menu.gd" id="1_1"]
-[ext_resource type="Texture2D" uid="uid://tuq1y3jqc2vr" path="res://icon.svg" id="2_1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.2, 0.6, 0.3, 1)
@@ -17,40 +16,188 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1, 1.0037875)
 script = ExtResource("1_1")
 
-[node name="Background" type="TextureRect" parent="."]
-modulate = Color(0.1, 0.4, 0.2, 1)
-layout_mode = 1
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="SkyLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="SkyGradient" type="ColorRect" parent="ParallaxBackground/SkyLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_1")
-expand_mode = 1
-stretch_mode = 6
+color = Color(0.7, 0.9, 1, 1)
 
-[node name="BackgroundOverlay" type="ColorRect" parent="Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.3)
+[node name="CloudLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.3, 0.3)
 
-[node name="Title" type="Label" parent="."]
-layout_mode = 1
+[node name="CloudPlaceholder1" type="Node2D" parent="ParallaxBackground/CloudLayer"]
+position = Vector2(200, 100)
+
+[node name="CloudShape" type="Polygon2D" parent="ParallaxBackground/CloudLayer/CloudPlaceholder1"]
+color = Color(1, 1, 1, 0.8)
+polygon = PackedVector2Array(-50, 0, -30, -30, 30, -30, 50, 0, 40, 30, -40, 30)
+
+[node name="CloudPlaceholder2" type="Node2D" parent="ParallaxBackground/CloudLayer"]
+position = Vector2(800, 150)
+
+[node name="CloudShape" type="Polygon2D" parent="ParallaxBackground/CloudLayer/CloudPlaceholder2"]
+color = Color(1, 1, 1, 0.7)
+polygon = PackedVector2Array(-60, 0, -40, -35, 40, -35, 60, 0, 50, 35, -50, 35)
+
+[node name="CloudPlaceholder3" type="Node2D" parent="ParallaxBackground/CloudLayer"]
+position = Vector2(1100, 80)
+
+[node name="CloudShape" type="Polygon2D" parent="ParallaxBackground/CloudLayer/CloudPlaceholder3"]
+color = Color(1, 1, 1, 0.75)
+polygon = PackedVector2Array(-45, 0, -25, -25, 25, -25, 45, 0, 35, 25, -35, 25)
+
+[node name="TreeLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.6, 0.6)
+
+[node name="TreePlaceholder1" type="Node2D" parent="ParallaxBackground/TreeLayer"]
+position = Vector2(150, 500)
+
+[node name="Trunk" type="ColorRect" parent="ParallaxBackground/TreeLayer/TreePlaceholder1"]
+offset_left = -8.0
+offset_top = -120.0
+offset_right = 8.0
+color = Color(0.4, 0.2, 0.1, 1)
+
+[node name="Tuff" type="Polygon2D" parent="ParallaxBackground/TreeLayer/TreePlaceholder1"]
+position = Vector2(0, -120)
+color = Color(1, 0.8, 0.2, 1)
+polygon = PackedVector2Array(-35, 0, -25, -50, 0, -75, 25, -50, 35, 0)
+
+[node name="TreePlaceholder2" type="Node2D" parent="ParallaxBackground/TreeLayer"]
+position = Vector2(400, 480)
+
+[node name="Trunk" type="ColorRect" parent="ParallaxBackground/TreeLayer/TreePlaceholder2"]
+offset_left = -8.0
+offset_top = -140.0
+offset_right = 8.0
+color = Color(0.4, 0.2, 0.1, 1)
+
+[node name="Tuff" type="Polygon2D" parent="ParallaxBackground/TreeLayer/TreePlaceholder2"]
+position = Vector2(0, -140)
+color = Color(0.9, 0.3, 0.9, 1)
+polygon = PackedVector2Array(-40, 0, -30, -55, 0, -85, 30, -55, 40, 0)
+
+[node name="TreePlaceholder3" type="Node2D" parent="ParallaxBackground/TreeLayer"]
+position = Vector2(900, 520)
+
+[node name="Trunk" type="ColorRect" parent="ParallaxBackground/TreeLayer/TreePlaceholder3"]
+offset_left = -8.0
+offset_top = -110.0
+offset_right = 8.0
+color = Color(0.4, 0.2, 0.1, 1)
+
+[node name="Tuff" type="Polygon2D" parent="ParallaxBackground/TreeLayer/TreePlaceholder3"]
+position = Vector2(0, -110)
+color = Color(0.2, 0.7, 0.9, 1)
+polygon = PackedVector2Array(-32, 0, -22, -42, 0, -65, 22, -42, 32, 0)
+
+[node name="TreePlaceholder4" type="Node2D" parent="ParallaxBackground/TreeLayer"]
+position = Vector2(1150, 490)
+
+[node name="Trunk" type="ColorRect" parent="ParallaxBackground/TreeLayer/TreePlaceholder4"]
+offset_left = -8.0
+offset_top = -130.0
+offset_right = 8.0
+color = Color(0.4, 0.2, 0.1, 1)
+
+[node name="Tuff" type="Polygon2D" parent="ParallaxBackground/TreeLayer/TreePlaceholder4"]
+position = Vector2(0, -130)
+color = Color(0.9, 0.5, 0.1, 1)
+polygon = PackedVector2Array(-38, 0, -28, -48, 0, -72, 28, -48, 38, 0)
+
+[node name="ForegroundLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="WobbleStack1" type="Node2D" parent="ParallaxBackground/ForegroundLayer"]
+position = Vector2(300, 600)
+
+[node name="Box1" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleStack1"]
+offset_left = -35.0
+offset_top = -25.0
+offset_right = 35.0
+color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="Box2" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleStack1"]
+offset_left = -30.0
+offset_top = -50.0
+offset_right = 30.0
+offset_bottom = -25.0
+color = Color(0.2, 0.9, 0.2, 1)
+
+[node name="Box3" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleStack1"]
+offset_left = -25.0
+offset_top = -75.0
+offset_right = 25.0
+offset_bottom = -50.0
+color = Color(0.2, 0.2, 0.9, 1)
+
+[node name="WobbleStack2" type="Node2D" parent="ParallaxBackground/ForegroundLayer"]
+position = Vector2(1000, 620)
+
+[node name="Box1" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleStack2"]
+offset_left = -40.0
+offset_top = -30.0
+offset_right = 40.0
+color = Color(0.9, 0.9, 0.2, 1)
+
+[node name="Box2" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleStack2"]
+offset_left = -35.0
+offset_top = -60.0
+offset_right = 35.0
+offset_bottom = -30.0
+color = Color(0.9, 0.3, 0.9, 1)
+
+[node name="Box3" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleStack2"]
+offset_left = -30.0
+offset_top = -90.0
+offset_right = 30.0
+offset_bottom = -60.0
+color = Color(0.3, 0.9, 0.9, 1)
+
+[node name="WobbleTower1" type="Node2D" parent="ParallaxBackground/ForegroundLayer"]
+position = Vector2(200, 580)
+
+[node name="Segment1" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleTower1"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+color = Color(0.8, 0.4, 0.1, 1)
+
+[node name="Segment2" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleTower1"]
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 18.0
+offset_bottom = -20.0
+color = Color(0.1, 0.8, 0.4, 1)
+
+[node name="Segment3" type="ColorRect" parent="ParallaxBackground/ForegroundLayer/WobbleTower1"]
+offset_left = -16.0
+offset_top = -60.0
+offset_right = 16.0
+offset_bottom = -40.0
+color = Color(0.4, 0.1, 0.8, 1)
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="MenuLayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = -150.0
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = -200.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.8, 1)
@@ -61,8 +208,7 @@ text = "The Lorax's Quest"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
+[node name="ButtonContainer" type="VBoxContainer" parent="MenuLayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -76,13 +222,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="StartButton" type="Button" parent="ButtonContainer"]
+[node name="StartButton" type="Button" parent="MenuLayer/ButtonContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_1")
 text = "Start Demo"
 
-[node name="QuitButton" type="Button" parent="ButtonContainer"]
+[node name="QuitButton" type="Button" parent="MenuLayer/ButtonContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_1")
