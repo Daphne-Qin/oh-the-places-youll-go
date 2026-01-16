@@ -288,8 +288,6 @@ func _get_error_message(result: int) -> String:
 			return "Cannot resolve server address. Check your internet connection."
 		HTTPRequest.RESULT_CONNECTION_ERROR:
 			return "Connection error. Please try again."
-		HTTPRequest.RESULT_SSL_HANDSHAKE_ERROR:
-			return "SSL error. Please check your connection."
 		HTTPRequest.RESULT_NO_RESPONSE:
 			return "No response from server. Request may have timed out."
 		HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED:
@@ -333,8 +331,9 @@ func _load_fallback_riddles() -> void:
 	
 	var data = json.data
 	if data.has("riddles") and data["riddles"] is Array:
-		fallback_riddles = data["riddles"]
-		print("Loaded ", fallback_riddles.size(), " fallback riddles.")
+		pass
+		#fallback_riddles = data["riddles"]
+		#print("Loaded ", fallback_riddles.size(), " fallback riddles.")
 	else:
 		_create_default_fallback_riddles()
 
@@ -386,11 +385,11 @@ func _load_riddle_cache() -> void:
 		return
 	
 	var data = json.data
-	if data.has("riddles") and data["riddles"] is Array:
-		riddle_cache = data["riddles"]
-		print("Loaded ", riddle_cache.size(), " riddles into cache.")
-	else:
-		print("Warning: Riddle cache JSON has invalid format.")
+	#if data.has("riddles") and data["riddles"] is Array:
+		#riddle_cache = data["riddles"]
+		#print("Loaded ", riddle_cache.size(), " riddles into cache.")
+	#else:
+		#print("Warning: Riddle cache JSON has invalid format.")
 
 func _get_cached_riddle() -> String:
 	"""

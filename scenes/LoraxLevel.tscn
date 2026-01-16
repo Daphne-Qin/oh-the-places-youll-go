@@ -1,24 +1,48 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1x2y3z4a5b6c7d8"]
+[gd_scene load_steps=8 format=3 uid="uid://b0rvkijyq6fr0"]
 
-[ext_resource type="Script" path="res://scripts/player_movement.gd" id="1_1"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="2_1"]
+[ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
+[ext_resource type="Texture2D" uid="uid://cpy6om2m2013o" path="res://assets/background/truffula_forest.png" id="1_lhcfs"]
+[ext_resource type="Texture2D" uid="uid://tuq1y3jqc2vr" path="res://icon.svg" id="2_1"]
+[ext_resource type="Texture2D" uid="uid://drrbgblia2bj" path="res://assets/sprites/lorax/angry-walk-0.png" id="4_toeh4"]
+[ext_resource type="Texture2D" uid="uid://c6wuwdj1cy6dl" path="res://assets/sprites/lorax/angry-walk-1.png" id="5_46v7x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(50, 50)
+size = Vector2(116, 118)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_342io"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_toeh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_46v7x")
+}],
+"loop": true,
+"name": &"angry",
+"speed": 5.0
+}]
 
 [node name="LoraxLevel" type="Node2D"]
 
+[node name="Background2" type="Sprite2D" parent="."]
+position = Vector2(593.99994, 364.00003)
+scale = Vector2(0.8685104, 0.70410156)
+texture = ExtResource("1_lhcfs")
+
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 1280.0
-offset_bottom = 720.0
+offset_left = 1390.0
+offset_top = 502.0
+offset_right = 2670.0
+offset_bottom = 1222.0
 color = Color(0.2, 0.4, 0.2, 1)
 
 [node name="Ground" type="ColorRect" parent="Background"]
-offset_left = 0.0
+layout_mode = 0
 offset_top = 600.0
 offset_right = 1280.0
 offset_bottom = 720.0
-color = Color(0.3, 0.5, 0.3, 1)
+color = Color(1.2953845, 1.1613277, 0.63467526, 1)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(640, 360)
@@ -32,27 +56,30 @@ texture = ExtResource("2_1")
 shape = SubResource("RectangleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-enabled = true
 limit_left = -1000
 limit_top = -1000
 limit_right = 1000
 limit_bottom = 1000
 position_smoothing_enabled = true
-position_smoothing_speed = 5.0
 
 [node name="Interactables" type="Node2D" parent="."]
 
 [node name="LoraxArea" type="Area2D" parent="Interactables"]
-position = Vector2(400, 500)
+position = Vector2(1014, 1075)
+
+[node name="Lorax" type="AnimatedSprite2D" parent="Interactables/LoraxArea"]
+position = Vector2(-495.0001, -250)
+scale = Vector2(0.5969388, 0.5969388)
+sprite_frames = SubResource("SpriteFrames_342io")
+animation = &"angry"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/LoraxArea"]
+position = Vector2(-495, -249)
 shape = SubResource("RectangleShape2D_1")
-
-[node name="Marker2D" type="Marker2D" parent="Interactables/LoraxArea"]
-modulate = Color(1, 0.8, 0.2, 1)
 
 [node name="TreeArea" type="Area2D" parent="Interactables"]
 position = Vector2(800, 500)
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/TreeArea"]
 shape = SubResource("RectangleShape2D_1")
@@ -62,6 +89,7 @@ modulate = Color(0.2, 0.8, 0.2, 1)
 
 [node name="StumpArea" type="Area2D" parent="Interactables"]
 position = Vector2(600, 550)
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/StumpArea"]
 shape = SubResource("RectangleShape2D_1")
