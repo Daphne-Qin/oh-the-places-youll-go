@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6wuwdj1cy6dl"
-path="res://.godot/imported/angry-walk-1.png-556f39d783ca1c94c3815cf334cd546b.ctex"
+uid="uid://w2csm8ohh5on"
+path="res://.godot/imported/angry_walk_14.png-d0bdefca880012454dcb0509bb86ab54.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/lorax/angry-walk-1.png"
-dest_files=["res://.godot/imported/angry-walk-1.png-556f39d783ca1c94c3815cf334cd546b.ctex"]
+source_file="res://assets/sprites/lorax/angry_walk_14.png"
+dest_files=["res://.godot/imported/angry_walk_14.png-d0bdefca880012454dcb0509bb86ab54.ctex"]
 
 [params]
 

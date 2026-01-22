@@ -1,101 +1,131 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=26 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
-[ext_resource type="Script" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="Texture2D" uid="uid://cpy6om2m2013o" path="res://assets/background/truffula_forest.png" id="1_lhcfs"]
-[ext_resource type="Texture2D" uid="uid://tuq1y3jqc2vr" path="res://icon.svg" id="2_1"]
-[ext_resource type="Texture2D" uid="uid://drrbgblia2bj" path="res://assets/sprites/lorax/angry-walk-0.png" id="4_toeh4"]
-[ext_resource type="Texture2D" uid="uid://c6wuwdj1cy6dl" path="res://assets/sprites/lorax/angry-walk-1.png" id="5_46v7x"]
+[ext_resource type="Script" uid="uid://bvc1qpe4kn53y" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
+[ext_resource type="Texture2D" uid="uid://dd6js2ao757kw" path="res://assets/sprites/lorax/angry_walk_01.png" id="5_3huvt"]
+[ext_resource type="Texture2D" uid="uid://u458xg13ht6r" path="res://assets/sprites/lorax/angry_walk_02.png" id="6_exxpo"]
+[ext_resource type="Texture2D" uid="uid://b1rt3xlbcdrdi" path="res://assets/sprites/lorax/angry_walk_03.png" id="7_qgl46"]
+[ext_resource type="Texture2D" uid="uid://dh5ydvh7d60il" path="res://assets/sprites/lorax/angry_walk_04.png" id="8_v5acc"]
+[ext_resource type="Texture2D" uid="uid://c5wn5eaf765o1" path="res://assets/sprites/lorax/angry_walk_05.png" id="9_0wcv0"]
+[ext_resource type="Texture2D" uid="uid://cppaxbsde102k" path="res://assets/sprites/lorax/angry_walk_06.png" id="10_tuvtb"]
+[ext_resource type="Texture2D" uid="uid://0joh6l02vesf" path="res://assets/sprites/lorax/angry_walk_07.png" id="11_vji0t"]
+[ext_resource type="Texture2D" uid="uid://c5d2g5g7ca8hg" path="res://assets/sprites/lorax/angry_walk_08.png" id="12_yr5o8"]
+[ext_resource type="Texture2D" uid="uid://c8t4w77sltjm3" path="res://assets/sprites/lorax/angry_walk_09.png" id="13_d2n4m"]
+[ext_resource type="Texture2D" uid="uid://dmgdd1d166kfg" path="res://assets/sprites/lorax/angry_walk_10.png" id="14_t4q7k"]
+[ext_resource type="Texture2D" uid="uid://didxaquu6s01h" path="res://assets/sprites/lorax/angry_walk_11.png" id="15_wbnep"]
+[ext_resource type="Texture2D" uid="uid://b5ial33vg4hv1" path="res://assets/sprites/lorax/angry_walk_12.png" id="16_6fwp1"]
+[ext_resource type="Texture2D" uid="uid://epv27j2og8iv" path="res://assets/sprites/lorax/angry_walk_13.png" id="17_uxwq6"]
+[ext_resource type="Texture2D" uid="uid://w2csm8ohh5on" path="res://assets/sprites/lorax/angry_walk_14.png" id="18_1c5k7"]
+[ext_resource type="Texture2D" uid="uid://b6va10kxhaxc0" path="res://assets/sprites/lorax/angry_walk_15.png" id="19_c1pjf"]
+[ext_resource type="Texture2D" uid="uid://rfejrekfx70v" path="res://assets/sprites/lorax/angry_walk_16.png" id="20_jbbts"]
+[ext_resource type="Texture2D" uid="uid://cg1b21k7gdm7j" path="res://assets/sprites/lorax/angry_walk_17.png" id="21_otipn"]
+[ext_resource type="Texture2D" uid="uid://becfucsdqqsqb" path="res://assets/sprites/lorax/angry_walk_18.png" id="22_1e531"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(116, 118)
+[sub_resource type="SpriteFrames" id="SpriteFrames_t24sr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3huvt"]
+size = Vector2(121, 73)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_342io"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_toeh4")
+"texture": ExtResource("5_3huvt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_46v7x")
+"texture": ExtResource("6_exxpo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qgl46")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_v5acc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0wcv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_tuvtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_vji0t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_yr5o8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_d2n4m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_t4q7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_wbnep")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_6fwp1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_uxwq6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_1c5k7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_c1pjf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_jbbts")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_otipn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_1e531")
 }],
 "loop": true,
 "name": &"angry",
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(268.375, 269)
+
 [node name="LoraxLevel" type="Node2D"]
 script = ExtResource("2_lorax_level")
 
-[node name="Background2" type="Sprite2D" parent="."]
-position = Vector2(593.99994, 364.00003)
+[node name="Background" type="Sprite2D" parent="."]
 scale = Vector2(0.8685104, 0.70410156)
 texture = ExtResource("1_lhcfs")
-
-[node name="Background" type="ColorRect" parent="."]
-offset_left = 1390.0
-offset_top = 502.0
-offset_right = 2670.0
-offset_bottom = 1222.0
-color = Color(0.2, 0.4, 0.2, 1)
-
-[node name="Ground" type="ColorRect" parent="Background"]
-layout_mode = 0
-offset_top = 600.0
-offset_right = 1280.0
-offset_bottom = 720.0
-color = Color(1.2953845, 1.1613277, 0.63467526, 1)
+centered = false
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(640, 360)
 script = ExtResource("1_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
-modulate = Color(0.4, 0.8, 1, 1)
-texture = ExtResource("2_1")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_t24sr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-limit_left = -1000
-limit_top = -1000
-limit_right = 1000
-limit_bottom = 1000
-position_smoothing_enabled = true
+position = Vector2(-0.5, -26.5)
+shape = SubResource("RectangleShape2D_3huvt")
 
 [node name="Interactables" type="Node2D" parent="."]
+position = Vector2(122, -4)
 
 [node name="LoraxArea" type="Area2D" parent="Interactables"]
-position = Vector2(1014, 1075)
+position = Vector2(-274, 523)
 monitorable = false
+metadata/_edit_group_ = true
 
 [node name="Lorax" type="AnimatedSprite2D" parent="Interactables/LoraxArea"]
-position = Vector2(-495.0001, -250)
-scale = Vector2(0.5969388, 0.5969388)
+scale = Vector2(0.22833045, 0.22833045)
 sprite_frames = SubResource("SpriteFrames_342io")
 animation = &"angry"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/LoraxArea"]
-position = Vector2(-495, -249)
 shape = SubResource("RectangleShape2D_1")
 
-[node name="TreeArea" type="Area2D" parent="Interactables"]
-position = Vector2(800, 500)
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/TreeArea"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Marker2D" type="Marker2D" parent="Interactables/TreeArea"]
-modulate = Color(0.2, 0.8, 0.2, 1)
-
-[node name="StumpArea" type="Area2D" parent="Interactables"]
-position = Vector2(600, 550)
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/StumpArea"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Marker2D" type="Marker2D" parent="Interactables/StumpArea"]
-modulate = Color(0.4, 0.2, 0.1, 1)
+[node name="Sprite2D" type="Sprite2D" parent="Interactables"]
+position = Vector2(-834, 1120)

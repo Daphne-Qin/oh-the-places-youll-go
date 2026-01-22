@@ -34,7 +34,6 @@ func _ready() -> void:
 	_setup_parallax()
 	_setup_wobble_physics()
 	_setup_buttons()
-	_start_animations()
 	
 	# Start background music if available
 	_play_menu_theme()
@@ -43,14 +42,10 @@ func _ready() -> void:
 
 func _setup_parallax() -> void:
 	"""Configure parallax scrolling layers."""
-	if sky_layer:
-		sky_layer.motion_scale = Vector2(0.1, 0.1)
-	if cloud_layer:
-		cloud_layer.motion_scale = Vector2(0.3, 0.3)
-	if tree_layer:
-		tree_layer.motion_scale = Vector2(0.6, 0.6)
-	if foreground_layer:
-		foreground_layer.motion_scale = Vector2(1.0, 1.0)
+	sky_layer.motion_scale = Vector2(0.1, 0.1)
+	cloud_layer.motion_scale = Vector2(0.3, 0.3)
+	tree_layer.motion_scale = Vector2(0.6, 0.6)
+	foreground_layer.motion_scale = Vector2(1.0, 1.0)
 
 func _setup_wobble_physics() -> void:
 	"""Find and initialize all wobble elements."""
@@ -77,15 +72,13 @@ func _find_wobble_nodes(node: Node) -> void:
 
 func _setup_buttons() -> void:
 	"""Setup interactive buttons with smooth hover effects."""
-	if start_button:
-		start_button.pressed.connect(_on_start_button_pressed)
-		start_button.mouse_entered.connect(func(): _on_button_hover(start_button, true))
-		start_button.mouse_exited.connect(func(): _on_button_hover(start_button, false))
+	start_button.pressed.connect(_on_start_button_pressed)
+	start_button.mouse_entered.connect(func(): _on_button_hover(start_button, true))
+	start_button.mouse_exited.connect(func(): _on_button_hover(start_button, false))
 	
-	if quit_button:
-		quit_button.pressed.connect(_on_quit_button_pressed)
-		quit_button.mouse_entered.connect(func(): _on_button_hover(quit_button, true))
-		quit_button.mouse_exited.connect(func(): _on_button_hover(quit_button, false))
+	quit_button.pressed.connect(_on_quit_button_pressed)
+	quit_button.mouse_entered.connect(func(): _on_button_hover(quit_button, true))
+	quit_button.mouse_exited.connect(func(): _on_button_hover(quit_button, false))
 
 func _on_button_hover(button: Button, is_hovering: bool) -> void:
 	"""Smooth button hover animation."""
@@ -102,11 +95,6 @@ func _on_button_hover(button: Button, is_hovering: bool) -> void:
 	else:
 		tween.tween_property(button, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT)
 		tween.tween_property(button, "modulate", Color.WHITE, 0.2)
-
-func _start_animations() -> void:
-	"""Start continuous animations."""
-	# Wobble physics will be handled in _process
-	# Parallax scrolling will be handled in _process
 
 func _process(delta: float) -> void:
 	"""Update continuous animations: parallax scrolling and wobble physics."""
