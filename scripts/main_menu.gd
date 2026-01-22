@@ -95,6 +95,7 @@ func _on_button_hover(button: Button, is_hovering: bool) -> void:
 	var tween = create_tween()
 	tween.set_parallel(true)
 	
+	button.pivot_offset = button.size/2
 	if is_hovering:
 		tween.tween_property(button, "scale", Vector2(1.1, 1.1), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 		tween.tween_property(button, "modulate", Color(1.2, 1.2, 1.2, 1.0), 0.2)
