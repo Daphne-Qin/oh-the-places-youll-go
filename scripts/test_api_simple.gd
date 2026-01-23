@@ -26,7 +26,7 @@ func _ready() -> void:
 	
 	# Make test request
 	var url = GEMINI_API_URL + API_KEY
-	var prompt = "Generate a single riddle for 12-year-old students about why forests and trees are important for the environment. The answer should be 1-2 words. Only return the riddle text, no extra commentary."
+	var prompt = "Generate a single riddle in the voice of the lorax about why forests and trees are important for the environment. The answer should be 1-2 words. Only return the riddle text, no extra commentary."
 	
 	var request_body = {
 		"contents": [{

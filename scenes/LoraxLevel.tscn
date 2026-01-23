@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
-[ext_resource type="Script" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="Texture2D" uid="uid://cpy6om2m2013o" path="res://assets/background/truffula_forest.png" id="1_lhcfs"]
 [ext_resource type="Texture2D" uid="uid://tuq1y3jqc2vr" path="res://icon.svg" id="2_1"]
+[ext_resource type="Script" uid="uid://d4ge357ou1se1" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="Texture2D" uid="uid://drrbgblia2bj" path="res://assets/sprites/lorax/angry-walk-0.png" id="4_toeh4"]
 [ext_resource type="Texture2D" uid="uid://c6wuwdj1cy6dl" path="res://assets/sprites/lorax/angry-walk-1.png" id="5_46v7x"]
 
@@ -71,13 +71,13 @@ position = Vector2(1014, 1075)
 monitorable = false
 
 [node name="Lorax" type="AnimatedSprite2D" parent="Interactables/LoraxArea"]
-position = Vector2(-495.0001, -250)
+position = Vector2(-590, -484)
 scale = Vector2(0.5969388, 0.5969388)
 sprite_frames = SubResource("SpriteFrames_342io")
 animation = &"angry"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/LoraxArea"]
-position = Vector2(-495, -249)
+position = Vector2(-588, -484)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="TreeArea" type="Area2D" parent="Interactables"]
