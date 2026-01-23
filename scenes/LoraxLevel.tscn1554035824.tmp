@@ -1,10 +1,9 @@
-[gd_scene load_steps=36 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=35 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
 [ext_resource type="Texture2D" uid="uid://cpy6om2m2013o" path="res://assets/background/truffula_forest.png" id="1_lhcfs"]
 [ext_resource type="Script" uid="uid://bvc1qpe4kn53y" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="Texture2D" uid="uid://dcmj42mts7486" path="res://assets/sprites/player/boy_walk_00.png" id="4_d2n4m"]
-[ext_resource type="Texture2D" uid="uid://4g6jonl8u15i" path="res://assets/sprites/player/boy_stand.png" id="4_t4q7k"]
 [ext_resource type="Texture2D" uid="uid://2asrbwr8jur5" path="res://assets/sprites/lorax/angry_walk_01.png" id="5_3huvt"]
 [ext_resource type="Texture2D" uid="uid://cn0f0d2x5v70d" path="res://assets/sprites/player/boy_walk_01.png" id="5_t4q7k"]
 [ext_resource type="Texture2D" uid="uid://lyi2dao2us7p" path="res://assets/sprites/lorax/angry_walk_02.png" id="6_exxpo"]
@@ -34,14 +33,6 @@
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_t24sr"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_t4q7k")
-}],
-"loop": true,
-"name": &"stand",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_d2n4m")
@@ -76,7 +67,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3huvt"]
-size = Vector2(121, 287)
+size = Vector2(121, 73)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_342io"]
 animations = [{
@@ -153,26 +144,25 @@ texture = ExtResource("1_lhcfs")
 centered = false
 
 [node name="Player" type="CharacterBody2D" parent="."]
-z_index = 1
-position = Vector2(991, 491)
+position = Vector2(640, 360)
 script = ExtResource("1_1")
-metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+position = Vector2(128.99994, 127.99999)
 scale = Vector2(0.18239798, 0.18239798)
 sprite_frames = SubResource("SpriteFrames_t24sr")
-animation = &"stand"
-flip_h = true
+animation = &"walk"
+frame_progress = 0.43790257
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(0, -3.5)
+position = Vector2(-0.5, -26.5)
 shape = SubResource("RectangleShape2D_3huvt")
 
 [node name="Interactables" type="Node2D" parent="."]
 position = Vector2(122, -4)
 
 [node name="LoraxArea" type="Area2D" parent="Interactables"]
-position = Vector2(266, 503)
+position = Vector2(387, 518)
 monitorable = false
 metadata/_edit_group_ = true
 
@@ -187,22 +177,3 @@ shape = SubResource("RectangleShape2D_1")
 
 [node name="Sprite2D" type="Sprite2D" parent="Interactables"]
 position = Vector2(-834, 1120)
-
-[node name="InteractionLabel" type="Label" parent="."]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 436.0
-offset_top = 74.0
-offset_right = 913.0
-offset_bottom = 157.0
-grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 3
-theme_override_font_sizes/font_size = 32
-text = "Walk up close to the Lorax!"
-horizontal_alignment = 1
-vertical_alignment = 1
