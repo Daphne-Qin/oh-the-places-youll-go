@@ -3,9 +3,9 @@ extends Control
 ## End Screen Script
 ## Handles end screen button functionality and stats display
 
-@onready var replay_button: Button = $ReplayButton
-@onready var main_menu_button: Button = $MainMenuButton
-@onready var quit_button: Button = $QuitButton
+@onready var replay_button: Button = $ButtonContainer/ReplayButton
+@onready var main_menu_button: Button = $ButtonContainer/MainMenuButton
+@onready var quit_button: Button = $ButtonContainer/QuitButton
 @onready var stats_label: Label = $StatsLabel
 
 # Scene paths

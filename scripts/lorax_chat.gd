@@ -3,12 +3,19 @@ extends Control
 ## Lorax Chat Interface
 ## Beautiful, Seussian-styled chat interface for talking with the Lorax
 
+@onready var portrait: TextureRect = $TextureRect
 @onready var chat_container: VBoxContainer = $ChatPanel/VBox/ChatContainer/ScrollContainer/MessagesContainer
 @onready var input_field: LineEdit = $ChatPanel/VBox/InputPanel/InputField
 @onready var send_button: Button = $ChatPanel/VBox/InputPanel/SendButton
 @onready var close_button: Button = $ChatPanel/VBox/Header/CloseButton
 @onready var lorax_avatar: TextureRect = $ChatPanel/VBox/Header/LoraxAvatar
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
+
+@export var portrait_assets := {
+	"neutral": null,
+	"angry": "res://assets/sprites/lorax/angry.png",
+	"grateful": "res://assets/sprites/lorax/grateful.png"
+}
 
 var is_open: bool = false
 
@@ -321,3 +328,7 @@ func _search_for_node(node: Node, name: String) -> Node:
 		if result:
 			return result
 	return null
+
+func _set_portrait(emotion: String):
+	if portrait_assets.has(emotion):
+		portrait.texture = portrait_assets[emotion]

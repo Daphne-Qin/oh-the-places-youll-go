@@ -30,7 +30,7 @@ func _ready() -> void:
 	
 	var request_body = {
 		"contents": [{
-			"parts": [{
+			"parts": [{ 
 				"text": prompt
 			}]
 		}]
