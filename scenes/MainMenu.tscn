@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://lresojblyp2w"]
+[gd_scene load_steps=4 format=3 uid="uid://lresojblyp2w"]
 
 [ext_resource type="Script" uid="uid://cnyxwqh425hn4" path="res://scripts/main_menu.gd" id="1_1"]
+[ext_resource type="Texture2D" uid="uid://b6s151irqkuje" path="res://assets/background/otpywgART.jpeg" id="2_0ykhv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.2, 0.6, 0.3, 1)
@@ -18,6 +19,11 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1, 1.0037875)
 script = ExtResource("1_1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(640.00006, 380.55862)
+scale = Vector2(0.67399395, 0.72004116)
+texture = ExtResource("2_0ykhv")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -188,26 +194,6 @@ color = Color(0.4, 0.1, 0.8, 1)
 
 [node name="MenuLayer" type="CanvasLayer" parent="."]
 
-[node name="Title" type="Label" parent="MenuLayer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -300.0
-offset_right = 400.0
-offset_bottom = -200.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 0.8, 1)
-theme_override_colors/font_outline_color = Color(0.2, 0.4, 0.1, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 64
-text = "The Lorax's Quest"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="ButtonContainer" type="VBoxContainer" parent="MenuLayer"]
 anchors_preset = 8
 anchor_left = 0.5
@@ -227,6 +213,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_1")
 text = "Start Demo"
+icon_alignment = 1
 
 [node name="QuitButton" type="Button" parent="MenuLayer/ButtonContainer"]
 layout_mode = 2
