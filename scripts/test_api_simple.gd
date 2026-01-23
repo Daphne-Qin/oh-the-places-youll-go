@@ -4,7 +4,7 @@ extends Node
 ## Attach this to a Node in a scene and run the scene (F6)
 ## Or call from the main menu script
 
-const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key="
+const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
 const API_KEY: String = "AIzaSyCwsby7zG31YB_LKjFxHdxcxAeDrpcvrSs"
 
 var http_request: HTTPRequest

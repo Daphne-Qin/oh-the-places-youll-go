@@ -6,8 +6,22 @@ extends Node
 signal lorax_message_received(message: String)
 signal lorax_message_failed(error_message: String)
 
-const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key="
-const API_KEY: String = "AIzaSyCwsby7zG31YB_LKjFxHdxcxAeDrpcvrSs"
+const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
+var api_key: String = ""
+
+func _load_api_key() -> void:
+	# Try to load from .env file (gitignored)
+	var file = FileAccess.open("res://.env", FileAccess.READ)
+	if file:
+		while not file.eof_reached():
+			var line = file.get_line().strip_edges()
+			if line.begins_with("GEMINI_API_KEY="):
+				api_key = line.substr(15)
+				print("[APIManager] API key loaded from .env")
+				return
+		file.close()
+
+	print("[APIManager] ERROR: No API key found! Create a .env file with GEMINI_API_KEY=your_key")
 
 const LORAX_SYSTEM_PROMPT: String = """You are the Lorax from Dr. Seuss. You speak for the trees and care deeply about the environment.
 Keep your responses short (1-3 sentences), whimsical, and in character.
@@ -17,6 +31,7 @@ var http_request: HTTPRequest
 
 func _ready() -> void:
 	print("[APIManager] Initializing...")
+	_load_api_key()
 	http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(_on_request_completed)
@@ -27,7 +42,11 @@ func send_message_to_lorax(user_message: String) -> void:
 	"""Send a message to the Lorax (via Gemini API)."""
 	print("[APIManager] Sending message: ", user_message)
 
-	var url = GEMINI_API_URL + API_KEY
+	if api_key == "":
+		lorax_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+		return
+
+	var url = GEMINI_API_URL + api_key
 
 	var request_body = {
 		"contents": [{
