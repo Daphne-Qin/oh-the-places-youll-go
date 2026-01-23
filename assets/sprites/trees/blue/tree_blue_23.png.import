@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6s151irqkuje"
-path="res://.godot/imported/otpywgART.jpeg-e9e9f70b5faedbc47e45b64940669902.ctex"
+uid="uid://dehg1hp6e15dj"
+path="res://.godot/imported/tree_blue_23.png-28b2061414a719ec48fe28c1a2fc6763.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/otpywgART.jpeg"
-dest_files=["res://.godot/imported/otpywgART.jpeg-e9e9f70b5faedbc47e45b64940669902.ctex"]
+source_file="res://assets/sprites/trees/blue/tree_blue_23.png"
+dest_files=["res://.godot/imported/tree_blue_23.png-28b2061414a719ec48fe28c1a2fc6763.ctex"]
 
 [params]
 
