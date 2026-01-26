@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://lresojblyp2w"]
 
 [ext_resource type="Script" uid="uid://cnyxwqh425hn4" path="res://scripts/main_menu.gd" id="1_1"]
-[ext_resource type="Texture2D" uid="uid://b6s151irqkuje" path="res://assets/background/otpywgART.jpeg" id="2_0ykhv"]
+[ext_resource type="Texture2D" uid="uid://b27mm8duxvln1" path="res://assets/background/otpywgART.png" id="2_0ykhv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.2, 0.6, 0.3, 1)
@@ -20,10 +20,15 @@ grow_vertical = 2
 scale = Vector2(1, 1.0037875)
 script = ExtResource("1_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(640.00006, 380.55862)
-scale = Vector2(0.67399395, 0.72004116)
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_0ykhv")
+expand_mode = 2
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

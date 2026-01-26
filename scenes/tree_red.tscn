@@ -1,0 +1,63 @@
+[gd_scene load_steps=12 format=3 uid="uid://bjswr0mp7ymrq"]
+
+[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scenes/tree.gd" id="1_1puje"]
+[ext_resource type="Texture2D" uid="uid://dp3ee536yivqj" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_00.PNG" id="1_02usa"]
+[ext_resource type="Texture2D" uid="uid://b5emwglinurcg" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_01.PNG" id="2_1puje"]
+[ext_resource type="Texture2D" uid="uid://ddwrqoy8pcvnu" path="res://assets/sprites/trees/tree_red/tree_red_cut/tree_red_cut_00.PNG" id="2_c4qkp"]
+[ext_resource type="Texture2D" uid="uid://ojqlaxpmasq5" path="res://assets/sprites/trees/tree_red/tree_red_cut/tree_red_cut_01.PNG" id="3_7dmei"]
+[ext_resource type="Texture2D" uid="uid://bx0p4rc755mng" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_02.PNG" id="3_p58ju"]
+[ext_resource type="Texture2D" uid="uid://1ct7lqjtrdtl" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_03.PNG" id="4_2i7dm"]
+[ext_resource type="Texture2D" uid="uid://dyhwnms2s1n30" path="res://assets/sprites/trees/tree_red/tree_red_cut/tree_red_cut_02.PNG" id="4_g0ipc"]
+[ext_resource type="Texture2D" uid="uid://8liptf6p4chp" path="res://assets/sprites/trees/tree_red/tree_red_cut/tree_red_cut_03.PNG" id="5_d1s6d"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nwvvl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_c4qkp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7dmei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_g0ipc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_d1s6d")
+}],
+"loop": true,
+"name": &"cut",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_02usa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_1puje")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_p58ju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2i7dm")
+}],
+"loop": true,
+"name": &"sway",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4qkp"]
+size = Vector2(172, 1181)
+
+[node name="TreeRed" type="Area2D"]
+script = ExtResource("1_1puje")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nwvvl")
+animation = &"cut"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-76, 204.5)
+shape = SubResource("RectangleShape2D_c4qkp")

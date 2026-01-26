@@ -7,7 +7,6 @@ extends Node2D
 @onready var player: CharacterBody2D = $Player
 
 # Interaction prompt UI
-var interaction_prompt: Label
 var is_near_lorax: bool = false
 var chat_instance: Control = null
 
@@ -39,24 +38,12 @@ func _on_lorax_area_entered(body: Node2D) -> void:
 	if body == player:
 		is_near_lorax = true
 		$InteractionLabel.text = "Press [E] to interact with the Lorax!"
-		if interaction_prompt:
-			interaction_prompt.visible = true
-			# Animate prompt appearance
-			var tween = create_tween()
-			interaction_prompt.modulate.a = 0.0
-			tween.tween_property(interaction_prompt, "modulate:a", 1.0, 0.3)
 
 func _on_lorax_area_exited(body: Node2D) -> void:
 	"""Called when player exits the Lorax interaction area."""
 	if body == player:
 		is_near_lorax = false
 		$InteractionLabel.text = "Walk up close to the Lorax!"
-		if interaction_prompt:
-			# Animate prompt disappearance
-			var tween = create_tween()
-			tween.tween_property(interaction_prompt, "modulate:a", 0.0, 0.2)
-			await tween.finished
-			interaction_prompt.visible = false
 
 func _input(event: InputEvent) -> void:
 	if not is_near_lorax:

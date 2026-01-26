@@ -1,0 +1,64 @@
+[gd_scene load_steps=12 format=3 uid="uid://cr26v3tfcmndt"]
+
+[ext_resource type="Texture2D" uid="uid://kwjcc22t7dbu" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_00.PNG" id="1_050up"]
+[ext_resource type="Texture2D" uid="uid://b822da8oja6ws" path="res://assets/sprites/trees/tree_orange/tree_orange_sway/tree_orange_00.PNG" id="1_d7ftr"]
+[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scenes/tree.gd" id="1_exof0"]
+[ext_resource type="Texture2D" uid="uid://r1ho78yfcrsu" path="res://assets/sprites/trees/tree_orange/tree_orange_sway/tree_orange_01.PNG" id="2_at6er"]
+[ext_resource type="Texture2D" uid="uid://bmegr0d8mhovi" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_01.PNG" id="2_exof0"]
+[ext_resource type="Texture2D" uid="uid://6pv2q3of8jvh" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_02.PNG" id="3_gpkkq"]
+[ext_resource type="Texture2D" uid="uid://c351jm5rj0b8l" path="res://assets/sprites/trees/tree_orange/tree_orange_sway/tree_orange_02.PNG" id="3_ok5kd"]
+[ext_resource type="Texture2D" uid="uid://c7i3x2k1qipw1" path="res://assets/sprites/trees/tree_orange/tree_orange_sway/tree_orange_03.PNG" id="4_c8gkk"]
+[ext_resource type="Texture2D" uid="uid://xpq48u073fm3" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_03.PNG" id="4_gfx3m"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_050up"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_050up")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_exof0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_gpkkq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gfx3m")
+}],
+"loop": true,
+"name": &"cut",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_d7ftr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_at6er")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ok5kd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_c8gkk")
+}],
+"loop": true,
+"name": &"sway",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exof0"]
+size = Vector2(73, 1211)
+
+[node name="TreeOrange" type="Area2D"]
+script = ExtResource("1_exof0")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, 3)
+sprite_frames = SubResource("SpriteFrames_050up")
+animation = &"sway"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, 221.5)
+shape = SubResource("RectangleShape2D_exof0")
