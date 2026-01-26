@@ -212,7 +212,7 @@ vertical_alignment = 1
 
 [node name="Player" type="CharacterBody2D" parent="Node2D"]
 z_index = 11
-position = Vector2(1053, 518)
+position = Vector2(1058, 524)
 script = ExtResource("1_1")
 metadata/_edit_group_ = true
 
@@ -246,7 +246,7 @@ position = Vector2(122, -4)
 
 [node name="LoraxArea" type="Area2D" parent="Node2D/Interactables"]
 z_index = 10
-position = Vector2(253, 543)
+position = Vector2(269, 538)
 monitorable = false
 metadata/_edit_group_ = true
 

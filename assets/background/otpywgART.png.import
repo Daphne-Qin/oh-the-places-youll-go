@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpy6om2m2013o"
-path="res://.godot/imported/truffula_forest.png-2b5207c1515d342c919bc9cd5824e75a.ctex"
+uid="uid://b27mm8duxvln1"
+path="res://.godot/imported/otpywgART.png-33a33e1476ba3179ff4892d30542fd76.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/truffula_forest.png"
-dest_files=["res://.godot/imported/truffula_forest.png-2b5207c1515d342c919bc9cd5824e75a.ctex"]
+source_file="res://assets/background/otpywgART.png"
+dest_files=["res://.godot/imported/otpywgART.png-33a33e1476ba3179ff4892d30542fd76.ctex"]
 
 [params]
 
