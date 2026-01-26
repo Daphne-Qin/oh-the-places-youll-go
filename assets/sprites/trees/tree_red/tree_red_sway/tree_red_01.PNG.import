@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b822da8oja6ws"
-path="res://.godot/imported/tree_orange_00.PNG-f6075f283198dc4197d39fd7d8fc656d.ctex"
+uid="uid://b5emwglinurcg"
+path="res://.godot/imported/tree_red_01.PNG-26516ed8ee8034e50498f4197d0d603d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/trees/tree_orange/tree_orange_00.PNG"
-dest_files=["res://.godot/imported/tree_orange_00.PNG-f6075f283198dc4197d39fd7d8fc656d.ctex"]
+source_file="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_01.PNG"
+dest_files=["res://.godot/imported/tree_red_01.PNG-26516ed8ee8034e50498f4197d0d603d.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6u44q2ubs5gd"
-path="res://.godot/imported/caterpillar_01.PNG-93302b0d4e92144c0d10c8345e12af43.ctex"
+uid="uid://dq11u53yka8oh"
+path="res://.godot/imported/caterpillar_01.png-20314ecaacfc4a3729698c743b264c41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/caterpillar/caterpillar_01.PNG"
-dest_files=["res://.godot/imported/caterpillar_01.PNG-93302b0d4e92144c0d10c8345e12af43.ctex"]
+source_file="res://assets/sprites/caterpillar/caterpillar_01.png"
+dest_files=["res://.godot/imported/caterpillar_01.png-20314ecaacfc4a3729698c743b264c41.ctex"]
 
 [params]
 

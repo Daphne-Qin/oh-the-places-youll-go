@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://bjswr0mp7ymrq"]
+
+[ext_resource type="Texture2D" uid="uid://dp3ee536yivqj" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_00.PNG" id="1_02usa"]
+[ext_resource type="Texture2D" uid="uid://b5emwglinurcg" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_01.PNG" id="2_1puje"]
+[ext_resource type="Texture2D" uid="uid://bx0p4rc755mng" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_02.PNG" id="3_p58ju"]
+[ext_resource type="Texture2D" uid="uid://1ct7lqjtrdtl" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_03.PNG" id="4_2i7dm"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nwvvl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_02usa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_1puje")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_p58ju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2i7dm")
+}],
+"loop": true,
+"name": &"sway",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4qkp"]
+size = Vector2(172, 1181)
+
+[node name="TreeRed" type="Area2D"]
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nwvvl")
+animation = &"sway"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-76, 204.5)
+shape = SubResource("RectangleShape2D_c4qkp")
