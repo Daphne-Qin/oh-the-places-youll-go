@@ -19,6 +19,21 @@ extends Control
 
 var is_open: bool = false
 
+# Game state tracking for riddle system
+var game_state := {
+	"failures": 0,
+	"riddles_passed": 0,
+	"intentions_passed": false,
+	"current_phase": "intentions"  # "intentions", "riddles", "complete", "kicked_out"
+}
+
+# Conversation history for context
+var conversation_history: Array = []
+
+# Signals for game outcomes
+signal player_granted_access
+signal player_kicked_out
+
 func _ready() -> void:
 	"""Initialize the chat interface."""
 	print("[CHAT] Initializing chat interface...")
@@ -69,19 +84,23 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and is_open:
 		close_chat()
 
-func open_chat() -> void:
+func open_chat(force_reset: bool = false) -> void:
 	"""Open the chat interface."""
 	print("[CHAT] open_chat() called")
 	if is_open:
 		print("[CHAT] Chat already open, returning")
 		return
-	
+
+	# Reset if player was kicked out or forced reset
+	if force_reset or game_state.current_phase == "kicked_out":
+		reset_conversation()
+
 	is_open = true
 	visible = true
 	modulate.a = 1.0  # Make sure it's fully visible
-	
+
 	print("[CHAT] Chat opened. Visible: ", visible, " Modulate alpha: ", modulate.a)
-	
+
 	# Animate in
 	var tween = create_tween()
 	tween.set_parallel(true)
@@ -89,24 +108,24 @@ func open_chat() -> void:
 	tween.tween_property(self, "modulate:a", 1.0, 0.3)
 	scale = Vector2(0.9, 0.9)
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	
+
 	# Wait for animation to complete
 	await get_tree().create_timer(0.3).timeout
-	
+
 	# Verify chat container is ready
 	if not chat_container:
 		print("[CHAT] ERROR: chat_container is null when opening chat!")
 		return
-	
+
 	# Add welcome message when chat opens (only if chat is empty)
 	if chat_container.get_child_count() == 0:
 		print("[CHAT] Chat is empty, adding welcome message...")
 		await get_tree().process_frame  # Wait one more frame
 		_add_welcome_message()
-	
+
 	# Focus input field
 	input_field.grab_focus()
-	
+
 	# Disable player movement
 	GameState.disable_movement()
 
@@ -132,8 +151,10 @@ func close_chat() -> void:
 func _add_welcome_message() -> void:
 	"""Add a welcome message from the Lorax."""
 	print("[CHAT] Adding welcome message...")
-	var welcome_text = "I am the Lorax. I speak for the trees. How can I help you today?"
+	var welcome_text = "I am the Lorax! I speak for the trees! You wish to enter my forest, I see... But first you must answer to ME! Tell me, small one - WHY do you seek the Truffula trees? What brings you here, if you please?"
 	_add_message(welcome_text, false)  # false = from Lorax
+	# Add to history
+	conversation_history.append({"text": welcome_text, "is_user": false})
 
 func _on_send_pressed() -> void:
 	"""Handle send button press."""
@@ -152,21 +173,26 @@ func _send_message() -> void:
 	var message = input_field.text.strip_edges()
 	if message == "":
 		return
-	
+
+	# Don't allow messages if game is over
+	if game_state.current_phase == "complete" or game_state.current_phase == "kicked_out":
+		return
+
 	print("[CHAT] Sending message to API: ", message)
-	
-	# Add user message to chat
+
+	# Add user message to chat and history
 	_add_message(message, true)  # true = from user
-	
+	conversation_history.append({"text": message, "is_user": true})
+
 	# Clear input
 	input_field.text = ""
-	
+
 	# Show typing indicator
 	_show_typing_indicator()
-	
-	# Send to API
+
+	# Send to API with conversation history and game state
 	print("[CHAT] Calling APIManager.send_message_to_lorax()...")
-	APIManager.send_message_to_lorax(message)
+	APIManager.send_message_to_lorax(message, conversation_history, game_state)
 	print("[CHAT] Message sent to API manager")
 
 func _add_message(text: String, is_user: bool) -> void:
@@ -303,7 +329,80 @@ func on_lorax_message_received(message: String) -> void:
 	"""Handle Lorax message received from API."""
 	print("[CHAT] Lorax message received: ", message)
 	_hide_typing_indicator()
-	_add_message(message, false)  # false = from Lorax
+
+	# Check for outcome tags and remove them from display
+	var display_message = message
+	var granted_access = false
+	var kicked_out = false
+
+	if "[FOREST_ACCESS_GRANTED]" in message:
+		granted_access = true
+		display_message = message.replace("[FOREST_ACCESS_GRANTED]", "").strip_edges()
+		game_state.current_phase = "complete"
+
+	if "[KICKED_OUT]" in message:
+		kicked_out = true
+		display_message = message.replace("[KICKED_OUT]", "").strip_edges()
+		game_state.current_phase = "kicked_out"
+
+	# Detect anger/failure indicators in the response
+	var anger_keywords = ["wrong", "falls", "weeps", "angry", "disappointed", "no!", "incorrect", "fail"]
+	var is_angry_response = false
+	for keyword in anger_keywords:
+		if keyword in message.to_lower():
+			is_angry_response = true
+			break
+
+	# Detect success indicators
+	var success_keywords = ["correct", "yes!", "right", "well done", "approval", "pleased", "passed"]
+	var is_success_response = false
+	for keyword in success_keywords:
+		if keyword in message.to_lower():
+			is_success_response = true
+			break
+
+	# Update portrait based on response
+	if kicked_out or is_angry_response:
+		_set_portrait("angry")
+	elif granted_access or is_success_response:
+		_set_portrait("grateful")
+	else:
+		_set_portrait("neutral")
+
+	# Add to chat and history
+	_add_message(display_message, false)
+	conversation_history.append({"text": display_message, "is_user": false})
+
+	# Handle outcomes with delay for dramatic effect
+	if granted_access:
+		await get_tree().create_timer(2.0).timeout
+		_handle_forest_access()
+	elif kicked_out:
+		await get_tree().create_timer(2.0).timeout
+		_handle_kicked_out()
+
+func _handle_forest_access() -> void:
+	"""Handle player being granted access to the forest."""
+	print("[CHAT] Player granted access to Truffula Forest!")
+	player_granted_access.emit()
+	# Add a final celebratory message
+	_add_message("🌳 The path to the Truffula Forest opens before you... 🌳", false)
+	# Disable input
+	input_field.editable = false
+	send_button.disabled = true
+
+func _handle_kicked_out() -> void:
+	"""Handle player being kicked out."""
+	print("[CHAT] Player kicked out!")
+	player_kicked_out.emit()
+	# Add a dismissal message
+	_add_message("🚫 The forest closes its paths to you. Come back when you've learned respect! 🚫", false)
+	# Disable input
+	input_field.editable = false
+	send_button.disabled = true
+	# Close chat after delay
+	await get_tree().create_timer(3.0).timeout
+	close_chat()
 
 func on_lorax_message_failed(error_message: String) -> void:
 	"""Handle Lorax message failure."""
@@ -329,6 +428,35 @@ func _search_for_node(node: Node, name: String) -> Node:
 			return result
 	return null
 
-func _set_portrait(emotion: String):
-	if portrait_assets.has(emotion):
-		portrait.texture = portrait_assets[emotion]
+func _set_portrait(emotion: String) -> void:
+	"""Set the Lorax portrait based on emotion."""
+	print("[CHAT] Setting portrait to: ", emotion)
+	if portrait and portrait_assets.has(emotion):
+		var asset_path = portrait_assets[emotion]
+		if asset_path != null and asset_path != "":
+			var texture = load(asset_path)
+			if texture:
+				portrait.texture = texture
+				print("[CHAT] Portrait loaded: ", asset_path)
+
+func reset_conversation() -> void:
+	"""Reset the conversation state for a new attempt."""
+	print("[CHAT] Resetting conversation...")
+	game_state = {
+		"failures": 0,
+		"riddles_passed": 0,
+		"intentions_passed": false,
+		"current_phase": "intentions"
+	}
+	conversation_history.clear()
+	# Clear existing messages
+	if chat_container:
+		for child in chat_container.get_children():
+			child.queue_free()
+	# Re-enable inputs
+	if input_field:
+		input_field.editable = true
+	if send_button:
+		send_button.disabled = false
+	# Reset portrait
+	_set_portrait("neutral")
