@@ -5,7 +5,7 @@ extends Node
 
 # Global flag to control whether the player can move
 # Set to false during cutscenes or dialogue
-var can_move: bool = true
+@export var can_move: bool = true
 
 # Signal emitted when movement state changes
 signal movement_state_changed(can_move: bool)

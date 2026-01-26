@@ -1,0 +1,87 @@
+[gd_scene load_steps=13 format=3 uid="uid://bcwoamcwrryp"]
+
+[ext_resource type="Texture2D" uid="uid://bdqivutd3ii6u" path="res://assets/background/lorax_forest.png" id="1_i4eyl"]
+[ext_resource type="PackedScene" uid="uid://b0rvkijyq6fr0" path="res://scenes/LoraxLevel.tscn" id="1_qsu88"]
+[ext_resource type="Texture2D" uid="uid://b822da8oja6ws" path="res://assets/sprites/trees/tree_orange/tree_orange_00.PNG" id="2_md0es"]
+[ext_resource type="Texture2D" uid="uid://r1ho78yfcrsu" path="res://assets/sprites/trees/tree_orange/tree_orange_01.PNG" id="3_bfskr"]
+[ext_resource type="Texture2D" uid="uid://c351jm5rj0b8l" path="res://assets/sprites/trees/tree_orange/tree_orange_02.PNG" id="4_078al"]
+[ext_resource type="Texture2D" uid="uid://c7i3x2k1qipw1" path="res://assets/sprites/trees/tree_orange/tree_orange_03.PNG" id="5_rayuq"]
+[ext_resource type="Texture2D" uid="uid://ci0cspg7f4rdw" path="res://assets/sprites/trees/tree_purple/tree_purple_00.PNG" id="6_avniy"]
+[ext_resource type="Texture2D" uid="uid://2gjoosr54sh8" path="res://assets/sprites/trees/tree_purple/tree_purple_01.PNG" id="7_qsu88"]
+[ext_resource type="Texture2D" uid="uid://b0cpw342j66op" path="res://assets/sprites/trees/tree_purple/tree_purple_02.PNG" id="8_gwq14"]
+[ext_resource type="Texture2D" uid="uid://ng4ieqsj8d7m" path="res://assets/sprites/trees/tree_purple/tree_purple_03.PNG" id="9_ylc23"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_avniy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_md0es")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bfskr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_078al")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_rayuq")
+}],
+"loop": true,
+"name": &"sway",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4y05l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_avniy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qsu88")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_gwq14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ylc23")
+}],
+"loop": true,
+"name": &"sway",
+"speed": 5.0
+}]
+
+[node name="LoraxForest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoraxLevel" parent="." instance=ExtResource("1_qsu88")]
+position = Vector2(92.99997, 312.00003)
+scale = Vector2(0.27743903, 0.277439)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_i4eyl")
+
+[node name="TreeOrange" type="AnimatedSprite2D" parent="."]
+position = Vector2(92.99997, 312.00003)
+scale = Vector2(0.27743903, 0.277439)
+sprite_frames = SubResource("SpriteFrames_avniy")
+animation = &"sway"
+frame_progress = 0.13801153
+
+[node name="TreePurple" type="AnimatedSprite2D" parent="."]
+position = Vector2(250.125, 346.72943)
+scale = Vector2(0.28573847, 0.28573847)
+sprite_frames = SubResource("SpriteFrames_4y05l")
+animation = &"sway"
+frame_progress = 0.6010439
