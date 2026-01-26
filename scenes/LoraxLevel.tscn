@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=45 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
 [ext_resource type="Script" uid="uid://bp0vemyf1u0ya" path="res://scripts/game_state.gd" id="1_3coij"]
@@ -98,6 +98,9 @@ animations = [{
 "name": &"default",
 "speed": 2.0
 }]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_otipn"]
+size = Vector2(1402.3756, 402.84985)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_342io"]
 animations = [{
@@ -223,12 +226,20 @@ flip_h = true
 position = Vector2(0, -3.5)
 shape = SubResource("RectangleShape2D_3huvt")
 
-[node name="Caterpillar" type="AnimatedSprite2D" parent="Node2D"]
+[node name="Caterpillar" type="Area2D" parent="Node2D"]
 position = Vector2(1485, 491)
 scale = Vector2(0.263125, 0.263125)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Caterpillar"]
+scale = Vector2(0.99999994, 0.99999994)
 sprite_frames = SubResource("SpriteFrames_1c5k7")
-frame_progress = 0.43616593
+frame_progress = 0.5713741
 flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Caterpillar"]
+position = Vector2(9.50293, 140.61731)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_otipn")
 
 [node name="Interactables" type="Node2D" parent="Node2D"]
 position = Vector2(122, -4)

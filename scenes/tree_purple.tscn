@@ -1,12 +1,34 @@
-[gd_scene load_steps=7 format=3 uid="uid://7i1j80m3i4cv"]
+[gd_scene load_steps=12 format=3 uid="uid://7i1j80m3i4cv"]
 
+[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scenes/tree.gd" id="1_bes85"]
 [ext_resource type="Texture2D" uid="uid://ci0cspg7f4rdw" path="res://assets/sprites/trees/tree_purple/tree_purple_sway/tree_purple_00.PNG" id="1_xg48e"]
 [ext_resource type="Texture2D" uid="uid://2gjoosr54sh8" path="res://assets/sprites/trees/tree_purple/tree_purple_sway/tree_purple_01.PNG" id="2_bes85"]
+[ext_resource type="Texture2D" uid="uid://civknhwl1i6um" path="res://assets/sprites/trees/tree_purple/tree_purple_cut/tree_purple_cut_00.PNG" id="2_kx1v5"]
+[ext_resource type="Texture2D" uid="uid://dtfylgyhjjrmn" path="res://assets/sprites/trees/tree_purple/tree_purple_cut/tree_purple_cut_01.PNG" id="3_dhnfn"]
 [ext_resource type="Texture2D" uid="uid://b0cpw342j66op" path="res://assets/sprites/trees/tree_purple/tree_purple_sway/tree_purple_02.PNG" id="3_g5cny"]
+[ext_resource type="Texture2D" uid="uid://dlnpm2tulu730" path="res://assets/sprites/trees/tree_purple/tree_purple_cut/tree_purple_cut_02.PNG" id="4_khp1o"]
 [ext_resource type="Texture2D" uid="uid://ng4ieqsj8d7m" path="res://assets/sprites/trees/tree_purple/tree_purple_sway/tree_purple_03.PNG" id="4_rks1g"]
+[ext_resource type="Texture2D" uid="uid://c74rc070wg00d" path="res://assets/sprites/trees/tree_purple/tree_purple_cut/tree_purple_cut_03.PNG" id="5_iltnj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yc0nh"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kx1v5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_dhnfn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_khp1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_iltnj")
+}],
+"loop": true,
+"name": &"cut",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_xg48e")
@@ -29,11 +51,12 @@ animations = [{
 size = Vector2(146, 1111)
 
 [node name="TreePurple" type="Area2D"]
+script = ExtResource("1_bes85")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_yc0nh")
-animation = &"sway"
+animation = &"cut"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-13, 256.5)

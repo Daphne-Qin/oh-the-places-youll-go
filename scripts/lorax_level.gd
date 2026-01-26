@@ -18,11 +18,6 @@ func _ready() -> void:
 		lorax_area.body_entered.connect(_on_lorax_area_entered)
 		lorax_area.body_exited.connect(_on_lorax_area_exited)
 
-	for tree in $Trees.get_children():
-		var sprite = tree.get_node("AnimatedSprite2D")
-		sprite.speed_scale = 0.5
-		sprite.play("sway")
-
 func _load_chat_interface() -> void:
 	"""Load and add the chat interface to the scene."""
 	var chat_scene = preload("res://scenes/LoraxChat.tscn")
