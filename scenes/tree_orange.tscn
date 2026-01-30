@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://kwjcc22t7dbu" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_00.PNG" id="1_050up"]
 [ext_resource type="Texture2D" uid="uid://b822da8oja6ws" path="res://assets/sprites/trees/tree_orange/tree_orange_sway/tree_orange_00.PNG" id="1_d7ftr"]
-[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scenes/tree.gd" id="1_exof0"]
+[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scripts/tree.gd" id="1_exof0"]
 [ext_resource type="Texture2D" uid="uid://r1ho78yfcrsu" path="res://assets/sprites/trees/tree_orange/tree_orange_sway/tree_orange_01.PNG" id="2_at6er"]
 [ext_resource type="Texture2D" uid="uid://bmegr0d8mhovi" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_01.PNG" id="2_exof0"]
 [ext_resource type="Texture2D" uid="uid://6pv2q3of8jvh" path="res://assets/sprites/trees/tree_orange/tree_orange_cut/tree_orange_cut_02.PNG" id="3_gpkkq"]

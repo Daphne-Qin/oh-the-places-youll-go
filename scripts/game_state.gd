@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 ## Game State Manager (Autoload Singleton)
 ## Manages global game state variables like player movement control
@@ -9,6 +9,7 @@ extends Node
 
 # Signal emitted when movement state changes
 signal movement_state_changed(can_move: bool)
+var lorax_level: Node
 
 func set_can_move(value: bool) -> void:
 	"""Set whether the player can move and emit signal."""

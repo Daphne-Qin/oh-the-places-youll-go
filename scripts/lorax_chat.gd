@@ -31,6 +31,7 @@ var game_state := {
 var conversation_history: Array = []
 
 # Signals for game outcomes
+signal tree_fall
 signal player_granted_access
 signal player_kicked_out
 
@@ -363,6 +364,7 @@ func on_lorax_message_received(message: String) -> void:
 
 	# Update portrait based on response
 	if kicked_out or is_angry_response:
+		tree_fall.emit()
 		_set_portrait("angry")
 	elif granted_access or is_success_response:
 		_set_portrait("grateful")
@@ -408,7 +410,7 @@ func on_lorax_message_failed(error_message: String) -> void:
 	"""Handle Lorax message failure."""
 	print("[CHAT] Lorax message failed: ", error_message)
 	_hide_typing_indicator()
-	var error_text = "I'm having trouble speaking right now. " + error_message
+	var error_text = "The trees rustle in anger! I'm left speechless. " + error_message
 	_add_message(error_text, false)
 
 func _find_messages_container() -> VBoxContainer:

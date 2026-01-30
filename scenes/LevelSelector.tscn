@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://ceu3sl3dghb35"]
+
+[ext_resource type="Texture2D" uid="uid://emin6p72qf84" path="res://assets/sprites/levelselect/map.png" id="1_8ixoo"]
+[ext_resource type="Script" uid="uid://boumw7tajidd6" path="res://scripts/level_selector.gd" id="1_emkfd"]
+[ext_resource type="Texture2D" uid="uid://cyyuocklqbstn" path="res://assets/sprites/levelselect/icon_book.png" id="2_lm2ad"]
+
+[node name="LevelSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_emkfd")
+
+[node name="Map" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Map"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Map"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -550.0
+offset_top = -360.0
+offset_right = 550.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_8ixoo")
+expand_mode = 1
+
+[node name="OpenSelectorButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -136.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = 136.0
+grow_horizontal = 0
+icon = ExtResource("2_lm2ad")
+expand_icon = true
+
+[connection signal="pressed" from="OpenSelectorButton" to="." method="_on_open_selector_button_pressed"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://bjswr0mp7ymrq"]
 
-[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scenes/tree.gd" id="1_1puje"]
+[ext_resource type="Script" uid="uid://c4ebrkia8kwqu" path="res://scripts/tree.gd" id="1_1puje"]
 [ext_resource type="Texture2D" uid="uid://dp3ee536yivqj" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_00.PNG" id="1_02usa"]
 [ext_resource type="Texture2D" uid="uid://b5emwglinurcg" path="res://assets/sprites/trees/tree_red/tree_red_sway/tree_red_01.PNG" id="2_1puje"]
 [ext_resource type="Texture2D" uid="uid://ddwrqoy8pcvnu" path="res://assets/sprites/trees/tree_red/tree_red_cut/tree_red_cut_00.PNG" id="2_c4qkp"]
@@ -55,6 +55,7 @@ script = ExtResource("1_1puje")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, 0)
 sprite_frames = SubResource("SpriteFrames_nwvvl")
 animation = &"cut"
 
