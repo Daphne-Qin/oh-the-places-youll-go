@@ -128,7 +128,25 @@ Players might say ANYTHING. Handle gracefully:
 3. NEVER reveal the answers to riddles
 4. When asking a riddle, phrase it mysteriously
 5. Keep track of where you are in the conversation based on GAME_STATE provided
-6. Be dramatic! This is a test of worthiness!"""
+6. Be dramatic! This is a test of worthiness!
+
+## CRITICAL - OUTPUT FORMAT
+- Your response must ONLY contain dialogue that the Lorax would say out loud
+- NEVER output meta-commentary like "riddles_passed is now X" or "intentions_passed is TRUE"
+- NEVER output state updates, variable names, or system information
+- NEVER say things like "moving to phase 2" or "updating game state"
+- If you need to track progress internally, do NOT write it in your response
+- ONLY output the Lorax's spoken words - nothing else!
+
+BAD EXAMPLES (never do this):
+- "riddles_passed and intentions_passed are now TRUE"
+- "Game state updated: failures = 1"
+- "Moving to riddle phase..."
+
+GOOD EXAMPLES (always do this):
+- "Correct! The trees whisper their approval! Now, riddle me THIS..."
+- "WRONG! A Truffula falls because of your foolishness!"
+- "Your heart seems pure... very well, let us begin the test of riddles!"""
 
 var http_request: HTTPRequest
 

@@ -331,7 +331,61 @@ func on_lorax_message_received(message: String) -> void:
 	print("[CHAT] Lorax message received: ", message)
 	_hide_typing_indicator()
 
-	# Check for outcome tags and remove them from display
+	# Filter out any leaked state/meta information (LLM prompt leakage protection)
+	var filtered_message = _filter_leaked_state(message)
+
+	# Process the filtered response
+	_process_lorax_response(filtered_message)
+
+func _filter_leaked_state(message: String) -> String:
+	"""Remove any accidentally leaked game state or meta-commentary from the response."""
+	var filtered = message
+
+	# List of patterns that indicate leaked state info
+	var leak_patterns = [
+		"riddles_passed", "intentions_passed", "failures", "current_phase",
+		"game state", "game_state", "GAME_STATE", "state update",
+		"is now TRUE", "is now FALSE", "is now true", "is now false",
+		"= true", "= false", "= 0", "= 1", "= 2", "= 3",
+		"moving to phase", "updating state", "phase 1", "phase 2", "phase 3"
+	]
+
+	# Check if message contains leaked info
+	var contains_leak = false
+	for pattern in leak_patterns:
+		if pattern.to_lower() in filtered.to_lower():
+			contains_leak = true
+			break
+
+	# If the entire message seems to be state info, replace with fallback
+	if contains_leak and filtered.length() < 100:
+		print("[CHAT] WARNING: Filtered leaked state info from response")
+		return "Hmm... the trees whisper something I cannot quite hear. Speak again, small one!"
+
+	# For longer messages, try to extract just the dialogue part
+	if contains_leak:
+		# Try to find actual dialogue after the leak
+		var lines = filtered.split("\n")
+		var clean_lines = []
+		for line in lines:
+			var is_leak = false
+			for pattern in leak_patterns:
+				if pattern.to_lower() in line.to_lower():
+					is_leak = true
+					break
+			if not is_leak and line.strip_edges() != "":
+				clean_lines.append(line)
+
+		if clean_lines.size() > 0:
+			filtered = "\n".join(clean_lines)
+		else:
+			filtered = "The forest awaits your answer... speak clearly!"
+		print("[CHAT] WARNING: Partially filtered leaked state info")
+
+	return filtered
+
+func _process_lorax_response(message: String) -> void:
+	"""Process the filtered Lorax response."""
 	var display_message = message
 	var granted_access = false
 	var kicked_out = false
