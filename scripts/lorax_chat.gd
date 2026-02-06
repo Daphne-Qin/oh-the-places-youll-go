@@ -402,28 +402,19 @@ func _process_lorax_response(message: String) -> void:
 		display_message = message.replace("[KICKED_OUT]", "").strip_edges()
 		game_state.current_phase = "kicked_out"
 
-	# Detect anger/failure indicators in the response
-	var anger_keywords = ["wrong", "falls", "weeps", "angry", "disappointed", "no!", "incorrect", "fail"]
-	var is_angry_response = false
-	for keyword in anger_keywords:
-		if keyword in message.to_lower():
-			is_angry_response = true
-			break
+	# Detect emotion from the Lorax's response
+	var detected_emotion = _detect_emotion(message)
 
-	# Detect success indicators
-	var success_keywords = ["correct", "yes!", "right", "well done", "approval", "pleased", "passed"]
-	var is_success_response = false
-	for keyword in success_keywords:
-		if keyword in message.to_lower():
-			is_success_response = true
-			break
-
-	# Update portrait based on response
-	if kicked_out or is_angry_response:
+	# Update portrait based on detected emotion
+	if kicked_out or detected_emotion == "angry":
 		tree_fall.emit()
 		_set_portrait("angry")
-	elif granted_access or is_success_response:
+	elif granted_access or detected_emotion == "grateful":
 		_set_portrait("grateful")
+	elif detected_emotion == "surprised":
+		# Randomly pick surprised0 or surprised1 for variety
+		var surprised_variant = "surprised" + str(randi() % 2)
+		_set_portrait(surprised_variant)
 	else:
 		_set_portrait("neutral")
 
@@ -438,6 +429,65 @@ func _process_lorax_response(message: String) -> void:
 	elif kicked_out:
 		await get_tree().create_timer(2.0).timeout
 		_handle_kicked_out()
+
+func _detect_emotion(message: String) -> String:
+	"""Analyze the Lorax's response and detect the emotion to display."""
+	var msg_lower = message.to_lower()
+
+	# ANGRY - Wrong answers, insults, profanity reactions, rage moments
+	var angry_keywords = [
+		"wrong", "falls", "weeps", "angry", "disappointed", "incorrect", "fail",
+		"apologize", "how dare", "the audacity", "we're done", "banish",
+		"tree falls", "truffula falls", "rudeness", "cover their ears",
+		"what did you just say", "sorry to the trees"
+	]
+	for keyword in angry_keywords:
+		if keyword in msg_lower:
+			return "angry"
+
+	# SURPRISED - Easter egg triggers, unexpected things, "WHO?", excitement
+	var surprised_keywords = [
+		"who? where?", "speak up", "clover",  # Horton reference
+		"seventeen", "umbrella",  # Cat in the Hat reference
+		"how do you know", "what machine", "definitely not",  # Factory easter egg
+		"stroke", "anti-tree language",  # Gibberish reaction
+		"that's my word", "sniffles",  # "Unless" emotional moment
+		"smallest heart", "medically concerning",  # Grinch reference
+		"mercury is in gatorade",  # Gemini joke
+		"lorax-male",  # Sigma joke
+		"haberdasher",  # No cap joke
+		"tree-zz", "married to the forest",  # Rizz joke
+		"!!", "?!", "wait,", "wait -"  # General surprise punctuation
+	]
+	for keyword in surprised_keywords:
+		if keyword in msg_lower:
+			return "surprised"
+
+	# GRATEFUL/HAPPY - Correct answers, compliments received, friends mentioned
+	var grateful_keywords = [
+		"correct", "yes!", "right", "well done", "approval", "pleased", "passed",
+		"opens its arms", "worthy", "pure of heart", "hope for you",
+		"bar-ba-loots", "swomee-swans", "humming-fish", "my friends",
+		"manners", "how rare", "good egg", "horton",
+		"distinguished quality", "truffula tufts",  # Mustache compliment
+		"trees rustle with approval", "forest welcomes"
+	]
+	for keyword in grateful_keywords:
+		if keyword in msg_lower:
+			return "grateful"
+
+	# UNCOMFORTABLE/AWKWARD (maps to surprised for now)
+	var uncomfortable_keywords = [
+		"we do not speak that name", "shudders",  # Once-ler
+		"not equipped for this emotional", "plant a tree instead",  # I love you
+		"this old thing", "grooming"  # Mustache flustered
+	]
+	for keyword in uncomfortable_keywords:
+		if keyword in msg_lower:
+			return "surprised"  # Use surprised for awkward moments too
+
+	# Default to neutral
+	return "neutral"
 
 func _handle_forest_access() -> void:
 	"""Handle player being granted access to the forest."""
