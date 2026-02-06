@@ -14,7 +14,9 @@ extends Control
 @export var portrait_assets := {
 	"neutral": null,
 	"angry": "res://assets/sprites/lorax/angry.png",
-	"grateful": "res://assets/sprites/lorax/grateful.png"
+	"grateful": "res://assets/sprites/lorax/grateful.png",
+	"surprised0": "res://assets/sprites/lorax/surprised0.png",
+	"surprised1": "res://assets/sprites/lorax/surprised1.png"
 }
 
 var is_open: bool = false
