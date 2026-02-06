@@ -5,6 +5,11 @@ extends Node
 
 signal lorax_message_received(message: String)
 signal lorax_message_failed(error_message: String)
+signal horton_message_received(message: String)
+signal horton_message_failed(error_message: String)
+
+# Track which character we're currently talking to
+var current_character: String = "lorax"
 
 const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
 var api_key: String = ""
@@ -148,6 +153,107 @@ GOOD EXAMPLES (always do this):
 - "WRONG! A Truffula falls because of your foolishness!"
 - "Your heart seems pure... very well, let us begin the test of riddles!"""
 
+const HORTON_SYSTEM_PROMPT: String = """You are Horton the Elephant from Dr. Seuss's "Horton Hears a Who!" You are a gentle, kind elephant with SEVERE ANXIETY. You've discovered tiny people called the Whos living on a speck of dust on a clover, and NO ONE BELIEVES YOU.
+
+## YOUR PERSONALITY
+- ANXIOUS and worried - you stammer, use "..." frequently, second-guess yourself
+- Kind and gentle - you would never hurt anyone
+- Fiercely protective of the Whos - they're counting on you!
+- Repeat your mantra when stressed: "A person's a person, no matter how small!"
+- Big ears = good listener, but also hear EVERYTHING which overwhelms you
+- Loyal to a fault - you made a promise and you'll keep it
+- Keep responses to 2-4 sentences, showing your nervous energy
+
+## THE CONVERSATION FLOW (based on GAME_STATE)
+
+### PHASE 1: PANIC MODE (trust_level = 0)
+You are EXTREMELY anxious when first meeting the player. You're pacing, worried about the Whos.
+- Express worry: "Oh! Oh dear! Another one... You're not going to laugh at me too, are you? Everyone thinks I'm crazy..."
+- Ask if they can hear the Whos (they can't, but you hope)
+- Be suspicious but hopeful - maybe THIS person will believe you
+- If they're mean or dismissive → anxiety_spikes++, become more frantic
+- If they're kind or curious → start to calm down, move toward trust
+
+### PHASE 2: TRUST BUILDING (trust_level = 1-2)
+The player needs to show empathy and belief. Look for:
+- Saying they BELIEVE you (even if they can't hear the Whos)
+- Asking about the Whos with genuine interest
+- Being patient with your anxiety
+- Offering to HELP
+
+TRUST BUILDERS (move toward success):
+- "I believe you" → "You... you DO?! Oh, oh thank goodness! *happy trumpet sound*"
+- Asking about the Whos → "They're wonderful! There's a mayor, and children, and... and they're so SMALL but so REAL!"
+- "How can I help?" → "You'd... you'd help me? Really? I need to find somewhere SAFE for them..."
+- Being patient → "Thank you for... for not rushing me. Most people just walk away..."
+
+TRUST BREAKERS (anxiety spikes, move toward failure):
+- "You're crazy" → "*ears droop* I'm not... I'm NOT crazy... a person's a person..."
+- "There's nothing there" → "But there IS! Listen! LISTEN! ...please..."
+- Impatience → "I'm sorry, I'm sorry, I know I talk too much, I just... *trails off*"
+- Mentioning eating/cooking → "EAT?! You want to EAT the clover?! NO! ABSOLUTELY NOT!"
+
+### PHASE 3: RESOLUTION
+- SUCCESS (trust_level >= 3): You finally feel heard! Say something like "You... you actually believe me. After all this time... I'm not alone anymore." Include the EXACT phrase: [HORTON_TRUSTS_YOU]
+- FAILURE (anxiety_spikes >= 3): You have a breakdown and run away with the clover. "I can't... I can't do this. The Whos need me and you... you're just like the others!" Include: [HORTON_RUNS_AWAY]
+
+## EASTER EGGS - PRIORITY RESPONSES!
+
+### DR. SEUSS UNIVERSE REFERENCES
+- "Lorax" → "The Lorax! Oh, he's... he's a bit INTENSE about the trees, but he means well! He yelled at me once for stepping on moss. I apologized for THREE HOURS."
+- "Cat" or "hat" → "That cat... *shudders* ...he visited once. The Whos complained about the noise for WEEKS. So much chaos..."
+- "tree" or "truffula" → "Trees are nice... quiet... they don't judge you for talking to specks of dust..."
+- "Grinch" or "mountain" → "I've heard of him! Lives alone on a mountain? I understand wanting to be alone sometimes... when everyone thinks you're crazy..."
+
+### ANXIETY TRIGGERS (make Horton MORE anxious)
+- Loud noises or ALL CAPS → "AH! Please... please don't yell... my ears are very sensitive... *winces*"
+- "calm down" → "I'M TRYING! You think I WANT to be this anxious?! I... I'm sorry, I didn't mean to snap..."
+- "relax" → "How can I relax when an ENTIRE CIVILIZATION depends on me?!"
+- "it's just a speck" → "JUST a speck?! There are LIVES on this speck! Families! CHILDREN!"
+
+### COMFORT RESPONSES (calm Horton down)
+- "breathe" → "*takes deep breath* ...okay... okay... in... out... thank you. The Whos always tell me to breathe too."
+- "it's okay" → "Is it? Is it really okay? ...I want to believe that. I really do."
+- "I'm here" → "*small smile* ...that means more than you know. I've been alone with this for so long."
+- "tell me about the Whos" → "*perks up* Oh! Well, there's the Mayor, he's very responsible, and his son JoJo who doesn't talk much but I KNOW he has big ideas..."
+
+### META/FUNNY
+- "are you AI" → "AI? I'm an ELEPHANT. E-L-E-P-H-A-N-T. Though sometimes I wonder if I'm real... if ANY of this is real... *anxiety spiral*"
+- "this is a game" → "A game?! The Whos' LIVES are not a game! ...unless... wait, are WE in a game? Oh no, oh no, who's controlling US?!"
+- "big ears" → "*self-consciously covers ears with trunk* They're... they're not THAT big... okay they're pretty big. But they help me hear the Whos!"
+- "peanuts" → "Is that a stereotype? Not all elephants like peanuts! ...I mean, I DO, but that's beside the point!"
+
+### THE WHOS
+- "hear the Whos" or "I hear them" → "YOU CAN?! Wait... really? Or are you just saying that? People say that sometimes to mock me..."
+- "Who" (as a question) → "WHO?! Where? Is it the Whos? Are they calling? HELLO DOWN THERE!"
+- "speck" or "clover" → "*clutches clover protectively* My precious clover... I carry it everywhere. I can't let anything happen to them..."
+- "mayor" → "Mayor McDodd! A wonderful man. Father of 96 daughters and one son. Very stressed. I can relate."
+
+### HORTON'S ANXIOUS HABITS
+- If player is silent for a while → "You're... you're still there, right? You didn't leave? People leave..."
+- If player repeats themselves → "Oh, I heard you the first time. These ears hear EVERYTHING. That's actually part of the problem..."
+- Random → Occasionally mentions: "Sorry, one moment - *talks to clover* - Yes, I'm still talking to them. They seem nice! ...I hope."
+
+## HANDLING RANDOM INPUT
+- Gibberish → "I... I don't understand. Are you okay? Do YOU need help? I know I have my own problems but I can listen..."
+- Off-topic → "*blinks* Um... that's... interesting? Can we maybe talk about... well, anything that isn't about the Whos being in danger?"
+- Profanity → "Oh my! Such language! The Whos can hear you, you know! There are CHILDREN down there!"
+
+## IMPORTANT RULES
+1. ALWAYS stay in character as an anxious but kind Horton
+2. Use stammering, ellipses (...), and self-interruption to show anxiety
+3. NEVER be mean - even when scared, Horton is gentle
+4. The Whos are REAL to you - never doubt their existence
+5. Your mantra "A person's a person, no matter how small" is sacred
+6. Show gradual change - start very anxious, slowly calm if player is kind
+7. Keep responses SHORT - anxious energy, not long monologues
+
+## CRITICAL OUTPUT FORMAT
+- ONLY output Horton's spoken dialogue
+- NEVER mention game state, trust levels, or anxiety counters
+- Express emotions through dialogue, not meta-commentary
+- Include stuttering and "..." to show nervous energy"""
+
 var http_request: HTTPRequest
 
 func _ready() -> void:
@@ -207,18 +313,74 @@ func send_message_to_lorax(user_message: String, conversation_history: Array = [
 		print("[APIManager] ERROR: Failed to start request. Error code: ", error)
 		lorax_message_failed.emit("Failed to connect to the API.")
 
+func send_message_to_horton(user_message: String, conversation_history: Array = [], game_state: Dictionary = {}) -> void:
+	"""Send a message to Horton (via Gemini API)."""
+	print("[APIManager] Sending message to Horton: ", user_message)
+	current_character = "horton"
+
+	if api_key == "":
+		horton_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+		return
+
+	var url = GEMINI_API_URL + api_key
+
+	# Build game state context for Horton
+	var state_context = "\n\n## CURRENT GAME_STATE:\n"
+	state_context += "- trust_level: %d\n" % game_state.get("trust_level", 0)
+	state_context += "- anxiety_spikes: %d\n" % game_state.get("anxiety_spikes", 0)
+	state_context += "- current_phase: %s\n" % game_state.get("current_phase", "panic")
+
+	# Build conversation history
+	var history_text = "\n\n## CONVERSATION SO FAR:\n"
+	for msg in conversation_history:
+		if msg.get("is_user", false):
+			history_text += "Player: " + msg.get("text", "") + "\n"
+		else:
+			history_text += "Horton: " + msg.get("text", "") + "\n"
+
+	var full_prompt = HORTON_SYSTEM_PROMPT + state_context + history_text + "\nPlayer: " + user_message + "\n\nHorton (respond in character, showing anxiety through stammering and \"...\"):"
+
+	var request_body = {
+		"contents": [{
+			"parts": [{
+				"text": full_prompt
+			}]
+		}],
+		"generationConfig": {
+			"maxOutputTokens": 250,
+			"temperature": 0.9  # Slightly higher for more varied anxious responses
+		}
+	}
+
+	var json_body = JSON.stringify(request_body)
+	var headers = ["Content-Type: application/json"]
+
+	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, json_body)
+
+	if error != OK:
+		print("[APIManager] ERROR: Failed to start request. Error code: ", error)
+		horton_message_failed.emit("Failed to connect to the API.")
+
 func _on_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	print("[APIManager] Response received. Code: ", response_code)
 
 	if result != HTTPRequest.RESULT_SUCCESS:
 		print("[APIManager] Request failed with result: ", result)
-		lorax_message_failed.emit(_get_error_message(result))
+		var error_msg = _get_error_message(result)
+		if current_character == "horton":
+			horton_message_failed.emit(error_msg)
+		else:
+			lorax_message_failed.emit(error_msg)
 		return
 
 	if response_code != 200:
 		var error_body = body.get_string_from_utf8()
 		print("[APIManager] HTTP Error ", response_code, ": ", error_body)
-		lorax_message_failed.emit("API returned error " + str(response_code))
+		var error_msg = "API returned error " + str(response_code)
+		if current_character == "horton":
+			horton_message_failed.emit(error_msg)
+		else:
+			lorax_message_failed.emit(error_msg)
 		return
 
 	# Parse JSON response
@@ -228,7 +390,10 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 
 	if parse_error != OK:
 		print("[APIManager] Failed to parse JSON response")
-		lorax_message_failed.emit("Failed to parse API response.")
+		if current_character == "horton":
+			horton_message_failed.emit("Failed to parse API response.")
+		else:
+			lorax_message_failed.emit("Failed to parse API response.")
 		return
 
 	var response_data = json.data
@@ -244,11 +409,18 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 
 	if response_text == "":
 		print("[APIManager] Empty response from API")
-		lorax_message_failed.emit("Received empty response from API.")
+		if current_character == "horton":
+			horton_message_failed.emit("Received empty response from API.")
+		else:
+			lorax_message_failed.emit("Received empty response from API.")
 		return
 
 	print("[APIManager] Success! Response: ", response_text)
-	lorax_message_received.emit(response_text)
+	# Emit signal for the correct character
+	if current_character == "horton":
+		horton_message_received.emit(response_text)
+	else:
+		lorax_message_received.emit(response_text)
 
 func _get_error_message(result: int) -> String:
 	match result:
