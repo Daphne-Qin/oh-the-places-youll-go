@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dq11u53yka8oh"
-path="res://.godot/imported/caterpillar_01.png-20314ecaacfc4a3729698c743b264c41.ctex"
+uid="uid://dbi5wm4o0hric"
+path="res://.godot/imported/anxiousHorton.png-1a8742567cb010a9b14af5757b18cf32.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/caterpillar/caterpillar_01.png"
-dest_files=["res://.godot/imported/caterpillar_01.png-20314ecaacfc4a3729698c743b264c41.ctex"]
+source_file="res://assets/sprites/horton/anxiousHorton.png"
+dest_files=["res://.godot/imported/anxiousHorton.png-1a8742567cb010a9b14af5757b18cf32.ctex"]
 
 [params]
 
