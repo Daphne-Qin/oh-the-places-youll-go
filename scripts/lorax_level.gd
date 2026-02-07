@@ -18,10 +18,11 @@ func _ready() -> void:
 	if lorax_area:
 		lorax_area.body_entered.connect(_on_lorax_area_entered)
 		lorax_area.body_exited.connect(_on_lorax_area_exited)
-		
+
+	GameState.enable_movement()
+
 	var level_select_scene = preload("res://scenes/LevelSelector.tscn")
 	level_select = level_select_scene.instantiate()
-	print("Level select", level_select)
 	
 	# Add to a CanvasLayer so it's always on top
 	var ui_layer = get_node_or_null("UILayer")

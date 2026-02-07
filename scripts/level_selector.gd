@@ -137,12 +137,3 @@ func _on_open_selector_button_pressed() -> void:
 		# Refresh button states when opening
 		_update_all_button_states()
 		$Map.show()
-
-func show_map() -> void:
-	"""Public method to show the map."""
-	_update_all_button_states()
-	$Map.show()
-
-func hide_map() -> void:
-	"""Public method to hide the map."""
-	$Map.hide()

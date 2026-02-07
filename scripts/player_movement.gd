@@ -37,8 +37,7 @@ func _process(delta):
 		
 	if velocity.length() > 0:
 		velocity = velocity.normalized()*speed
-		$AnimatedSprite2D.animation = "walk"
-		$AnimatedSprite2D.play()
+		$AnimatedSprite2D.play("walk")
 	else:
 		$AnimatedSprite2D.stop()
 		$AnimatedSprite2D.animation = "stand"

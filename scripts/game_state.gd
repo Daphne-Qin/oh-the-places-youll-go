@@ -22,7 +22,7 @@ var levels := {
 		"scene_path": "res://scenes/LoraxLevel.tscn",
 		"unlocked": true,  # First level always unlocked
 		"completed": false,
-		"map_position": Vector2(200, 300),  # Position on the map
+		"map_position": Vector2(38, 497),  # Position on the map
 		"icon": "res://assets/sprites/levelselect/icon_lorax.png"
 	},
 	"horton": {
@@ -30,16 +30,8 @@ var levels := {
 		"scene_path": "res://scenes/HortonLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Lorax
 		"completed": false,
-		"map_position": Vector2(500, 250),
+		"map_position": Vector2(1050, 553),
 		"icon": "res://assets/sprites/levelselect/icon_horton.png"
-	},
-	"truffula_forest": {
-		"name": "Truffula Forest",
-		"scene_path": "res://scenes/TruffulaForest.tscn",
-		"unlocked": false,  # Final destination - unlocked after Lorax riddles
-		"completed": false,
-		"map_position": Vector2(350, 150),
-		"icon": "res://assets/sprites/levelselect/icon_forest.png"
 	}
 }
 

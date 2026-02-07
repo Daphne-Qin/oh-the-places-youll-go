@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=11 format=3 uid="uid://dp5wlstdvcrv7"]
 
+[ext_resource type="Script" uid="uid://csmdfcqc7s3fn" path="res://scenes/horton_level.gd" id="1_ndjet"]
 [ext_resource type="Texture2D" uid="uid://x3jjhrnt2hbj" path="res://assets/background/horton_forest.jpg" id="1_piuc7"]
 [ext_resource type="Texture2D" uid="uid://rxbk71nxlxab" path="res://assets/sprites/horton/horton_walk_00.png" id="2_0v62h"]
 [ext_resource type="Texture2D" uid="uid://dy32tvmoeg2pu" path="res://assets/sprites/horton/horton_walk_01.png" id="3_ndjet"]
+[ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scenes/horton_level_sprites.gd" id="3_yp8v0"]
 [ext_resource type="Texture2D" uid="uid://bbuhfuwwiwbit" path="res://assets/sprites/horton/horton_walk_02.png" id="4_yp8v0"]
 [ext_resource type="Texture2D" uid="uid://ltplpq5pidg1" path="res://assets/sprites/horton/horton_walk_03.png" id="5_6ehc2"]
 [ext_resource type="Texture2D" uid="uid://ckuvloky12lhm" path="res://assets/sprites/horton/horton_walk_04.png" id="6_6708l"]
@@ -26,7 +28,7 @@ animations = [{
 "texture": ExtResource("6_6708l")
 }],
 "loop": true,
-"name": &"default",
+"name": &"walk",
 "speed": 5.0
 }]
 
@@ -40,6 +42,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ndjet")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -51,14 +54,16 @@ grow_vertical = 2
 texture = ExtResource("1_piuc7")
 
 [node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("3_yp8v0")
 
 [node name="Horton" type="Area2D" parent="Node2D"]
-position = Vector2(311, 456)
+position = Vector2(-302, 473)
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Horton"]
 scale = Vector2(0.24148607, 0.24148607)
 sprite_frames = SubResource("SpriteFrames_fgenl")
+animation = &"walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Horton"]
 position = Vector2(27, 2)
