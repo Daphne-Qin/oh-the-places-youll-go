@@ -15,6 +15,9 @@ var chat_is_open: bool = false
 var interaction_label: Label
 
 func _ready() -> void:
+	# Enable player movement when level starts
+	GameState.enable_movement()
+
 	# Load the HortonChat scene at runtime
 	horton_chat_scene = load("res://scenes/HortonChat.tscn")
 	if not horton_chat_scene:
@@ -34,6 +37,7 @@ func _ready() -> void:
 		$Node2D/Horton.body_exited.connect(_on_player_exited_horton_area)
 
 	print("[HortonLevel] Level ready, interaction enabled")
+	print("[HortonLevel] Player can move: ", GameState.can_move)
 
 func _create_interaction_label() -> void:
 	"""Create the 'Press E to interact' label."""
@@ -52,46 +56,89 @@ func _create_interaction_label() -> void:
 
 func _process(_delta: float) -> void:
 	# Check for interaction input when player is in range
-	if player_in_range and Input.is_action_just_pressed("ui_accept") and not chat_is_open:
-		_open_horton_chat()
+	if player_in_range and not chat_is_open:
+		# Check for E key (using Input.is_action_just_pressed for proper single-press detection)
+		if Input.is_action_just_pressed("ui_accept"):
+			print("[HortonLevel] Enter/Space pressed!")
+			_open_horton_chat()
 
-func _on_player_entered_horton_area(_body: Node2D) -> void:
+func _input(event: InputEvent) -> void:
+	"""Handle input events."""
+	# Handle E key press for interaction
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_E and player_in_range and not chat_is_open:
+			print("[HortonLevel] E key pressed!")
+			_open_horton_chat()
+
+	# Handle escape to close chat
+	if event.is_action_pressed("ui_cancel") and chat_is_open:
+		if horton_chat_instance:
+			horton_chat_instance.close_chat()
+			chat_is_open = false
+			# Show interaction label again if player still in range
+			if player_in_range and interaction_label:
+				interaction_label.visible = true
+
+func _on_player_entered_horton_area(body: Node2D) -> void:
 	"""Called when player enters Horton's interaction area."""
-	print("[HortonLevel] Player entered Horton area")
-	player_in_range = true
-	if interaction_label:
-		interaction_label.visible = true
+	print("[HortonLevel] body_entered signal fired! Body: ", body.name)
+	if body.name == "Player":
+		print("[HortonLevel] Player entered Horton area!")
+		player_in_range = true
+		if interaction_label:
+			interaction_label.visible = true
+			print("[HortonLevel] Interaction label shown")
 
-func _on_player_exited_horton_area(_body: Node2D) -> void:
+func _on_player_exited_horton_area(body: Node2D) -> void:
 	"""Called when player exits Horton's interaction area."""
-	print("[HortonLevel] Player exited Horton area")
-	player_in_range = false
-	if interaction_label:
-		interaction_label.visible = false
+	print("[HortonLevel] body_exited signal fired! Body: ", body.name)
+	if body.name == "Player":
+		print("[HortonLevel] Player exited Horton area")
+		player_in_range = false
+		if interaction_label:
+			interaction_label.visible = false
+			print("[HortonLevel] Interaction label hidden")
 
 func _open_horton_chat() -> void:
 	"""Open the Horton chat interface."""
 	if chat_is_open:
+		print("[HortonLevel] Chat already open, skipping...")
 		return
 
-	print("[HortonLevel] Opening Horton chat...")
+	print("[HortonLevel] _open_horton_chat() called!")
 
 	# Hide interaction label
 	if interaction_label:
 		interaction_label.visible = false
+		print("[HortonLevel] Interaction label hidden")
+
+	# Check if scene is loaded
+	if not horton_chat_scene:
+		print("[HortonLevel] ERROR: horton_chat_scene is null! Can't open chat.")
+		return
 
 	# Instantiate chat if needed
 	if not horton_chat_instance:
+		print("[HortonLevel] Creating new HortonChat instance...")
 		horton_chat_instance = horton_chat_scene.instantiate()
+
+		if not horton_chat_instance:
+			print("[HortonLevel] ERROR: Failed to instantiate HortonChat!")
+			return
+
+		print("[HortonLevel] Adding HortonChat to scene tree...")
 		add_child(horton_chat_instance)
 
 		# Connect to chat signals
+		print("[HortonLevel] Connecting signals...")
 		horton_chat_instance.horton_trusts_player.connect(_on_horton_trusts_player)
 		horton_chat_instance.horton_ran_away.connect(_on_horton_ran_away)
 
 	# Open the chat
+	print("[HortonLevel] Calling horton_chat_instance.open_chat()...")
 	horton_chat_instance.open_chat()
 	chat_is_open = true
+	print("[HortonLevel] Chat should be open now!")
 
 func _on_horton_trusts_player() -> void:
 	"""Called when Horton finally trusts the player."""
@@ -104,13 +151,3 @@ func _on_horton_ran_away() -> void:
 	print("[HortonLevel] FAILURE! Horton ran away!")
 	chat_is_open = false
 	# Maybe show a "Try again?" message or return to level select
-
-func _input(event: InputEvent) -> void:
-	"""Handle escape to close chat."""
-	if event.is_action_pressed("ui_cancel") and chat_is_open:
-		if horton_chat_instance:
-			horton_chat_instance.close_chat()
-			chat_is_open = false
-			# Show interaction label again if player still in range
-			if player_in_range and interaction_label:
-				interaction_label.visible = true
