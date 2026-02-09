@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://g585og1spnc4"]
+[gd_scene load_steps=5 format=3 uid="uid://txeqiwo1iljl"]
 
 [ext_resource type="Script" uid="uid://2yicsmd30n5f" path="res://scripts/horton_chat.gd" id="1_sl4rf"]
 [ext_resource type="Texture2D" uid="uid://cdwony7tg5i6i" path="res://assets/sprites/lorax/angry.png" id="2_e0bh3"]

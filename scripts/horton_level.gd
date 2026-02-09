@@ -24,6 +24,15 @@ func _ready() -> void:
 		print("[HortonLevel] ERROR: Failed to load HortonChat.tscn!")
 	else:
 		print("[HortonLevel] HortonChat scene loaded successfully")
+	horton_chat_instance = horton_chat_scene.instantiate()
+	var ui_layer = get_node_or_null("UILayer")
+	if not ui_layer:
+		ui_layer = CanvasLayer.new()
+		ui_layer.name = "UILayer"
+		add_child(ui_layer)
+	
+	ui_layer.add_child(horton_chat_instance)
+	horton_chat_instance.hide()
 
 	# Start Horton's entrance animation
 	$Node2D.horton_enter()

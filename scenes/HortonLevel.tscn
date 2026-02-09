@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://dp5wlstdvcrv7"]
 
-[ext_resource type="Script" uid="uid://csmdfcqc7s3fn" path="res://scenes/horton_level.gd" id="1_ndjet"]
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
+[ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
 [ext_resource type="Texture2D" uid="uid://rxbk71nxlxab" path="res://assets/sprites/horton/horton_walk_00.png" id="2_0v62h"]
 [ext_resource type="Texture2D" uid="uid://dy32tvmoeg2pu" path="res://assets/sprites/horton/horton_walk_01.png" id="3_ndjet"]
 [ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scenes/horton_level_sprites.gd" id="3_yp8v0"]
@@ -46,7 +46,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ndjet")
+script = ExtResource("1_rrf0p")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -100

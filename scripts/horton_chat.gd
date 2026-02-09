@@ -106,7 +106,7 @@ func open_chat(force_reset: bool = false) -> void:
 	scale = Vector2(0.95, 0.95)
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4).set_ease(Tween.EASE_OUT)
 
-	await get_tree().create_timer(0.4).timeout
+	#await get_tree().create_timer(0.4).timeout
 
 	if not chat_container:
 		print("[HORTON_CHAT] ERROR: chat_container is null when opening chat!")
@@ -382,10 +382,10 @@ func _process_horton_response(message: String) -> void:
 
 	# Handle outcomes
 	if player_trusted:
-		await get_tree().create_timer(2.0).timeout
+		#await get_tree().create_timer(2.0).timeout
 		_handle_trust_success()
 	elif horton_left:
-		await get_tree().create_timer(2.0).timeout
+		#await get_tree().create_timer(2.0).timeout
 		_handle_horton_ran_away()
 
 func _detect_emotion(message: String) -> String:
@@ -439,7 +439,7 @@ func _handle_horton_ran_away() -> void:
 	_add_message("*Horton has fled with the clover, trumpeting anxiously in the distance*", false)
 	input_field.editable = false
 	send_button.disabled = true
-	await get_tree().create_timer(3.0).timeout
+	#await get_tree().create_timer(3.0).timeout
 	close_chat()
 
 func on_horton_message_failed(error_message: String) -> void:
