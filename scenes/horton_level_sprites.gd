@@ -12,10 +12,10 @@ func _process(delta: float) -> void:
 
 
 func horton_enter():
-	$Horton.position.x = -200  # start offscreen
+	$Horton.position.x = -400  # start offscreen
 	$Horton/AnimatedSprite2D.play("walk")
 	var tween = create_tween()
-	tween.tween_property($Horton, "position:x", 400, 3)
+	tween.tween_property($Horton, "position:x", 300, 3)
 	tween.finished.connect(func ():
 		$Horton/AnimatedSprite2D.stop()
 	)

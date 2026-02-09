@@ -57,8 +57,7 @@ metadata/_edit_group_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-1, 0)
 sprite_frames = SubResource("SpriteFrames_nwvvl")
-animation = &"cut"
-frame_progress = 0.25274593
+animation = &"sway"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-76, 204.5)

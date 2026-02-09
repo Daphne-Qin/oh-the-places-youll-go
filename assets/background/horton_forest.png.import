@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x3jjhrnt2hbj"
-path="res://.godot/imported/horton_forest.jpg-66373a4569d1e5ab541a9ab27f15f71f.ctex"
+uid="uid://dw3bkqjseycjk"
+path="res://.godot/imported/horton_forest.png-9c7d5f89c05b6fc611213259a3faf988.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/horton_forest.jpg"
-dest_files=["res://.godot/imported/horton_forest.jpg-66373a4569d1e5ab541a9ab27f15f71f.ctex"]
+source_file="res://assets/background/horton_forest.png"
+dest_files=["res://.godot/imported/horton_forest.png-9c7d5f89c05b6fc611213259a3faf988.ctex"]
 
 [params]
 
