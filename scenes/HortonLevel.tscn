@@ -1,13 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=14 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Script" uid="uid://csmdfcqc7s3fn" path="res://scenes/horton_level.gd" id="1_ndjet"]
-[ext_resource type="Texture2D" uid="uid://x3jjhrnt2hbj" path="res://assets/background/horton_forest.jpg" id="1_piuc7"]
+[ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Texture2D" uid="uid://rxbk71nxlxab" path="res://assets/sprites/horton/horton_walk_00.png" id="2_0v62h"]
 [ext_resource type="Texture2D" uid="uid://dy32tvmoeg2pu" path="res://assets/sprites/horton/horton_walk_01.png" id="3_ndjet"]
 [ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scenes/horton_level_sprites.gd" id="3_yp8v0"]
 [ext_resource type="Texture2D" uid="uid://bbuhfuwwiwbit" path="res://assets/sprites/horton/horton_walk_02.png" id="4_yp8v0"]
 [ext_resource type="Texture2D" uid="uid://ltplpq5pidg1" path="res://assets/sprites/horton/horton_walk_03.png" id="5_6ehc2"]
 [ext_resource type="Texture2D" uid="uid://ckuvloky12lhm" path="res://assets/sprites/horton/horton_walk_04.png" id="6_6708l"]
+[ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="9_fgenl"]
+[ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="10_rrf0p"]
+[ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="11_7ucuf"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
 animations = [{
@@ -45,6 +48,7 @@ grow_vertical = 2
 script = ExtResource("1_ndjet")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+z_index = -100
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,7 +61,7 @@ texture = ExtResource("1_piuc7")
 script = ExtResource("3_yp8v0")
 
 [node name="Horton" type="Area2D" parent="Node2D"]
-position = Vector2(-302, 473)
+position = Vector2(-656, 528)
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Horton"]
@@ -68,3 +72,20 @@ animation = &"walk"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Horton"]
 position = Vector2(27, 2)
 shape = SubResource("RectangleShape2D_rrf0p")
+
+[node name="Trees" type="Node2D" parent="Node2D"]
+
+[node name="TreeOrange" parent="Node2D/Trees" instance=ExtResource("9_fgenl")]
+z_index = -1
+position = Vector2(148, 307.99997)
+scale = Vector2(0.35, 0.35)
+
+[node name="TreeRed" parent="Node2D/Trees" instance=ExtResource("10_rrf0p")]
+z_index = 1
+position = Vector2(693.00006, 397.99997)
+scale = Vector2(0.35, 0.35)
+
+[node name="TreePurple" parent="Node2D/Trees" instance=ExtResource("11_7ucuf")]
+z_index = -1
+position = Vector2(1087, 330)
+scale = Vector2(0.35, 0.35)
