@@ -15,6 +15,13 @@ var chat_is_open: bool = false
 var interaction_label: Label
 
 func _ready() -> void:
+	# Load the HortonChat scene at runtime
+	horton_chat_scene = load("res://scenes/HortonChat.tscn")
+	if not horton_chat_scene:
+		print("[HortonLevel] ERROR: Failed to load HortonChat.tscn!")
+	else:
+		print("[HortonLevel] HortonChat scene loaded successfully")
+
 	# Start Horton's entrance animation
 	$Node2D.horton_enter()
 
