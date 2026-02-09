@@ -1,0 +1,139 @@
+[gd_scene load_steps=5 format=3 uid="uid://g585og1spnc4"]
+
+[ext_resource type="Script" uid="uid://2yicsmd30n5f" path="res://scripts/horton_chat.gd" id="1_sl4rf"]
+[ext_resource type="Texture2D" uid="uid://cdwony7tg5i6i" path="res://assets/sprites/lorax/angry.png" id="2_e0bh3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.101960786, 0.3019608, 0.101960786, 0.47843137)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9, 0.6, 0.2, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.9, 0.6, 0.2, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="HortonChat" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sl4rf")
+
+[node name="BackgroundOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 56.0
+offset_right = 346.0
+offset_bottom = 152.0
+texture = ExtResource("2_e0bh3")
+expand_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChatPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -192.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="VBox" type="VBoxContainer" parent="ChatPanel"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="ChatPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="ChatPanel/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.9, 0.2, 1)
+theme_override_font_sizes/font_size = 24
+text = "The Lorax"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="ChatPanel/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="ChatPanel/VBox/Header"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "✕"
+flat = true
+
+[node name="ChatContainer" type="VBoxContainer" parent="ChatPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatPanel/VBox/ChatContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MessagesContainer" type="VBoxContainer" parent="ChatPanel/VBox/ChatContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="TypingIndicator" type="Label" parent="ChatPanel/VBox/ChatContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = "The Lorax is thinking..."
+horizontal_alignment = 1
+
+[node name="InputPanel" type="HBoxContainer" parent="ChatPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="InputField" type="LineEdit" parent="ChatPanel/VBox/InputPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Type your message to the Lorax..."
+expand_to_text_length = true
+
+[node name="SendButton" type="Button" parent="ChatPanel/VBox/InputPanel"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+text = "Send"

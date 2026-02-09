@@ -2,7 +2,6 @@ extends Control
 
 ## Lorax Chat Interface
 ## Beautiful, Seussian-styled chat interface for talking with the Lorax
-
 @onready var portrait: TextureRect = $TextureRect
 @onready var chat_container: VBoxContainer = $ChatPanel/VBox/ChatContainer/ScrollContainer/MessagesContainer
 @onready var input_field: LineEdit = $ChatPanel/VBox/InputPanel/InputField

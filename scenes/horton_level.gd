@@ -1,9 +1,109 @@
 extends Control
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	$Node2D.horton_enter()
-	pass
+## Horton Level Controller
+## Manages player interaction with Horton the anxious elephant
 
-func _process(delta):
-	pass
+# Chat system
+var horton_chat_scene = null  # Will be loaded at runtime
+var horton_chat_instance = null
+
+# Interaction tracking
+var player_in_range: bool = false
+var chat_is_open: bool = false
+
+# UI elements
+var interaction_label: Label
+
+func _ready() -> void:
+	# Start Horton's entrance animation
+	$Node2D.horton_enter()
+
+	# Create interaction label
+	_create_interaction_label()
+
+	# Connect to Horton's Area2D for interaction detection
+	if $Node2D/Horton:
+		$Node2D/Horton.body_entered.connect(_on_player_entered_horton_area)
+		$Node2D/Horton.body_exited.connect(_on_player_exited_horton_area)
+
+	print("[HortonLevel] Level ready, interaction enabled")
+
+func _create_interaction_label() -> void:
+	"""Create the 'Press E to interact' label."""
+	interaction_label = Label.new()
+	interaction_label.text = "Press [E] to talk to Horton! (He's very anxious...)"
+	interaction_label.visible = false
+	interaction_label.position = Vector2(400, 50)  # Top-center area
+
+	# Style the label
+	interaction_label.add_theme_font_size_override("font_size", 20)
+	interaction_label.add_theme_color_override("font_color", Color(1, 1, 1))
+	interaction_label.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	interaction_label.add_theme_constant_override("outline_size", 4)
+
+	add_child(interaction_label)
+
+func _process(_delta: float) -> void:
+	# Check for interaction input when player is in range
+	if player_in_range and Input.is_action_just_pressed("ui_accept") and not chat_is_open:
+		_open_horton_chat()
+
+func _on_player_entered_horton_area(_body: Node2D) -> void:
+	"""Called when player enters Horton's interaction area."""
+	print("[HortonLevel] Player entered Horton area")
+	player_in_range = true
+	if interaction_label:
+		interaction_label.visible = true
+
+func _on_player_exited_horton_area(_body: Node2D) -> void:
+	"""Called when player exits Horton's interaction area."""
+	print("[HortonLevel] Player exited Horton area")
+	player_in_range = false
+	if interaction_label:
+		interaction_label.visible = false
+
+func _open_horton_chat() -> void:
+	"""Open the Horton chat interface."""
+	if chat_is_open:
+		return
+
+	print("[HortonLevel] Opening Horton chat...")
+
+	# Hide interaction label
+	if interaction_label:
+		interaction_label.visible = false
+
+	# Instantiate chat if needed
+	if not horton_chat_instance:
+		horton_chat_instance = horton_chat_scene.instantiate()
+		add_child(horton_chat_instance)
+
+		# Connect to chat signals
+		horton_chat_instance.horton_trusts_player.connect(_on_horton_trusts_player)
+		horton_chat_instance.horton_ran_away.connect(_on_horton_ran_away)
+
+	# Open the chat
+	horton_chat_instance.open_chat()
+	chat_is_open = true
+
+func _on_horton_trusts_player() -> void:
+	"""Called when Horton finally trusts the player."""
+	print("[HortonLevel] SUCCESS! Horton trusts the player!")
+	# Could trigger level completion animation here
+	# GameState.complete_level("horton") is already called in horton_chat.gd
+
+func _on_horton_ran_away() -> void:
+	"""Called when Horton's anxiety overwhelms him and he runs away."""
+	print("[HortonLevel] FAILURE! Horton ran away!")
+	chat_is_open = false
+	# Maybe show a "Try again?" message or return to level select
+
+func _input(event: InputEvent) -> void:
+	"""Handle escape to close chat."""
+	if event.is_action_pressed("ui_cancel") and chat_is_open:
+		if horton_chat_instance:
+			horton_chat_instance.close_chat()
+			chat_is_open = false
+			# Show interaction label again if player still in range
+			if player_in_range and interaction_label:
+				interaction_label.visible = true

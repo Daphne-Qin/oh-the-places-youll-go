@@ -12,11 +12,11 @@ extends Control
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
 
 @export var portrait_assets := {
-	"neutral": "res://assets/sprites/horton/neutral.png",
-	"anxious": "res://assets/sprites/horton/anxious.png",
-	"happy": "res://assets/sprites/horton/happy.png",
-	"sad": "res://assets/sprites/horton/sad.png",
-	"panicked": "res://assets/sprites/horton/panicked.png"
+	"neutral": "res://assets/sprites/horton/anxiousHorton.png",  # Use anxious as neutral for now
+	"anxious": "res://assets/sprites/horton/anxiousHorton.png",
+	"happy": "res://assets/sprites/horton/happyCHAT.png",
+	"sad": "res://assets/sprites/horton/anxiousHorton.png",  # Use anxious for sad too
+	"panicked": "res://assets/sprites/horton/anxiousHorton.png"  # Use anxious for panicked
 }
 
 var is_open: bool = false
