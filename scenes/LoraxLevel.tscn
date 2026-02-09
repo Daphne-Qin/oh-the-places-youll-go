@@ -1,27 +1,17 @@
-[gd_scene load_steps=45 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=33 format=3 uid="uid://b0rvkijyq6fr0"]
 
-[ext_resource type="Script" uid="uid://dc4qivueyhmao" path="res://scripts/player_movement.gd" id="1_1"]
 [ext_resource type="Script" uid="uid://bp0vemyf1u0ya" path="res://scripts/game_state.gd" id="1_3coij"]
 [ext_resource type="Texture2D" uid="uid://bglljlu8hv2tk" path="res://assets/background/lorax_forest.png" id="2_6fwp1"]
 [ext_resource type="Script" uid="uid://bvc1qpe4kn53y" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="3_tj5gh"]
-[ext_resource type="Texture2D" uid="uid://dcmj42mts7486" path="res://assets/sprites/player/boy_walk_00.png" id="4_d2n4m"]
-[ext_resource type="Texture2D" uid="uid://4g6jonl8u15i" path="res://assets/sprites/player/boy_stand.png" id="4_t4q7k"]
 [ext_resource type="Texture2D" uid="uid://2asrbwr8jur5" path="res://assets/sprites/lorax/angry_walk_01.png" id="5_3huvt"]
-[ext_resource type="Texture2D" uid="uid://cn0f0d2x5v70d" path="res://assets/sprites/player/boy_walk_01.png" id="5_t4q7k"]
+[ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="5_vji0t"]
 [ext_resource type="Texture2D" uid="uid://lyi2dao2us7p" path="res://assets/sprites/lorax/angry_walk_02.png" id="6_exxpo"]
-[ext_resource type="Texture2D" uid="uid://cumnuyd08bqpx" path="res://assets/sprites/player/boy_walk_02.png" id="6_wbnep"]
-[ext_resource type="Texture2D" uid="uid://o7s0qpeg756w" path="res://assets/sprites/player/boy_walk_03.png" id="7_6fwp1"]
 [ext_resource type="Texture2D" uid="uid://mvsux3gu65dw" path="res://assets/sprites/lorax/angry_walk_03.png" id="7_qgl46"]
-[ext_resource type="Texture2D" uid="uid://3aso7ioxfh4y" path="res://assets/sprites/player/boy_walk_04.png" id="8_uxwq6"]
 [ext_resource type="Texture2D" uid="uid://chxaxwdesghk3" path="res://assets/sprites/lorax/angry_walk_04.png" id="8_v5acc"]
 [ext_resource type="Texture2D" uid="uid://bhugykh2eskuo" path="res://assets/sprites/lorax/angry_walk_05.png" id="9_0wcv0"]
-[ext_resource type="Texture2D" uid="uid://bpnakkncaw24q" path="res://assets/sprites/player/boy_walk_05.png" id="9_1c5k7"]
-[ext_resource type="Texture2D" uid="uid://c6yyu7qeo0pe" path="res://assets/sprites/player/boy_walk_06.png" id="10_c1pjf"]
 [ext_resource type="Texture2D" uid="uid://d1eywb7pdhdq5" path="res://assets/sprites/lorax/angry_walk_06.png" id="10_tuvtb"]
-[ext_resource type="Texture2D" uid="uid://bdypw04oqw0j0" path="res://assets/sprites/player/boy_walk_07.png" id="11_jbbts"]
 [ext_resource type="Texture2D" uid="uid://vtuylc63abyr" path="res://assets/sprites/lorax/angry_walk_07.png" id="11_vji0t"]
-[ext_resource type="Texture2D" uid="uid://bdt5fvo4vws35" path="res://assets/sprites/player/boy_walk_08.png" id="12_otipn"]
 [ext_resource type="Texture2D" uid="uid://c81xqo3khfa5i" path="res://assets/sprites/lorax/angry_walk_08.png" id="12_yr5o8"]
 [ext_resource type="Texture2D" uid="uid://v4lnjwv3mgei" path="res://assets/sprites/lorax/angry_walk_00.png" id="13_1e531"]
 [ext_resource type="Texture2D" uid="uid://bh8dcrk5emmf1" path="res://assets/sprites/lorax/angry_walk_09.png" id="13_d2n4m"]
@@ -38,52 +28,6 @@
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="36_c1pjf"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="37_jbbts"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="38_otipn"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_t24sr"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_t4q7k")
-}],
-"loop": true,
-"name": &"stand",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_d2n4m")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_t4q7k")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_wbnep")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_6fwp1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_uxwq6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_1c5k7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_c1pjf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_jbbts")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_otipn")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 10.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3huvt"]
-size = Vector2(121, 287)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1c5k7"]
 animations = [{
@@ -177,6 +121,7 @@ grow_vertical = 2
 script = ExtResource("1_3coij")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+z_index = -10
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -210,21 +155,8 @@ text = "Walk up close to the Lorax!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player" type="CharacterBody2D" parent="Node2D"]
-z_index = 11
+[node name="Player" parent="Node2D" instance=ExtResource("5_vji0t")]
 position = Vector2(1055, 505)
-script = ExtResource("1_1")
-metadata/_edit_group_ = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Player"]
-scale = Vector2(0.18239798, 0.18239798)
-sprite_frames = SubResource("SpriteFrames_t24sr")
-animation = &"stand"
-flip_h = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Player"]
-position = Vector2(0, -3.5)
-shape = SubResource("RectangleShape2D_3huvt")
 
 [node name="Caterpillar" type="Area2D" parent="Node2D"]
 position = Vector2(1485, 491)
@@ -263,6 +195,7 @@ shape = SubResource("RectangleShape2D_1")
 [node name="Trees" type="Node2D" parent="Node2D"]
 
 [node name="TreeOrange" parent="Node2D/Trees" instance=ExtResource("36_c1pjf")]
+z_index = -1
 position = Vector2(312, 266)
 scale = Vector2(0.25, 0.25)
 
