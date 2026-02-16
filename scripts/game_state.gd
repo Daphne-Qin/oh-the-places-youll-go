@@ -100,3 +100,22 @@ func go_to_level(level_id: String) -> void:
 		get_tree().change_scene_to_file(scene_path)
 	else:
 		print("[GameState] Level is locked: ", level_id)
+
+func load_top_scene(scene_path: String) -> Control:
+	'''
+	Loads a scene into the level and allow overlay.
+	'''
+	var scene_resource = load(scene_path)
+	var scene = scene_resource.instantiate()
+	
+	# Add to a CanvasLayer so it's always on top
+	var ui_layer = get_node_or_null("UILayer")
+	if not ui_layer:
+		ui_layer = CanvasLayer.new()
+		ui_layer.name = "UILayer"
+		add_child(ui_layer)
+	
+	ui_layer.add_child(scene)
+	scene.hide()
+	
+	return scene

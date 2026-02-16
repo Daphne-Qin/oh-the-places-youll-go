@@ -103,11 +103,12 @@ func open_chat(force_reset: bool = false) -> void:
 	var tween = create_tween()
 	tween.set_parallel(true)
 	modulate.a = 0.0
-	tween.tween_property(self, "modulate:a", 1.0, 0.4)
-	scale = Vector2(0.95, 0.95)
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "modulate:a", 1.0, 0.3)
+	scale = Vector2(0.9, 0.9)
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
-	#await get_tree().create_timer(0.4).timeout
+	# Wait for animation to complete
+	await get_tree().create_timer(0.3).timeout
 
 	if not chat_container:
 		print("[HORTON_CHAT] ERROR: chat_container is null when opening chat!")
@@ -118,7 +119,9 @@ func open_chat(force_reset: bool = false) -> void:
 		await get_tree().process_frame
 		_add_welcome_message()
 
+	# Focus input field
 	input_field.grab_focus()
+
 	GameState.disable_movement()
 
 func close_chat() -> void:
@@ -130,8 +133,8 @@ func close_chat() -> void:
 
 	var tween = create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-	tween.tween_property(self, "scale", Vector2(0.95, 0.95), 0.3)
+	tween.tween_property(self, "modulate:a", 0.0, 0.2)
+	tween.tween_property(self, "scale", Vector2(0.9, 0.9), 0.2)
 
 	await tween.finished
 	visible = false
