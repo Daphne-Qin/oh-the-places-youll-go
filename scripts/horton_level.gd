@@ -14,9 +14,18 @@ var chat_is_open: bool = false
 # UI elements
 var interaction_label: Label
 
+var camera: Camera2D = null
+
 func _ready() -> void:
 	# Enable player movement when level starts
 	GameState.enable_movement()
+	
+	# set camera
+	camera = $Node2D/Player/Camera2D
+	camera.limit_left = -1280
+	camera.limit_right = 1280
+	camera.limit_top = 0
+	camera.limit_bottom = 720
 
 	# Load the HortonChat scene at runtime
 	horton_chat_scene = load("res://scenes/HortonChat.tscn")

@@ -10,6 +10,7 @@ extends Node2D
 var is_near_lorax: bool = false
 var chat_instance: Control = null
 var level_select: Control = null
+var camera: Camera2D = null
 
 func _ready() -> void:
 	"""Initialize the level."""
@@ -18,6 +19,13 @@ func _ready() -> void:
 	if lorax_area:
 		lorax_area.body_entered.connect(_on_lorax_area_entered)
 		lorax_area.body_exited.connect(_on_lorax_area_exited)
+	
+	# set camera
+	camera = $Player/Camera2D
+	camera.limit_left = 0
+	camera.limit_right = 1280
+	camera.limit_top = 0
+	camera.limit_bottom = 720
 
 	GameState.enable_movement()
 
