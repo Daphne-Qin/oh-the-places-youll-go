@@ -21,21 +21,22 @@ extends Control
 
 var is_open: bool = false
 
-# Game state tracking for trust building system
+# Game state tracking for Listening Challenge system
 var game_state := {
-	"trust_level": 0,  # 0-3, need 3 to win
-	"anxiety_spikes": 0,  # 0-3, 3 = failure
-	"current_phase": "panic"  # "panic", "building", "resolved", "ran_away"
+	"messages_decoded": 0,  # 0-5 messages successfully decoded
+	"total_failures": 0,  # 0-10 failures across all messages, 10 = game over
+	"current_message_attempts": 0,  # Attempts on current message (resets per message)
+	"current_phase": "introduction"  # "introduction", "decoding", "resolved", "ran_away"
 }
 
 # Conversation history for context
 var conversation_history: Array = []
 
 # Signals for game outcomes
-signal anxiety_spike
-signal trust_gained
-signal horton_trusts_player
-signal horton_ran_away
+signal message_decoded  # Successfully decoded a message
+signal interpretation_failed  # Failed to decode a message correctly
+signal horton_trusts_player  # Successfully completed all challenges
+signal horton_ran_away  # Too many failures, Horton gives up
 
 func _ready() -> void:
 	"""Initialize the chat interface."""
@@ -140,7 +141,7 @@ func close_chat() -> void:
 func _add_welcome_message() -> void:
 	"""Add a welcome message from Horton."""
 	print("[HORTON_CHAT] Adding welcome message...")
-	var welcome_text = "Oh! Oh dear... *clutches clover protectively* ...another one. You're not... you're not going to laugh at me too, are you? Everyone thinks I'm crazy but I'm NOT! There are PEOPLE on this clover! Tiny people! The Whos! ...you probably don't believe me either..."
+	var welcome_text = "Oh! Oh thank goodness someone's here! *holds clover to ear excitedly* I can HEAR the Whos, but... but their voices are so tiny and garbled! My ears are big but sometimes I only catch bits and pieces. I need your help to understand what they're saying! Will you help me translate their messages? A person's a person, no matter how small!"
 	_add_message(welcome_text, false)
 	conversation_history.append({"text": welcome_text, "is_user": false})
 	_set_portrait("anxious")
@@ -304,10 +305,10 @@ func _filter_leaked_state(message: String) -> String:
 	var filtered = message
 
 	var leak_patterns = [
-		"trust_level", "anxiety_spikes", "current_phase",
+		"messages_decoded", "total_failures", "current_message_attempts", "current_phase",
 		"game state", "game_state", "GAME_STATE",
 		"is now TRUE", "is now FALSE", "= true", "= false",
-		"= 0", "= 1", "= 2", "= 3"
+		"= 0", "= 1", "= 2", "= 3", "= 4", "= 5", "= 10"
 	]
 
 	var contains_leak = false
@@ -362,18 +363,18 @@ func _process_horton_response(message: String) -> void:
 	# Update portrait
 	if horton_left:
 		_set_portrait("panicked")
-		anxiety_spike.emit()
+		interpretation_failed.emit()
 	elif player_trusted:
 		_set_portrait("happy")
-		trust_gained.emit()
+		message_decoded.emit()
 	elif detected_emotion == "anxious":
 		_set_portrait("anxious")
 	elif detected_emotion == "sad":
 		_set_portrait("sad")
-		anxiety_spike.emit()
+		interpretation_failed.emit()
 	elif detected_emotion == "happy":
 		_set_portrait("happy")
-		trust_gained.emit()
+		message_decoded.emit()
 	else:
 		_set_portrait("neutral")
 
@@ -480,9 +481,10 @@ func reset_conversation() -> void:
 	"""Reset the conversation state."""
 	print("[HORTON_CHAT] Resetting conversation...")
 	game_state = {
-		"trust_level": 0,
-		"anxiety_spikes": 0,
-		"current_phase": "panic"
+		"messages_decoded": 0,
+		"total_failures": 0,
+		"current_message_attempts": 0,
+		"current_phase": "introduction"
 	}
 	conversation_history.clear()
 	if chat_container:
