@@ -24,7 +24,7 @@ func _on_movement_state_changed(value: bool) -> void:
 	"""Update local movement flag when GameState changes"""
 	can_move = value
 
-func _process(delta):
+func _physics_process(delta: float) -> void:
 	velocity = Vector2.ZERO
 	
 	if can_move:
@@ -42,36 +42,4 @@ func _process(delta):
 		$AnimatedSprite2D.stop()
 		$AnimatedSprite2D.animation = "stand"
 		
-	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
-
-#func _physics_process(delta: float) -> void:
-	## Check if player can move (controlled by global game state)
-	## Movement is disabled during cutscenes or dialogue
-	#if not GameState.can_move:
-		## Apply friction when movement is disabled
-		#velocity.x = move_toward(velocity.x, 0.0, friction * delta)
-		#move_and_slide()
-		#return
-	#
-	## Get horizontal input (left/right movement only)
-	## Input.get_axis returns -1 for left, 1 for right, 0 for no input
-	## Works with both arrow keys and WASD (default Godot input map)
-	#var horizontal_input: float = Input.get_axis("ui_left", "ui_right")
-	#
-	## Apply movement with smooth acceleration
-	#if horizontal_input != 0.0:
-		## Accelerate towards target speed
-		#velocity.x = move_toward(velocity.x, horizontal_input * speed, acceleration * delta)
-		#
-		## Update facing direction and flip sprite
-		#var new_facing: int = 1 if horizontal_input > 0 else -1
-		#if new_facing != facing_direction:
-			#facing_direction = new_facing
-			#_flip_sprite()
-	#else:
-		## No input: apply friction to gradually stop
-		#velocity.x = move_toward(velocity.x, 0.0, friction * delta)
-	#
-	## Apply movement using Godot's built-in physics
-	#move_and_slide()
+	move_and_slide()

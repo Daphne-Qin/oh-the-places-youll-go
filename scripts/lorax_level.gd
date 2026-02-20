@@ -3,52 +3,39 @@ extends Node2D
 ## Lorax Level Script
 ## Manages the game level, interactions, and chat interface
 
-@onready var lorax_area: Area2D = $Interactables/LoraxArea
+@onready var lorax: Area2D = $Interactables/LoraxArea
 @onready var player: CharacterBody2D = $Player
 
 # Interaction prompt UI
 var is_near_lorax: bool = false
 var chat_instance: Control = null
 var level_select: Control = null
+var camera: Camera2D = null
 
 func _ready() -> void:
 	"""Initialize the level."""
+	GameState.enable_movement()
 	
 	# Connect Lorax area signals
-	if lorax_area:
-		lorax_area.body_entered.connect(_on_lorax_area_entered)
-		lorax_area.body_exited.connect(_on_lorax_area_exited)
-
-	GameState.enable_movement()
-
-	var level_select_scene = preload("res://scenes/LevelSelector.tscn")
-	level_select = level_select_scene.instantiate()
+	if lorax:
+		lorax.body_entered.connect(_on_lorax_area_entered)
+		lorax.body_exited.connect(_on_lorax_area_exited)
 	
-	# Add to a CanvasLayer so it's always on top
-	var ui_layer = get_node_or_null("UILayer")
-	if not ui_layer:
-		ui_layer = CanvasLayer.new()
-		ui_layer.name = "UILayer"
-		add_child(ui_layer)
-	
-	ui_layer.add_child(level_select)
+	# set camera
+	camera = $Player/Camera2D
+	camera.limit_left = 0
+	camera.limit_right = 1280
+	camera.limit_top = 0
+	camera.limit_bottom = 720
+
+	# level menu
+	level_select = GameState.load_top_scene("res://scenes/LevelSelector.tscn")
 	level_select.hide()
-	
 
 func _load_chat_interface() -> void:
 	"""Load and add the chat interface to the scene."""
-	var chat_scene = preload("res://scenes/LoraxChat.tscn")
-	chat_instance = chat_scene.instantiate()
-	
-	# Add to a CanvasLayer so it's always on top
-	var ui_layer = get_node_or_null("UILayer")
-	if not ui_layer:
-		ui_layer = CanvasLayer.new()
-		ui_layer.name = "UILayer"
-		add_child(ui_layer)
-	
-	ui_layer.add_child(chat_instance)
-	chat_instance.visible = false
+	chat_instance = GameState.load_top_scene("res://scenes/LoraxChat.tscn")
+	chat_instance.hide()
 	
 	# level completed signal
 	if chat_instance.has_signal("player_granted_access"):
@@ -68,6 +55,7 @@ func _on_lorax_area_exited(body: Node2D) -> void:
 		$InteractionLabel.text = "Walk up close to the Lorax!"
 
 func _input(event: InputEvent) -> void:
+	"""Handle input events."""
 	if not is_near_lorax:
 		return
 		
@@ -77,13 +65,13 @@ func _input(event: InputEvent) -> void:
 			_load_chat_interface()
 			await get_tree().process_frame
 
-		chat_instance.visible = true
+		chat_instance.show()
 		if chat_instance.has_method("open_chat"):
 			chat_instance.open_chat()
 
 		print("[LEVEL] Chat opened")
 		
 func _on_player_granted_access() -> void:
-	chat_instance.visible = false
+	chat_instance.hide()
 	$InteractionLabel.text = "Congrats! Enter the forest by clicking on the storybook above!"
 	level_select.show()

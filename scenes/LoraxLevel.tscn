@@ -1,6 +1,5 @@
 [gd_scene load_steps=33 format=3 uid="uid://b0rvkijyq6fr0"]
 
-[ext_resource type="Script" uid="uid://bp0vemyf1u0ya" path="res://scripts/game_state.gd" id="1_3coij"]
 [ext_resource type="Texture2D" uid="uid://bglljlu8hv2tk" path="res://assets/background/lorax_forest.png" id="2_6fwp1"]
 [ext_resource type="Script" uid="uid://bvc1qpe4kn53y" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="3_tj5gh"]
@@ -24,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://balmbrilmvrn5" path="res://assets/sprites/lorax/angry_walk_15.png" id="19_c1pjf"]
 [ext_resource type="Texture2D" uid="uid://chnuh3j6udqxo" path="res://assets/sprites/lorax/angry_walk_16.png" id="20_jbbts"]
 [ext_resource type="Texture2D" uid="uid://bfa75ghvgksrd" path="res://assets/sprites/lorax/angry_walk_17.png" id="21_otipn"]
+[ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="28_vji0t"]
 [ext_resource type="Texture2D" uid="uid://bwbajyvutslne" path="res://assets/sprites/caterpillar/caterpillar_00.PNG" id="32_6fwp1"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="36_c1pjf"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="37_jbbts"]
@@ -118,7 +118,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_3coij")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -10
@@ -138,10 +137,10 @@ z_index = 10
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 429.0
-offset_top = 83.0
-offset_right = 845.0
-offset_bottom = 116.00001
+offset_left = 457.0
+offset_top = 80.0
+offset_right = 873.0
+offset_bottom = 113.00001
 grow_horizontal = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -218,3 +217,9 @@ scale = Vector2(0.25, 0.25)
 [node name="TreeRed" parent="Node2D/Trees" instance=ExtResource("38_otipn")]
 position = Vector2(236, 440)
 scale = Vector2(0.3, 0.3)
+
+[node name="Boundary" parent="Node2D" instance=ExtResource("28_vji0t")]
+position = Vector2(0, 380)
+
+[node name="Boundary2" parent="Node2D" instance=ExtResource("28_vji0t")]
+position = Vector2(1280, 380)

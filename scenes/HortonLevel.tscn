@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=17 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
 [ext_resource type="Texture2D" uid="uid://rxbk71nxlxab" path="res://assets/sprites/horton/horton_walk_00.png" id="2_0v62h"]
+[ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="3_crd7h"]
 [ext_resource type="Texture2D" uid="uid://dy32tvmoeg2pu" path="res://assets/sprites/horton/horton_walk_01.png" id="3_ndjet"]
-[ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scenes/horton_level_sprites.gd" id="3_yp8v0"]
+[ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scripts/horton_level_sprites.gd" id="3_yp8v0"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="4_rrf0p"]
 [ext_resource type="Texture2D" uid="uid://bbuhfuwwiwbit" path="res://assets/sprites/horton/horton_walk_02.png" id="4_yp8v0"]
 [ext_resource type="Texture2D" uid="uid://ltplpq5pidg1" path="res://assets/sprites/horton/horton_walk_03.png" id="5_6ehc2"]
@@ -12,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="9_fgenl"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="10_rrf0p"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="11_7ucuf"]
+[ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="13_7ucuf"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
 animations = [{
@@ -51,12 +53,33 @@ script = ExtResource("1_rrf0p")
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -100
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -2560.0
+offset_bottom = 720.0
+grow_horizontal = 0
 texture = ExtResource("1_piuc7")
+
+[node name="InteractionLabel" type="Label" parent="."]
+z_index = 10
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -183.0
+offset_top = 80.0
+offset_right = 183.0
+offset_bottom = 103.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_crd7h")
+theme_override_font_sizes/font_size = 32
+text = "Walk up to Horton!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("3_yp8v0")
@@ -93,4 +116,20 @@ scale = Vector2(0.35, 0.35)
 [node name="TreePurple" parent="Node2D/Trees" instance=ExtResource("11_7ucuf")]
 z_index = -1
 position = Vector2(1087, 330)
+scale = Vector2(0.35, 0.35)
+
+[node name="TreeRed2" parent="Node2D/Trees" instance=ExtResource("10_rrf0p")]
+z_index = -1
+position = Vector2(-1048, 347)
+scale = Vector2(0.3, 0.3)
+
+[node name="Boundary" parent="Node2D" instance=ExtResource("13_7ucuf")]
+position = Vector2(-1280, 380)
+
+[node name="Boundary2" parent="Node2D" instance=ExtResource("13_7ucuf")]
+position = Vector2(1280, 380)
+
+[node name="TreePurple" parent="." instance=ExtResource("11_7ucuf")]
+z_index = 1
+position = Vector2(-202, 417.99997)
 scale = Vector2(0.35, 0.35)

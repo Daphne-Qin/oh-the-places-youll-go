@@ -38,29 +38,29 @@ signal player_kicked_out
 
 func _ready() -> void:
 	"""Initialize the chat interface."""
-	print("[CHAT] Initializing chat interface...")
+	print("[LORAX_CHAT] Initializing chat interface...")
 	
 	# Wait a frame to ensure all @onready variables are set
 	await get_tree().process_frame
 	
 	# Verify nodes exist - try to find container if path failed
 	if not chat_container:
-		print("[CHAT] WARNING: chat_container not found via path, searching...")
+		print("[LORAX_CHAT] WARNING: chat_container not found via path, searching...")
 		chat_container = _find_messages_container()
 		if not chat_container:
-			print("[CHAT] ERROR: Could not find MessagesContainer!")
+			print("[LORAX_CHAT] ERROR: Could not find MessagesContainer!")
 			return
 	if not send_button:
-		print("[CHAT] ERROR: send_button not found!")
+		print("[LORAX_CHAT] ERROR: send_button not found!")
 		return
 	if not close_button:
-		print("[CHAT] ERROR: close_button not found!")
+		print("[LORAX_CHAT] ERROR: close_button not found!")
 		return
 	if not input_field:
-		print("[CHAT] ERROR: input_field not found!")
+		print("[LORAX_CHAT] ERROR: input_field not found!")
 		return
 	
-	print("[CHAT] All nodes found. Chat container: ", chat_container.name)
+	print("[LORAX_CHAT] All nodes found. Chat container: ", chat_container.name)
 	
 	# Connect signals
 	send_button.pressed.connect(_on_send_pressed)
@@ -71,15 +71,15 @@ func _ready() -> void:
 	if APIManager:
 		APIManager.lorax_message_received.connect(on_lorax_message_received)
 		APIManager.lorax_message_failed.connect(on_lorax_message_failed)
-		print("[CHAT] Connected to APIManager signals")
+		print("[LORAX_CHAT] Connected to APIManager signals")
 	else:
-		print("[CHAT] ERROR: APIManager not found!")
+		print("[LORAX_CHAT] ERROR: APIManager not found!")
 	
 	# Start hidden
 	visible = false
 	is_open = false
 	
-	print("[CHAT] Chat interface initialized successfully")
+	print("[LORAX_CHAT] Chat interface initialized successfully")
 
 func _input(event: InputEvent) -> void:
 	"""Handle input for opening/closing chat."""
@@ -88,9 +88,9 @@ func _input(event: InputEvent) -> void:
 
 func open_chat(force_reset: bool = false) -> void:
 	"""Open the chat interface."""
-	print("[CHAT] open_chat() called")
+	print("[LORAX_CHAT] open_chat() called")
 	if is_open:
-		print("[CHAT] Chat already open, returning")
+		print("[LORAX_CHAT] Chat already open, returning")
 		return
 
 	# Reset if player was kicked out or forced reset
@@ -101,7 +101,7 @@ func open_chat(force_reset: bool = false) -> void:
 	visible = true
 	modulate.a = 1.0  # Make sure it's fully visible
 
-	print("[CHAT] Chat opened. Visible: ", visible, " Modulate alpha: ", modulate.a)
+	print("[LORAX_CHAT] Chat opened. Visible: ", visible, " Modulate alpha: ", modulate.a)
 
 	# Animate in
 	var tween = create_tween()
@@ -116,12 +116,12 @@ func open_chat(force_reset: bool = false) -> void:
 
 	# Verify chat container is ready
 	if not chat_container:
-		print("[CHAT] ERROR: chat_container is null when opening chat!")
+		print("[LORAX_CHAT] ERROR: chat_container is null when opening chat!")
 		return
 
 	# Add welcome message when chat opens (only if chat is empty)
 	if chat_container.get_child_count() == 0:
-		print("[CHAT] Chat is empty, adding welcome message...")
+		print("[LORAX_CHAT] Chat is empty, adding welcome message...")
 		await get_tree().process_frame  # Wait one more frame
 		_add_welcome_message()
 
@@ -152,7 +152,7 @@ func close_chat() -> void:
 
 func _add_welcome_message() -> void:
 	"""Add a welcome message from the Lorax."""
-	print("[CHAT] Adding welcome message...")
+	print("[LORAX_CHAT] Adding welcome message...")
 	var welcome_text = "I am the Lorax! I speak for the trees! You wish to enter my forest, I see... But first you must answer to ME! Tell me, small one - WHY do you seek the Truffula trees? What brings you here, if you please?"
 	_add_message(welcome_text, false)  # false = from Lorax
 	# Add to history
@@ -180,7 +180,7 @@ func _send_message() -> void:
 	if game_state.current_phase == "complete" or game_state.current_phase == "kicked_out":
 		return
 
-	print("[CHAT] Sending message to API: ", message)
+	print("[LORAX_CHAT] Sending message to API: ", message)
 
 	# Add user message to chat and history
 	_add_message(message, true)  # true = from user
@@ -193,24 +193,24 @@ func _send_message() -> void:
 	_show_typing_indicator()
 
 	# Send to API with conversation history and game state
-	print("[CHAT] Calling APIManager.send_message_to_lorax()...")
+	print("[LORAX_CHAT] Calling APIManager.send_message_to_lorax()...")
 	APIManager.send_message_to_lorax(message, conversation_history, game_state)
-	print("[CHAT] Message sent to API manager")
+	print("[LORAX_CHAT] Message sent to API manager")
 
 func _add_message(text: String, is_user: bool) -> void:
 	"""Add a message bubble to the chat."""
-	print("[CHAT] Adding message: ", text, " (user: ", is_user, ")")
+	print("[LORAX_CHAT] Adding message: ", text, " (user: ", is_user, ")")
 	
 	# Verify chat container exists
 	if not chat_container:
-		print("[CHAT] ERROR: chat_container is null!")
+		print("[LORAX_CHAT] ERROR: chat_container is null!")
 		return
 	
 	# Create message bubble
 	var bubble = _create_message_bubble(text, is_user)
 	chat_container.add_child(bubble)
 	
-	print("[CHAT] Message bubble added. Container now has ", chat_container.get_child_count(), " children")
+	print("[LORAX_CHAT] Message bubble added. Container now has ", chat_container.get_child_count(), " children")
 	
 	# Make sure bubble is visible
 	bubble.visible = true
@@ -329,7 +329,7 @@ func _scroll_to_bottom() -> void:
 
 func on_lorax_message_received(message: String) -> void:
 	"""Handle Lorax message received from API."""
-	print("[CHAT] Lorax message received: ", message)
+	print("[LORAX_CHAT] Lorax message received: ", message)
 	_hide_typing_indicator()
 
 	# Filter out any leaked state/meta information (LLM prompt leakage protection)
@@ -360,7 +360,7 @@ func _filter_leaked_state(message: String) -> String:
 
 	# If the entire message seems to be state info, replace with fallback
 	if contains_leak and filtered.length() < 100:
-		print("[CHAT] WARNING: Filtered leaked state info from response")
+		print("[LORAX_CHAT] WARNING: Filtered leaked state info from response")
 		return "Hmm... the trees whisper something I cannot quite hear. Speak again, small one!"
 
 	# For longer messages, try to extract just the dialogue part
@@ -381,7 +381,7 @@ func _filter_leaked_state(message: String) -> String:
 			filtered = "\n".join(clean_lines)
 		else:
 			filtered = "The forest awaits your answer... speak clearly!"
-		print("[CHAT] WARNING: Partially filtered leaked state info")
+		print("[LORAX_CHAT] WARNING: Partially filtered leaked state info")
 
 	return filtered
 
@@ -490,7 +490,7 @@ func _detect_emotion(message: String) -> String:
 
 func _handle_forest_access() -> void:
 	"""Handle player being granted access to the forest."""
-	print("[CHAT] Player granted access to Truffula Forest!")
+	print("[LORAX_CHAT] Player granted access to Truffula Forest!")
 	player_granted_access.emit()
 	# Complete the Lorax level - this unlocks Truffula Forest and Horton!
 	GameState.complete_level("lorax")
@@ -502,7 +502,7 @@ func _handle_forest_access() -> void:
 
 func _handle_kicked_out() -> void:
 	"""Handle player being kicked out."""
-	print("[CHAT] Player kicked out!")
+	print("[LORAX_CHAT] Player kicked out!")
 	player_kicked_out.emit()
 	# Add a dismissal message
 	_add_message("🚫 The forest closes its paths to you. Come back when you've learned respect! 🚫", false)
@@ -515,7 +515,7 @@ func _handle_kicked_out() -> void:
 
 func on_lorax_message_failed(error_message: String) -> void:
 	"""Handle Lorax message failure."""
-	print("[CHAT] Lorax message failed: ", error_message)
+	print("[LORAX_CHAT] Lorax message failed: ", error_message)
 	_hide_typing_indicator()
 	var error_text = "The trees rustle in anger! I'm left speechless. " + error_message
 	_add_message(error_text, false)
@@ -539,18 +539,18 @@ func _search_for_node(node: Node, name: String) -> Node:
 
 func _set_portrait(emotion: String) -> void:
 	"""Set the Lorax portrait based on emotion."""
-	print("[CHAT] Setting portrait to: ", emotion)
+	print("[LORAX_CHAT] Setting portrait to: ", emotion)
 	if portrait and portrait_assets.has(emotion):
 		var asset_path = portrait_assets[emotion]
 		if asset_path != null and asset_path != "":
 			var texture = load(asset_path)
 			if texture:
 				portrait.texture = texture
-				print("[CHAT] Portrait loaded: ", asset_path)
+				print("[LORAX_CHAT] Portrait loaded: ", asset_path)
 
 func reset_conversation() -> void:
 	"""Reset the conversation state for a new attempt."""
-	print("[CHAT] Resetting conversation...")
+	print("[LORAX_CHAT] Resetting conversation...")
 	game_state = {
 		"failures": 0,
 		"riddles_passed": 0,
