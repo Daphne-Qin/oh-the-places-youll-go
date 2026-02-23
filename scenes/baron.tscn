@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://nwghmka30tu4"]
+[gd_scene load_steps=9 format=3 uid="uid://nwghmka30tu4"]
 
 [ext_resource type="Texture2D" uid="uid://bils18arxvle" path="res://assets/sprites/baron/baron_stand.png" id="1_72dp4"]
+[ext_resource type="Script" uid="uid://cbghbtssjnia7" path="res://scripts/baron.gd" id="1_iw5hr"]
 [ext_resource type="Texture2D" uid="uid://ccebimgf47qob" path="res://assets/sprites/baron/baron_walk_00.png" id="2_iw5hr"]
 [ext_resource type="Texture2D" uid="uid://m8kkhbx7ws0h" path="res://assets/sprites/baron/baron_walk_01.png" id="3_m7ull"]
 [ext_resource type="Texture2D" uid="uid://cg1a4iox6il5j" path="res://assets/sprites/baron/baron_walk_02.png" id="4_y1u3m"]
@@ -39,12 +40,14 @@ size = Vector2(788, 585)
 
 [node name="Baron" type="Area2D"]
 scale = Vector2(0.5, 0.5)
+script = ExtResource("1_iw5hr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jutkn")
 animation = &"walk"
-frame_progress = 0.31136063
+frame_progress = 0.67689234
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(-9, 11.5)
 shape = SubResource("RectangleShape2D_grtgy")
