@@ -1,86 +1,104 @@
 extends Control
 
 ## Horton Level Controller
-## Manages player interaction with Horton the anxious elephant
+## Manages the three-way interaction: Player ↔ Horton ↔ Baron Von Bitey
 
 @onready var horton: Area2D = $Node2D/Horton
 @onready var player: CharacterBody2D = $Node2D/Player
+@onready var baron: Area2D = $Node2D/Baron
 
-# Interaction prompt UI
+# Interaction state
 var is_near_horton: bool = false
 var chat_instance: Control = null
 var level_select: Control = null
 var camera: Camera2D = null
 
 func _ready() -> void:
-	# Enable player movement when level starts
 	GameState.enable_movement()
 
-	# Connect to Horton's Area2D for interaction detection
+	# Connect Horton area interaction
 	if horton:
 		horton.body_entered.connect(_on_horton_area_entered)
 		horton.body_exited.connect(_on_horton_area_exited)
-	
-	# set camera
+
+	# Camera setup
 	camera = $Node2D/Player/Camera2D
-	camera.limit_left = -1280
-	camera.limit_right = 1280
-	camera.limit_top = 0
+	camera.limit_left  = -1280
+	camera.limit_right =  1280
+	camera.limit_top   =  0
 	camera.limit_bottom = 720
 
-	# level menu
+	# Level selector (hidden until level is complete)
 	level_select = GameState.load_top_scene("res://scenes/LevelSelector.tscn")
 	level_select.hide()
 
-	# Start Horton's entrance animation
+	# Start Horton's entrance, then Baron's entrance
 	$Node2D.horton_enter()
+	await get_tree().create_timer(2.0).timeout
+	$Node2D.baron_enter()
 
 func _load_chat_interface() -> void:
-	"""Load and add the chat interface to the scene."""
+	"""Load and configure the three-way chat interface."""
 	chat_instance = GameState.load_top_scene("res://scenes/HortonChat.tscn")
 	chat_instance.hide()
-	
-	# level completed signal
-	if chat_instance.has_signal("horton_trusts_player"):
-		chat_instance.horton_trusts_player.connect(_on_horton_trusts_player)
-		print("[LEVEL] Connected player_granted_access signal")
+
+	# Pass the Node2D sprites reference so chat can trigger animations
+	if chat_instance.has_method("set_sprites_node"):
+		chat_instance.set_sprites_node($Node2D)
+
+	# Connect outcome signals
+	chat_instance.horton_trusts_player.connect(_on_horton_trusts_player)
+	chat_instance.baron_wins.connect(_on_baron_wins)
+	chat_instance.whos_lost.connect(_on_whos_lost)
+	print("[LEVEL] Chat interface loaded and signals connected.")
 
 func _input(event: InputEvent) -> void:
-	"""Handle input events."""
 	if not is_near_horton:
 		return
-
-	# press E to load chat
 	if event is InputEventKey and event.pressed and event.keycode == KEY_E:
 		if chat_instance == null:
 			_load_chat_interface()
 			await get_tree().process_frame
-
 		chat_instance.show()
 		if chat_instance.has_method("open_chat"):
 			chat_instance.open_chat()
-
 		print("[LEVEL] Chat opened")
 
 func _on_horton_area_entered(body: Node2D) -> void:
-	"""Called when player enters Horton's interaction area."""
 	if body == player:
 		is_near_horton = true
-		$InteractionLabel.text = "Press [E] to interact with Horton! (He's very anxious...)"
+		$InteractionLabel.text = "Press [E] to talk with Horton (and keep an eye on the Baron!)"
 
 func _on_horton_area_exited(body: Node2D) -> void:
-	"""Called when player exits Horton's interaction area."""
 	if body == player:
 		is_near_horton = false
 		$InteractionLabel.text = "Walk up close to Horton the Elephant!"
 
-func _on_horton_trusts_player() -> void:
-	"""Called when Horton finally trusts the player."""
-	print("[HortonLevel] SUCCESS! Horton trusts the player!")
-	chat_instance.hide()
-	$InteractionLabel.text = "Congrats! Continue to the depths of the forest by clicking the storybook above..."
+# ---------------------------------------------------------------------------
+# Outcome handlers
+# ---------------------------------------------------------------------------
 
-func _on_horton_ran_away() -> void:
-	"""Called when Horton's anxiety overwhelms him and he runs away."""
-	print("[HortonLevel] FAILURE! Horton ran away!")
-	chat_instance.hide()
+func _on_horton_trusts_player() -> void:
+	"""WIN: Whoville saved, Baron defeated."""
+	print("[HortonLevel] WIN! Horton's faithful. The Whos are safe!")
+	if chat_instance:
+		await get_tree().create_timer(3.5).timeout
+		chat_instance.hide()
+	$InteractionLabel.text = "The Whos are safe! An elephant's faithful, one hundred percent. Open the storybook above to continue..."
+	level_select.show()
+
+func _on_baron_wins() -> void:
+	"""FAIL 1: Baron took the clover."""
+	print("[HortonLevel] FAIL 1 — Baron took the clover!")
+	if chat_instance:
+		await get_tree().create_timer(4.0).timeout
+		chat_instance.hide()
+	$InteractionLabel.text = "Baron Von Bitey has taken the clover... The Whos are in terrible danger. Try again."
+
+func _on_whos_lost() -> void:
+	"""FAIL 2: Whos were lost without the player's help."""
+	print("[HortonLevel] FAIL 2 — The Whos were lost.")
+	if chat_instance:
+		await get_tree().create_timer(4.0).timeout
+		chat_instance.hide()
+	$InteractionLabel.text = "The Whos needed your help, and the crisis was too great. The clover is safe... but Whoville is lost. Try again."
