@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dq11u53yka8oh"
-path="res://.godot/imported/caterpillar_01.png-20314ecaacfc4a3729698c743b264c41.ctex"
+uid="uid://cqdbpj48ejwag"
+path="res://.godot/imported/baron_walk_04.png-c05ef3107c6d08acafe3c6a4bf0ce370.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/caterpillar/caterpillar_01.png"
-dest_files=["res://.godot/imported/caterpillar_01.png-20314ecaacfc4a3729698c743b264c41.ctex"]
+source_file="res://assets/sprites/baron/baron_walk_04.png"
+dest_files=["res://.godot/imported/baron_walk_04.png-c05ef3107c6d08acafe3c6a4bf0ce370.ctex"]
 
 [params]
 
