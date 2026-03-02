@@ -8,13 +8,6 @@ extends Control
 @onready var quit_button: Button = $MenuLayer/ButtonContainer/QuitButton
 @onready var background_music: AudioStreamPlayer = $BackgroundMusic
 
-# Parallax system
-@onready var parallax_background: ParallaxBackground = $ParallaxBackground
-@onready var sky_layer: ParallaxLayer = $ParallaxBackground/SkyLayer
-@onready var cloud_layer: ParallaxLayer = $ParallaxBackground/CloudLayer
-@onready var tree_layer: ParallaxLayer = $ParallaxBackground/TreeLayer
-@onready var foreground_layer: ParallaxLayer = $ParallaxBackground/ForegroundLayer
-
 # Wobble physics system - automatically finds all wobble nodes
 var wobble_elements: Array[Node2D] = []
 var wobble_data: Dictionary = {}  # Stores original positions and physics properties
@@ -31,21 +24,12 @@ const LORAX_LEVEL_SCENE = "res://scenes/LoraxLevel.tscn"
 
 func _ready() -> void:
 	"""Initialize the main menu systems."""
-	_setup_parallax()
-	_setup_wobble_physics()
 	_setup_buttons()
 	
 	# Start background music if available
 	_play_menu_theme()
 	
 	print("Main Menu loaded - Placeholder system ready")
-
-func _setup_parallax() -> void:
-	"""Configure parallax scrolling layers."""
-	sky_layer.motion_scale = Vector2(0.1, 0.1)
-	cloud_layer.motion_scale = Vector2(0.3, 0.3)
-	tree_layer.motion_scale = Vector2(0.6, 0.6)
-	foreground_layer.motion_scale = Vector2(1.0, 1.0)
 
 func _setup_wobble_physics() -> void:
 	"""Find and initialize all wobble elements."""
@@ -96,51 +80,6 @@ func _on_button_hover(button: Button, is_hovering: bool) -> void:
 		tween.tween_property(button, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT)
 		tween.tween_property(button, "modulate", Color.WHITE, 0.2)
 
-func _process(delta: float) -> void:
-	"""Update continuous animations: parallax scrolling and wobble physics."""
-	_update_parallax(delta)
-	_update_wobble_physics(delta)
-
-func _update_parallax(delta: float) -> void:
-	"""Update parallax scrolling."""
-	if parallax_background:
-		parallax_background.scroll_offset.x += parallax_scroll_speed * delta
-		# Loop parallax when it goes too far
-		if parallax_background.scroll_offset.x > 1280:
-			parallax_background.scroll_offset.x -= 1280
-
-func _update_wobble_physics(delta: float) -> void:
-	"""Update wobble physics for all wobble elements."""
-	for element in wobble_elements:
-		if not element or not wobble_data.has(element):
-			continue
-		
-		var data = wobble_data[element]
-		var base_pos = data["base_position"]
-		var velocity = data["velocity"]
-		
-		# Calculate spring force towards base position
-		var current_offset = element.position - base_pos
-		var spring_force = -current_offset * wobble_spring
-		
-		# Add some random gentle force for continuous motion
-		var random_force = Vector2(
-			sin(Time.get_ticks_msec() * 0.001 + element.position.x * 0.01) * wobble_strength * 0.1,
-			cos(Time.get_ticks_msec() * 0.0015 + element.position.y * 0.01) * wobble_strength * 0.1
-		)
-		
-		# Update velocity with forces and damping
-		velocity += (spring_force + random_force) * delta
-		velocity *= wobble_damping
-		
-		# Update position
-		element.position += velocity * delta
-		
-		# Update rotation based on horizontal velocity for teetering effect
-		element.rotation_degrees = velocity.x * 0.5
-		
-		# Store updated velocity
-		data["velocity"] = velocity
 
 func _play_menu_theme() -> void:
 	"""Play the cheerful menu theme music."""
@@ -194,7 +133,13 @@ func _transition_to_scene(scene_path: String) -> void:
 	# Fade out
 	var fade_tween = create_tween()
 	fade_tween.tween_property(fade_overlay, "color:a", 1.0, 0.3)
+	
+	# Fade music out (if playing)
+	if background_music and background_music.playing:
+		fade_tween.tween_property(background_music, "volume_db", -40.0, 0.5)
+
 	await fade_tween.finished
+	
 	
 	# Change scene
 	get_tree().change_scene_to_file(scene_path)

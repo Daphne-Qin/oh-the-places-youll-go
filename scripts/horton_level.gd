@@ -7,6 +7,8 @@ extends Control
 @onready var player: CharacterBody2D = $Node2D/Player
 @onready var baron: Area2D = $Node2D/Baron
 
+@onready var current_music: AudioStreamPlayer = null
+
 # Interaction state
 var is_near_horton: bool = false
 var chat_instance: Control = null
@@ -31,11 +33,37 @@ func _ready() -> void:
 	# Level selector (hidden until level is complete)
 	level_select = GameState.load_top_scene("res://scenes/LevelSelector.tscn")
 	level_select.hide()
+	
+	_switch_music($Music/Default)
 
 	# Start Horton's entrance, then Baron's entrance
 	$Node2D.horton_enter()
 	await get_tree().create_timer(2.0).timeout
 	$Node2D.baron_enter()
+	
+func _switch_music(new_music: AudioStreamPlayer) -> void:
+	if new_music == current_music:
+		return
+		
+	var music_fade_time = 1
+
+	var tween = create_tween()
+
+	# Fade out old track
+	if current_music and current_music.playing:
+		tween.tween_property(current_music, "volume_db", -40.0, music_fade_time)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+
+	# Stop old music AFTER fade
+	if current_music and current_music != new_music:
+		current_music.stop()
+	
+	# set new music
+	current_music = new_music
+	current_music.volume_db = 0.0
+	current_music.play()
 
 func _load_chat_interface() -> void:
 	"""Load and configure the three-way chat interface."""

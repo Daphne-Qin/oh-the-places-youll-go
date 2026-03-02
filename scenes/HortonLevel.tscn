@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=19 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="11_7ucuf"]
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="11_dbhvm"]
 [ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="13_7ucuf"]
+[ext_resource type="AudioStream" uid="uid://ca1xbh1nlolq4" path="res://assets/audio/music/Guardians of the Green Path.mp3" id="16_ye3p4"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
 animations = [{
@@ -90,11 +91,12 @@ z_index = 0
 position = Vector2(919, 488)
 
 [node name="Horton" type="Area2D" parent="Node2D"]
-position = Vector2(-656, 528)
+position = Vector2(-703, 474)
+scale = Vector2(1.5, 1.5)
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Horton"]
-scale = Vector2(0.24148607, 0.24148607)
+scale = Vector2(0.23, 0.2)
 sprite_frames = SubResource("SpriteFrames_fgenl")
 animation = &"walk"
 
@@ -103,8 +105,8 @@ position = Vector2(27, 2)
 shape = SubResource("RectangleShape2D_rrf0p")
 
 [node name="Baron" parent="Node2D" instance=ExtResource("11_dbhvm")]
-visible = false
-position = Vector2(-706, 520)
+position = Vector2(1532, 514)
+scale = Vector2(0.4, 0.4)
 
 [node name="Trees" type="Node2D" parent="Node2D"]
 
@@ -138,3 +140,8 @@ position = Vector2(-1280, 380)
 
 [node name="Boundary2" parent="Node2D" instance=ExtResource("13_7ucuf")]
 position = Vector2(1280, 380)
+
+[node name="Music" type="Node" parent="."]
+
+[node name="Default" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("16_ye3p4")

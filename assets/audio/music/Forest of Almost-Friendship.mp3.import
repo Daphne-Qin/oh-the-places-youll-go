@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dj58n80154ccm"
+path="res://.godot/imported/Forest of Almost-Friendship.mp3-b929a6a30222ecf0df4df76409d5c8fe.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/Forest of Almost-Friendship.mp3"
+dest_files=["res://.godot/imported/Forest of Almost-Friendship.mp3-b929a6a30222ecf0df4df76409d5c8fe.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=1.0
+bpm=0.0
+beat_count=0
+bar_beats=4

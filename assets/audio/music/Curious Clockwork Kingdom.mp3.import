@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://41mhvcly5nw"
+path="res://.godot/imported/Curious Clockwork Kingdom.mp3-a4c936bfb94bfd51872f78bd10f4aa33.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/Curious Clockwork Kingdom.mp3"
+dest_files=["res://.godot/imported/Curious Clockwork Kingdom.mp3-a4c936bfb94bfd51872f78bd10f4aa33.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

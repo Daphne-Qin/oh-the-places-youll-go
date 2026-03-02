@@ -6,6 +6,8 @@ extends Node2D
 @onready var lorax: Area2D = $Interactables/LoraxArea
 @onready var player: CharacterBody2D = $Player
 
+@onready var current_music: AudioStreamPlayer = null
+
 # Interaction prompt UI
 var is_near_lorax: bool = false
 var chat_instance: Control = null
@@ -31,6 +33,34 @@ func _ready() -> void:
 	# level menu
 	level_select = GameState.load_top_scene("res://scenes/LevelSelector.tscn")
 	level_select.hide()
+	
+	# start music
+	_switch_music($Music/Default)
+	
+
+func _switch_music(new_music: AudioStreamPlayer) -> void:
+	if new_music == current_music:
+		return
+		
+	var music_fade_time = 1
+
+	var tween = create_tween()
+
+	# Fade out old track
+	if current_music and current_music.playing:
+		tween.tween_property(current_music, "volume_db", -40.0, music_fade_time)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+
+	# Stop old music AFTER fade
+	if current_music and current_music != new_music:
+		current_music.stop()
+	
+	# set new music
+	current_music = new_music
+	current_music.volume_db = 0.0
+	current_music.play()
 
 func _load_chat_interface() -> void:
 	"""Load and add the chat interface to the scene."""
@@ -72,6 +102,7 @@ func _input(event: InputEvent) -> void:
 		print("[LEVEL] Chat opened")
 		
 func _on_player_granted_access() -> void:
+	_switch_music($Music/Success)
 	chat_instance.hide()
 	$InteractionLabel.text = "Congrats! Enter the forest by clicking on the storybook above!"
 	level_select.show()

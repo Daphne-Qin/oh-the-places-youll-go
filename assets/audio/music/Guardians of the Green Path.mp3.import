@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ca1xbh1nlolq4"
+path="res://.godot/imported/Guardians of the Green Path.mp3-3c79711b6ee521131bf8ea696e06acf6.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/Guardians of the Green Path.mp3"
+dest_files=["res://.godot/imported/Guardians of the Green Path.mp3-3c79711b6ee521131bf8ea696e06acf6.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=1.0
+bpm=0.0
+beat_count=0
+bar_beats=4

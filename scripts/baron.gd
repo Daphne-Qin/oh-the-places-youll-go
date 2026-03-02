@@ -18,6 +18,7 @@ func _ready() -> void:
 
 func move() -> void:
 	"""Play the walk animation (used on ready and for patrol)."""
+	$AnimatedSprite2D.sprite_frames.set_animation_speed("walk", 24.0)
 	sprite.play("walk")
 
 func stand() -> void:
@@ -33,7 +34,8 @@ func start_patrol(min_x: float = 650.0, max_x: float = 950.0, speed: float = 60.
 	_patrol_max_x = max_x
 	_patrol_speed = speed
 	_is_patrolling = true
-	sprite.play("walk")
+	await get_tree().create_timer(5).timeout
+	move()
 	_do_patrol_step()
 
 func _do_patrol_step() -> void:
@@ -76,7 +78,7 @@ func make_move_for_clover(clover_x: float = 310.0) -> void:
 	if _patrol_tween:
 		_patrol_tween.kill()
 
-	sprite.play("walk")
+	move()
 	sprite.speed_scale = 2.5   # doubled animation speed to imply running
 	sprite.flip_h = (clover_x < position.x)
 
@@ -95,8 +97,7 @@ func defeat_retreat() -> void:
 	if _patrol_tween:
 		_patrol_tween.kill()
 
-	sprite.play("walk")
-	sprite.speed_scale = 3.0
+	move()
 	sprite.flip_h = false  # face right (fleeing)
 
 	# Stumble sideways + tumble down simultaneously, then run off screen

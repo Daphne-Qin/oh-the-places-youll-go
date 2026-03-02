@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://nwghmka30tu4"]
+[gd_scene load_steps=28 format=3 uid="uid://nwghmka30tu4"]
 
 [ext_resource type="Texture2D" uid="uid://bils18arxvle" path="res://assets/sprites/baron/baron_stand.png" id="1_72dp4"]
 [ext_resource type="Script" uid="uid://cbghbtssjnia7" path="res://scripts/baron.gd" id="1_iw5hr"]
@@ -8,6 +8,23 @@
 [ext_resource type="Texture2D" uid="uid://hht1jstkrc6q" path="res://assets/sprites/baron/baron_walk_03.png" id="5_eto8j"]
 [ext_resource type="Texture2D" uid="uid://cqdbpj48ejwag" path="res://assets/sprites/baron/baron_walk_04.png" id="7_y1u3m"]
 [ext_resource type="Texture2D" uid="uid://56nr8db6b7hw" path="res://assets/sprites/baron/baron_walk_05.png" id="8_eto8j"]
+[ext_resource type="Texture2D" uid="uid://v3bv4wo6d3e8" path="res://assets/sprites/baron/baron_walk_06.png" id="9_h10ox"]
+[ext_resource type="Texture2D" uid="uid://b0dwmsma23k21" path="res://assets/sprites/baron/baron_walk_07.png" id="10_0mbwf"]
+[ext_resource type="Texture2D" uid="uid://b5dkk665y8hxp" path="res://assets/sprites/baron/baron_walk_08.png" id="11_lyoay"]
+[ext_resource type="Texture2D" uid="uid://djf4gbwunt8jf" path="res://assets/sprites/baron/baron_walk_09.png" id="12_0th55"]
+[ext_resource type="Texture2D" uid="uid://yq8p15x5c64f" path="res://assets/sprites/baron/baron_walk_10.png" id="13_auxqd"]
+[ext_resource type="Texture2D" uid="uid://dhnccpac6b0l3" path="res://assets/sprites/baron/baron_walk_11.png" id="14_vnm6x"]
+[ext_resource type="Texture2D" uid="uid://lakc5ynlfujp" path="res://assets/sprites/baron/baron_walk_12.png" id="15_lea8u"]
+[ext_resource type="Texture2D" uid="uid://yllkub72u1sl" path="res://assets/sprites/baron/baron_walk_13.png" id="16_7rl44"]
+[ext_resource type="Texture2D" uid="uid://844or3nei6ci" path="res://assets/sprites/baron/baron_walk_14.png" id="17_8i2f5"]
+[ext_resource type="Texture2D" uid="uid://bbymll3ll0k4a" path="res://assets/sprites/baron/baron_walk_15.png" id="18_3su3m"]
+[ext_resource type="Texture2D" uid="uid://ce5qd27se178y" path="res://assets/sprites/baron/baron_walk_16.png" id="19_8c0mt"]
+[ext_resource type="Texture2D" uid="uid://10q42y4r0ju8" path="res://assets/sprites/baron/baron_walk_17.png" id="20_ub8yl"]
+[ext_resource type="Texture2D" uid="uid://cq1s3wo2fb0tx" path="res://assets/sprites/baron/baron_walk_18.png" id="21_5skvl"]
+[ext_resource type="Texture2D" uid="uid://ommvm0u1daav" path="res://assets/sprites/baron/baron_walk_19.png" id="22_bfl5p"]
+[ext_resource type="Texture2D" uid="uid://dy5n2wewuuri7" path="res://assets/sprites/baron/baron_walk_20.png" id="23_vnjw5"]
+[ext_resource type="Texture2D" uid="uid://b7vx6rc8k8pss" path="res://assets/sprites/baron/baron_walk_21.png" id="24_hbv6u"]
+[ext_resource type="Texture2D" uid="uid://di4oe4j0gc80e" path="res://assets/sprites/baron/baron_walk_22.png" id="25_qj2wq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jutkn"]
 animations = [{
@@ -37,10 +54,61 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("8_eto8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_h10ox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_0mbwf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_lyoay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_0th55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_auxqd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_vnm6x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_lea8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_7rl44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_8i2f5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_3su3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_8c0mt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ub8yl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_5skvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_bfl5p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_vnjw5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_hbv6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_qj2wq")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 20.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_grtgy"]
@@ -53,7 +121,7 @@ script = ExtResource("1_iw5hr")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jutkn")
 animation = &"walk"
-frame_progress = 0.14265585
+frame_progress = 0.9116358
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
