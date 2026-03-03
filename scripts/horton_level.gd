@@ -8,6 +8,7 @@ extends Control
 @onready var player: CharacterBody2D = $Node2D/Player
 @onready var baron: Area2D = $Node2D/Baron
 @onready var current_music: AudioStreamPlayer = null
+@onready var interaction_label = $CanvasLayer/InteractionLabel
 
 # Interaction state
 var is_near_horton: bool = false
@@ -214,7 +215,7 @@ func _start_chase() -> void:
 	if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("forced_close"):
 		chat_instance.forced_close("chase")
 
-	$InteractionLabel.text = "The Baron is charging at Horton! RUN to help!"
+	interaction_label.text = "The Baron is charging at Horton! RUN to help!"
 	$Node2D.baron_chase_horton()
 	chase_resolve_timer.start()
 	print("[LEVEL] Chase started!")
@@ -233,7 +234,7 @@ func _resolve_chase(player_made_it: bool) -> void:
 	if player_made_it:
 		print("[LEVEL] Chase resolved — player saved Horton!")
 		$Node2D.baron_back_off()
-		$InteractionLabel.text = "You drove the Baron back! Talk to Horton to continue decoding..."
+		interaction_label.text = "You drove the Baron back! Talk to Horton to continue decoding..."
 		_start_next_chase_timer()
 	else:
 		print("[LEVEL] Chase resolved — Baron grabs the clover!")
@@ -241,7 +242,7 @@ func _resolve_chase(player_made_it: bool) -> void:
 		if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("set_clover_state"):
 			chat_instance.set_clover_state("baron")
 		$Node2D.baron_grab_clover()
-		$InteractionLabel.text = "Baron Von Bitey grabbed the clover! Get close to him and press [E] to negotiate!"
+		interaction_label.text = "Baron Von Bitey grabbed the clover! Get close to him and press [E] to negotiate!"
 
 # ---------------------------------------------------------------------------
 # Clover handoff — Baron drops clover
@@ -252,7 +253,7 @@ func _on_baron_drops_clover() -> void:
 	if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("set_clover_state"):
 		chat_instance.set_clover_state("player")
 	$Node2D.baron_drops_clover_visual()
-	$InteractionLabel.text = "Baron dropped the clover! Bring it back to Horton!"
+	interaction_label.text = "Baron dropped the clover! Bring it back to Horton!"
 	print("[LEVEL] Baron dropped the clover — player now holds it.")
 
 func _return_clover_to_horton() -> void:
@@ -260,7 +261,7 @@ func _return_clover_to_horton() -> void:
 	if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("set_clover_state"):
 		chat_instance.set_clover_state("horton")
 	$Node2D.horton_reclaim_clover()
-	$InteractionLabel.text = "Horton has the clover! Continue decoding the Who messages..."
+	interaction_label.text = "Horton has the clover! Continue decoding the Who messages..."
 	_start_next_chase_timer()
 	print("[LEVEL] Clover returned to Horton.")
 
@@ -269,21 +270,21 @@ func _return_clover_to_horton() -> void:
 # ---------------------------------------------------------------------------
 func _update_interaction_label() -> void:
 	if is_chase_active:
-		$InteractionLabel.text = "RUN to Horton!"
+		interaction_label.text = "RUN to Horton!"
 		return
 	match clover_state:
 		"horton":
 			if is_near_horton:
-				$InteractionLabel.text = "Press [E] to talk with Horton and decode the Who messages!"
+				interaction_label.text = "Press [E] to talk with Horton and decode the Who messages!"
 			else:
-				$InteractionLabel.text = "Walk up to Horton the Elephant!"
+				interaction_label.text = "Walk up to Horton the Elephant!"
 		"baron":
 			if is_near_baron:
-				$InteractionLabel.text = "Press [E] to talk to Baron Von Bitey!"
+				interaction_label.text = "Press [E] to talk to Baron Von Bitey!"
 			else:
-				$InteractionLabel.text = "Baron Von Bitey has the clover — get close to him!"
+				interaction_label.text = "Baron Von Bitey has the clover — get close to him!"
 		"player":
-			$InteractionLabel.text = "Bring the clover back to Horton!"
+			interaction_label.text = "Bring the clover back to Horton!"
 
 # ---------------------------------------------------------------------------
 # Outcome handlers
@@ -296,7 +297,7 @@ func _on_horton_trusts_player() -> void:
 	if chat_instance:
 		await get_tree().create_timer(3.5).timeout
 		chat_instance.hide()
-	$InteractionLabel.text = "The Whos are saved! An elephant's faithful, one hundred percent. Open the storybook above to continue..."
+	interaction_label.text = "The Whos are saved! An elephant's faithful, one hundred percent. Open the storybook above to continue..."
 	level_select.show()
 
 func _on_baron_wins() -> void:
@@ -307,7 +308,7 @@ func _on_baron_wins() -> void:
 	if chat_instance:
 		await get_tree().create_timer(4.0).timeout
 		chat_instance.hide()
-	$InteractionLabel.text = "Baron Von Bitey has taken the clover for his soup... The Whos are in terrible danger. Try again."
+	interaction_label.text = "Baron Von Bitey has taken the clover for his soup... The Whos are in terrible danger. Try again."
 
 func _on_whos_lost() -> void:
 	outcome_triggered = true
@@ -317,4 +318,4 @@ func _on_whos_lost() -> void:
 	if chat_instance:
 		await get_tree().create_timer(4.0).timeout
 		chat_instance.hide()
-	$InteractionLabel.text = "The messages went undecoded for too long... The Whos needed your help. Try again."
+	interaction_label.text = "The messages went undecoded for too long... The Whos needed your help. Try again."

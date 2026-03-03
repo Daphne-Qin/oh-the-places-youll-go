@@ -63,16 +63,17 @@ offset_bottom = 720.0
 grow_horizontal = 0
 texture = ExtResource("1_piuc7")
 
-[node name="InteractionLabel" type="Label" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="InteractionLabel" type="Label" parent="CanvasLayer"]
 z_index = 10
-layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -183.0
 offset_top = 80.0
 offset_right = 183.0
-offset_bottom = 103.0
+offset_bottom = 113.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)

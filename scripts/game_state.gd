@@ -113,6 +113,7 @@ func load_top_scene(scene_path: String) -> Control:
 	if not ui_layer:
 		ui_layer = CanvasLayer.new()
 		ui_layer.name = "UILayer"
+		ui_layer.layer = 1000
 		add_child(ui_layer)
 	
 	ui_layer.add_child(scene)
