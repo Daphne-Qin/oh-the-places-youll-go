@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://d23n4v62fths4"]
+
+[ext_resource type="Texture2D" uid="uid://dfbam773vdre6" path="res://assets/background/cat_livingroom.png" id="1_m4pvi"]
+[ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="2_wi6vh"]
+[ext_resource type="PackedScene" uid="uid://c11ntw4wepndr" path="res://scenes/cat.tscn" id="3_6dehb"]
+
+[node name="CatLevel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.7016299, 0.7016299, 0.7016299, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_m4pvi")
+expand_mode = 3
+
+[node name="InteractionLabel" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Player" parent="Node2D" instance=ExtResource("2_wi6vh")]
+position = Vector2(859, 458)
+
+[node name="Cat" parent="Node2D" instance=ExtResource("3_6dehb")]
+position = Vector2(417, 376)

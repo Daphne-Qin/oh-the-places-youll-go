@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func move() -> void:
 	"""Play the walk animation (used on ready and for patrol)."""
-	$AnimatedSprite2D.sprite_frames.set_animation_speed("walk", 24.0)
+	sprite.sprite_frames.set_animation_speed("walk", 24.0)
 	sprite.play("walk")
 
 func stand() -> void:
