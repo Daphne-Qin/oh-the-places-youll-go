@@ -32,6 +32,14 @@ var levels := {
 		"completed": false,
 		"map_position": Vector2(1050, 553),
 		"icon": "res://assets/sprites/levelselect/icon_horton.png"
+	},
+	"cat": {
+		"name": "The Cat in the Hat",
+		"scene_path": "res://scenes/CatLevel.tscn",
+		"unlocked": false,  # Unlocked after completing Horton
+		"completed": false,
+		"map_position": Vector2(550, 200),
+		"icon": ""
 	}
 }
 
@@ -75,7 +83,7 @@ func _handle_level_completion(level_id: String) -> void:
 			unlock_level("truffula_forest")  # Passing Lorax riddles unlocks the forest
 			unlock_level("horton")  # Also unlock Horton's level
 		"horton":
-			pass  # Future: unlock next level after Horton
+			unlock_level("cat")  # Completing Horton unlocks the Cat in the Hat level
 
 func is_level_unlocked(level_id: String) -> bool:
 	"""Check if a level is unlocked."""

@@ -532,6 +532,22 @@ func _send_player_message() -> void:
 	_add_message(text, "player")
 	shared_history.append({"label": "Player", "text": text})
 
+	# ---------------------------------------------------------------------------
+	# SECRET SKIP CODES (for testing / demos)
+	# ---------------------------------------------------------------------------
+	var lower = text.to_lower()
+	if lower == "a person's a person":
+		# Instantly win — skip all decoding
+		decode_stage = 5
+		_add_narrator_message("(Skip code accepted — triggering Horton win!)")
+		_trigger_jojo_finale()
+		return
+	if lower == "mischief minestrone":
+		# Baron immediately drops the clover — test the clover-return path
+		_add_narrator_message("(Skip code accepted — Baron drops the clover!)")
+		baron_drops_clover.emit()
+		return
+
 	# Talking to the Baron restores patience (and delays patrol)
 	baron_patience = min(100.0, baron_patience + PATIENCE_RESTORE)
 	_update_baron_stage()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d23n4v62fths4"]
+[gd_scene load_steps=5 format=3 uid="uid://d23n4v62fths4"]
 
 [ext_resource type="Texture2D" uid="uid://dfbam773vdre6" path="res://assets/background/cat_livingroom.png" id="1_m4pvi"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="2_wi6vh"]
 [ext_resource type="PackedScene" uid="uid://c11ntw4wepndr" path="res://scenes/cat.tscn" id="3_6dehb"]
+[ext_resource type="Script" path="res://scripts/cat_level.gd" id="4_catlvl"]
 
 [node name="CatLevel" type="Control"]
 layout_mode = 3
@@ -11,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_catlvl")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0.7016299, 0.7016299, 0.7016299, 1)
@@ -24,9 +26,17 @@ texture = ExtResource("1_m4pvi")
 expand_mode = 3
 
 [node name="InteractionLabel" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 12
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
 
 [node name="Node2D" type="Node2D" parent="."]
 

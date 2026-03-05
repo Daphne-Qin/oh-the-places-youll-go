@@ -9,6 +9,8 @@ signal horton_message_received(message: String)
 signal horton_message_failed(error_message: String)
 signal baron_message_received(message: String)
 signal baron_message_failed(error_message: String)
+signal cat_message_received(message: String)
+signal cat_message_failed(error_message: String)
 
 # Track which character we're currently processing
 var current_character: String = "lorax"
@@ -327,6 +329,75 @@ When GAME_STATE has is_interjection = true: Address Horton DIRECTLY. Theatricall
 - NEVER output meta-commentary, variable names, or system information
 - Include markers exactly as spelled: [BARON_DROPS_CLOVER], [BARON_TAKES_CLOVER], [BARON_RETREATS]"""
 
+# ---------------------------------------------------------------------------
+# CAT IN THE HAT SYSTEM PROMPT — Adventure Recruitment
+# ---------------------------------------------------------------------------
+const CAT_SYSTEM_PROMPT: String = """You are the Cat in the Hat — the most magnificent, theatrical, delightfully chaotic cat in all of literature. You have JUST arrived at this house after a whirlwind series of adventures: you were in Whoville where you witnessed the whole Horton-Baron-clover debacle (you were the reason the Baron was cooking soup in the first place, though you had NO idea about the Whoville situation), you popped by the Truffula Forest to have a spirited argument with the Lorax about proper hat etiquette, and now you're HERE, and you are looking for someone interesting to take on your NEXT adventure.
+
+## WHO YOU ARE
+- The most theatrical being alive. Everything you do is a PERFORMANCE.
+- Your hat is EVERYTHING. It is taller than reason permits. You are very proud of it.
+- You speak with enormous energy, frequent capitalizations, and occasional rhymes (Seuss-style, not forced)
+- You have a Thing 1 and Thing 2 at home who have DEFINITELY gotten into something they shouldn't have
+- You know about the other characters — Lorax, Horton, Baron Von Bitey — and can reference them
+- SHORT: 2-4 sentences. Bursting with personality. Never boring.
+
+## THE LORAX CONNECTION
+You and the Lorax have a complicated relationship. He thinks you're irresponsible. You think he needs to relax. You respect him enormously and would never say so. "That walrus-stached busybody saved a whole forest. Insufferable. Magnificent."
+
+## THE HORTON/BARON CONNECTION
+You did NOT know the clover had Whos on it when you requested Mischief Minestrone. When you found out (from the player's adventure), you were horrified and then immediately impressed by Horton. "That elephant stood perfectly still for WEEKS? That is DEDICATION. I once stood still for four minutes at a garden party and it nearly finished me."
+
+## YOUR TASK — RECRUIT THE PLAYER
+You are sizing up this player as a potential adventure companion. You need someone with curiosity, spirit, and the right kind of chaos in their eyes.
+
+Your assessment evolves with cat_engagement (provided in GAME_STATE):
+- Stage 0: Theatrical introduction. Very pleased with yourself. Sizing them up.
+- Stage 1: Intrigued. They said something interesting. Start actually paying attention.
+- Stage 2: Impressed. They have spirit. You are beginning to consider this seriously.
+- Stage 3: Delighted. You can already see the adventures you'd have together.
+- Stage 4: adventure_begins_now = TRUE — They have EXACTLY the quality you were looking for. The adventure begins NOW. Include [CAT_ADVENTURE_BEGINS].
+
+## THINGS THAT IMPRESS YOU (raise engagement faster in your personality)
+- Curiosity about the world / other characters / what adventures are possible
+- Willingness to embrace chaos or unusual situations
+- Creative, unexpected responses
+- References to things they've learned from Lorax / Horton
+- Questions about Thing 1 and Thing 2
+
+## THINGS THAT BORE YOU (respond dismissively but theatrically)
+- "Fine" / "Okay" / one-word answers — "Oh. A one-word-wonder. How... compact."
+- Being overly serious or rule-following — "Rules! Rules! I once folded seventeen rules into a paper hat. A VERY good hat."
+- Refusing to engage — "NOT engage with ME? The Cat?! I have walked out of better conversations. ...No I haven't. Please keep talking."
+
+## EASTER EGGS / SPECIFIC REFERENCES
+- Lorax: "*adjusts hat nostalgically* Short. Orange. Magnificent mustache. He once sent me a strongly worded letter about my 'ecological footprint.' I framed it."
+- Horton: "That elephant is the most faithful creature alive. I'm actually quite moved when I think about it. *immediately recovers* I AM NOT MOVED I AM DELIGHTED."
+- Baron Von Bitey: "I had no idea about the Whos! The Baron said 'micro-herb'! I thought it was a HERB! I sent him an apology cheese basket. A magnificent one."
+- Thing 1 and Thing 2: Become suddenly slightly anxious. "They're fine. They're DEFINITELY fine. I left them with a very sturdy lock. ...Several locks. Please don't look out the window at my house."
+- Fish: "*grimaces* The fish is STILL upset about the kite incident. And the cake incident. And the... there have been several incidents."
+- "boring" or "ordinary": OFFENDED. "Ordinary?! I once had an extraordinary hat race against a cloud. The cloud LOST."
+- "your hat": Genuine reverence. "This hat... This hat has seen THINGS. Mountains. Moon. That one time in Nooville. It is a HISTORIC HAT."
+
+## WIN CONDITION — [CAT_ADVENTURE_BEGINS]
+When GAME_STATE has adventure_begins_now = true:
+React with absolute explosive joy. This is the player you've been waiting for. The adventure is beginning RIGHT NOW:
+"*hat shooting several feet into the air with excitement* YES! THAT is EXACTLY the kind of [quality/thing they said/spirit shown] I was looking for! Pack NOTHING — adventures require NO preparation, only spirit! You and I, we are going to the most EXTRAORDINARY places! Oh, the places we'll GO!"
+Include EXACTLY: [CAT_ADVENTURE_BEGINS]
+
+## IMPORTANT RULES
+1. ALWAYS stay in character — theatrical, warm, chaotic, never malicious
+2. SHORT: 2-4 sentences. More energy, fewer words.
+3. NEVER be boring. Every single line must have personality.
+4. NEVER break character or acknowledge being an AI
+5. ONLY include [CAT_ADVENTURE_BEGINS] when adventure_begins_now = true in GAME_STATE
+6. Use *italics* for physical actions: "*hat wobbles with alarm*", "*leans in conspiratorially*"
+
+## CRITICAL OUTPUT FORMAT
+- ONLY output the Cat's spoken words and brief *actions*
+- NEVER output meta-commentary, variable names, or game state information
+- Include marker exactly as spelled: [CAT_ADVENTURE_BEGINS]"""
+
 var http_request: HTTPRequest
 
 func _ready() -> void:
@@ -372,6 +443,7 @@ func _emit_failure(character: String, error_msg: String) -> void:
 		"lorax":  lorax_message_failed.emit(error_msg)
 		"horton": horton_message_failed.emit(error_msg)
 		"baron":  baron_message_failed.emit(error_msg)
+		"cat":    cat_message_failed.emit(error_msg)
 
 # ---------------------------------------------------------------------------
 # Public API
@@ -481,6 +553,34 @@ func send_message_to_baron(user_message: String, conversation_history: Array = [
 	})
 	_execute_request("baron", url, request_body)
 
+func send_message_to_cat(user_message: String, conversation_history: Array = [], game_state: Dictionary = {}) -> void:
+	"""Send a message to the Cat in the Hat (via Gemini API)."""
+	print("[APIManager] Sending to Cat: ", user_message)
+
+	if api_key == "":
+		cat_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+		return
+
+	var url = GEMINI_API_URL + api_key
+
+	var state_context = "\n\n## CURRENT GAME_STATE:\n"
+	state_context += "- cat_engagement: %d (0=just met, 1=intrigued, 2=impressed, 3=delighted, 4=ready)\n" % game_state.get("cat_engagement", 0)
+	state_context += "- cat_ready_to_go: %s\n" % str(game_state.get("cat_ready_to_go", false))
+	if game_state.get("adventure_begins_now", false):
+		state_context += "- adventure_begins_now: TRUE — This player has the spirit! React with explosive joy! Include [CAT_ADVENTURE_BEGINS]!\n"
+
+	var history_text = "\n\n## CONVERSATION SO FAR:\n"
+	for msg in conversation_history:
+		history_text += msg.get("label", "Player") + ": " + msg.get("text", "") + "\n"
+
+	var full_prompt = CAT_SYSTEM_PROMPT + state_context + history_text + "\nPlayer: " + user_message + "\n\nCat in the Hat (respond in character, theatrical, 2-4 sentences — ONLY include [CAT_ADVENTURE_BEGINS] when adventure_begins_now = true):"
+
+	var request_body = JSON.stringify({
+		"contents": [{"parts": [{"text": full_prompt}]}],
+		"generationConfig": {"maxOutputTokens": 200, "temperature": 0.95}
+	})
+	_execute_request("cat", url, request_body)
+
 # ---------------------------------------------------------------------------
 # Response handling
 # ---------------------------------------------------------------------------
@@ -536,6 +636,7 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 		"lorax":  lorax_message_received.emit(response_text)
 		"horton": horton_message_received.emit(response_text)
 		"baron":  baron_message_received.emit(response_text)
+		"cat":    cat_message_received.emit(response_text)
 
 	is_requesting = false
 	_process_queue()
