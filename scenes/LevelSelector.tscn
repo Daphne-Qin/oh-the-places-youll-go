@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://ceu3sl3dghb35"]
 
-[ext_resource type="Texture2D" uid="uid://emin6p72qf84" path="res://assets/sprites/levelselect/map.png" id="1_8ixoo"]
+[ext_resource type="Texture2D" uid="uid://emin6p72qf84" path="res://assets/sprites/levelselect/map2.png" id="1_8ixoo"]
 [ext_resource type="Script" uid="uid://boumw7tajidd6" path="res://scripts/level_selector.gd" id="1_emkfd"]
 [ext_resource type="Texture2D" uid="uid://cyyuocklqbstn" path="res://assets/sprites/levelselect/icon_book.png" id="2_lm2ad"]
 

@@ -4,7 +4,7 @@ extends Area2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	move()
+	idle()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,6 +16,6 @@ func move() -> void:
 	sprite.sprite_frames.set_animation_speed("walk", 24.0)
 	sprite.play("walk")
 
-func stand() -> void:
+func idle() -> void:
 	"""Play the stand/idle animation."""
-	sprite.play("stand")
+	sprite.play("idle")

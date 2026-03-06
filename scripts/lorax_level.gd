@@ -3,7 +3,7 @@ extends Node2D
 ## Lorax Level Script
 ## Manages the game level, interactions, and chat interface
 
-@onready var lorax: Area2D = $Interactables/LoraxArea
+@onready var lorax: Area2D = $Interactables/Lorax
 @onready var player: CharacterBody2D = $Player
 
 @onready var current_music: AudioStreamPlayer = null

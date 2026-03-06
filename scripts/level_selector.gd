@@ -128,6 +128,7 @@ func _on_level_unlocked(level_id: String) -> void:
 func _on_level_completed(level_id: String) -> void:
 	"""Called when a level is completed."""
 	_update_button_state(level_id)
+	$Map/TextureRect.texture = GameState.levels[level_id]["map_sprite"]
 
 func _on_open_selector_button_pressed() -> void:
 	"""Toggle map visibility."""

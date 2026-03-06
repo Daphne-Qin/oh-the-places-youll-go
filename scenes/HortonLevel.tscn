@@ -1,47 +1,127 @@
-[gd_scene load_steps=19 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=39 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
-[ext_resource type="Texture2D" uid="uid://rxbk71nxlxab" path="res://assets/sprites/horton/horton_walk_00.png" id="2_0v62h"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="3_crd7h"]
-[ext_resource type="Texture2D" uid="uid://dy32tvmoeg2pu" path="res://assets/sprites/horton/horton_walk_01.png" id="3_ndjet"]
 [ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scripts/horton_level_sprites.gd" id="3_yp8v0"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="4_rrf0p"]
-[ext_resource type="Texture2D" uid="uid://bbuhfuwwiwbit" path="res://assets/sprites/horton/horton_walk_02.png" id="4_yp8v0"]
-[ext_resource type="Texture2D" uid="uid://ltplpq5pidg1" path="res://assets/sprites/horton/horton_walk_03.png" id="5_6ehc2"]
-[ext_resource type="Texture2D" uid="uid://ckuvloky12lhm" path="res://assets/sprites/horton/horton_walk_04.png" id="6_6708l"]
+[ext_resource type="Texture2D" uid="uid://dhacetpl7iix1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_00.png" id="6_qecdo"]
+[ext_resource type="Texture2D" uid="uid://bvgf5hn21ub5e" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_01.png" id="7_x6ors"]
+[ext_resource type="Texture2D" uid="uid://c311x34jfcxoh" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_02.png" id="8_r44yw"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="9_fgenl"]
+[ext_resource type="Texture2D" uid="uid://hku50o3polwa" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_03.png" id="9_xnft6"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="10_rrf0p"]
+[ext_resource type="Texture2D" uid="uid://bli7c6bjd8sde" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_04.png" id="10_yjdu3"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="11_7ucuf"]
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="11_dbhvm"]
+[ext_resource type="Texture2D" uid="uid://bt44ftt4twts5" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_05.png" id="11_s8x3g"]
+[ext_resource type="Texture2D" uid="uid://x0ido7jg3pia" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_06.png" id="12_jhn8p"]
 [ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="13_7ucuf"]
+[ext_resource type="Texture2D" uid="uid://ca40yi6hho4wc" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_07.png" id="13_c0xef"]
+[ext_resource type="Texture2D" uid="uid://3rofg3g1jc06" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_08.png" id="14_keug4"]
+[ext_resource type="Texture2D" uid="uid://bxt7vwlndlom3" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_09.png" id="15_puh50"]
+[ext_resource type="Texture2D" uid="uid://iokuuompu056" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_10.png" id="16_e5abh"]
 [ext_resource type="AudioStream" uid="uid://ca1xbh1nlolq4" path="res://assets/audio/music/Guardians of the Green Path.mp3" id="16_ye3p4"]
+[ext_resource type="Texture2D" uid="uid://cqnboxvl36i30" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_11.png" id="17_enxcu"]
+[ext_resource type="Texture2D" uid="uid://dy1qoc2anjbb5" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_12.png" id="18_lh3ob"]
+[ext_resource type="Texture2D" uid="uid://b8st26pwoqpgx" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_13.png" id="19_ejwsa"]
+[ext_resource type="Texture2D" uid="uid://pmahmo72g0ky" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_14.png" id="20_lhp8s"]
+[ext_resource type="Texture2D" uid="uid://dqt8udqsm8v36" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_15.png" id="21_dv076"]
+[ext_resource type="Texture2D" uid="uid://wq5e6hwpescq" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_16.png" id="22_mf0ft"]
+[ext_resource type="Texture2D" uid="uid://scv7ub34hwa3" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_17.png" id="23_s28b7"]
+[ext_resource type="Texture2D" uid="uid://dpa0hpek6m6kb" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_18.png" id="24_fh0n6"]
+[ext_resource type="Texture2D" uid="uid://bqx3wgyc3gcb" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_19.png" id="25_craed"]
+[ext_resource type="Texture2D" uid="uid://d0qlxguiui4a1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_20.png" id="26_dbwbb"]
+[ext_resource type="Texture2D" uid="uid://cvlkyrap286vk" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_21.png" id="27_ixni6"]
+[ext_resource type="Texture2D" uid="uid://ch0ifcqnnftgv" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_22.png" id="28_ei668"]
+[ext_resource type="Texture2D" uid="uid://4uplbssiwk6x" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_23.png" id="29_ocec0"]
+[ext_resource type="Texture2D" uid="uid://d14y42dn57ima" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_24.png" id="30_2di5s"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_0v62h")
+"texture": ExtResource("6_qecdo")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_ndjet")
+"texture": ExtResource("7_x6ors")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_yp8v0")
+"texture": ExtResource("8_r44yw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_6ehc2")
+"texture": ExtResource("9_xnft6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_6708l")
+"texture": ExtResource("10_yjdu3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_s8x3g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_jhn8p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_c0xef")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_keug4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_puh50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_e5abh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_enxcu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_lh3ob")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ejwsa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_lhp8s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_dv076")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_mf0ft")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_s28b7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_fh0n6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_craed")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_dbwbb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_ixni6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_ei668")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_ocec0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_2di5s")
 }],
 "loop": true,
-"name": &"walk",
-"speed": 5.0
+"name": &"walk_noclover",
+"speed": 20.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rrf0p"]
-size = Vector2(302, 283)
+size = Vector2(300.00006, 241.33331)
 
 [node name="HortonLevel" type="Control"]
 layout_mode = 3
@@ -92,17 +172,19 @@ z_index = 0
 position = Vector2(919, 488)
 
 [node name="Horton" type="Area2D" parent="Node2D"]
-position = Vector2(-703, 474)
+position = Vector2(-691, 477.00003)
 scale = Vector2(1.5, 1.5)
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Horton"]
-scale = Vector2(0.23, 0.2)
+position = Vector2(13.266665, 0)
+scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_fgenl")
-animation = &"walk"
+animation = &"walk_noclover"
+frame_progress = 0.10795339
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Horton"]
-position = Vector2(27, 2)
+position = Vector2(23.333344, -4.666687)
 shape = SubResource("RectangleShape2D_rrf0p")
 
 [node name="Baron" parent="Node2D" instance=ExtResource("11_dbhvm")]

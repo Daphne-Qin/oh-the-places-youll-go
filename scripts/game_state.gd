@@ -22,6 +22,7 @@ var levels := {
 		"scene_path": "res://scenes/LoraxLevel.tscn",
 		"unlocked": true,  # First level always unlocked
 		"completed": false,
+		"map_sprite": preload("res://assets/sprites/levelselect/map2.png"),
 		"map_position": Vector2(38, 497),  # Position on the map
 		"icon": "res://assets/sprites/levelselect/icon_lorax.png"
 	},
@@ -30,6 +31,7 @@ var levels := {
 		"scene_path": "res://scenes/HortonLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Lorax
 		"completed": false,
+		"map_sprite": preload("res://assets/sprites/levelselect/map2.png"),
 		"map_position": Vector2(1050, 553),
 		"icon": "res://assets/sprites/levelselect/icon_horton.png"
 	},
@@ -38,7 +40,8 @@ var levels := {
 		"scene_path": "res://scenes/CatLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Horton
 		"completed": false,
-		"map_position": Vector2(550, 200),
+		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
+		"map_position": Vector2(200, 300),
 		"icon": ""
 	}
 }

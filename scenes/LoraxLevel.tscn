@@ -1,35 +1,55 @@
-[gd_scene load_steps=35 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=55 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Texture2D" uid="uid://bglljlu8hv2tk" path="res://assets/background/lorax_forest.png" id="2_6fwp1"]
 [ext_resource type="Script" uid="uid://bvc1qpe4kn53y" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="3_tj5gh"]
-[ext_resource type="Texture2D" uid="uid://2asrbwr8jur5" path="res://assets/sprites/lorax/angry_walk_01.png" id="5_3huvt"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="5_vji0t"]
-[ext_resource type="Texture2D" uid="uid://lyi2dao2us7p" path="res://assets/sprites/lorax/angry_walk_02.png" id="6_exxpo"]
-[ext_resource type="Texture2D" uid="uid://mvsux3gu65dw" path="res://assets/sprites/lorax/angry_walk_03.png" id="7_qgl46"]
-[ext_resource type="Texture2D" uid="uid://chxaxwdesghk3" path="res://assets/sprites/lorax/angry_walk_04.png" id="8_v5acc"]
-[ext_resource type="Texture2D" uid="uid://bhugykh2eskuo" path="res://assets/sprites/lorax/angry_walk_05.png" id="9_0wcv0"]
-[ext_resource type="Texture2D" uid="uid://d1eywb7pdhdq5" path="res://assets/sprites/lorax/angry_walk_06.png" id="10_tuvtb"]
-[ext_resource type="Texture2D" uid="uid://vtuylc63abyr" path="res://assets/sprites/lorax/angry_walk_07.png" id="11_vji0t"]
-[ext_resource type="Texture2D" uid="uid://c81xqo3khfa5i" path="res://assets/sprites/lorax/angry_walk_08.png" id="12_yr5o8"]
-[ext_resource type="Texture2D" uid="uid://v4lnjwv3mgei" path="res://assets/sprites/lorax/angry_walk_00.png" id="13_1e531"]
-[ext_resource type="Texture2D" uid="uid://bh8dcrk5emmf1" path="res://assets/sprites/lorax/angry_walk_09.png" id="13_d2n4m"]
-[ext_resource type="Texture2D" uid="uid://bpdeq8lutdnf4" path="res://assets/sprites/lorax/angry_walk_10.png" id="14_t4q7k"]
-[ext_resource type="Texture2D" uid="uid://dwkhrimen8nre" path="res://assets/sprites/lorax/angry_walk_11.png" id="15_wbnep"]
-[ext_resource type="Texture2D" uid="uid://5lfy2fuvlnvh" path="res://assets/sprites/lorax/angry_walk_12.png" id="16_6fwp1"]
+[ext_resource type="Script" uid="uid://8b7lhtmrxae6" path="res://scripts/lorax.gd" id="7_j12i1"]
+[ext_resource type="Texture2D" uid="uid://bnxicbgbvs3n8" path="res://assets/sprites/lorax/idle/lorax_idle_00.png" id="7_w7bs0"]
+[ext_resource type="Texture2D" uid="uid://dxk53cakq6yr6" path="res://assets/sprites/lorax/idle/lorax_idle_01.png" id="8_j12i1"]
+[ext_resource type="Texture2D" uid="uid://cjh2du153b1eu" path="res://assets/sprites/lorax/idle/lorax_idle_02.png" id="9_u47m5"]
+[ext_resource type="Texture2D" uid="uid://bdyhrgpfguehx" path="res://assets/sprites/lorax/idle/lorax_idle_03.png" id="10_6voj2"]
+[ext_resource type="Texture2D" uid="uid://c3bkqthw5ws2c" path="res://assets/sprites/lorax/idle/lorax_idle_04.png" id="11_80k7f"]
+[ext_resource type="Texture2D" uid="uid://cqv7h4r1deotp" path="res://assets/sprites/lorax/idle/lorax_idle_05.png" id="12_3xlgo"]
+[ext_resource type="Texture2D" uid="uid://dw6umja3f61xr" path="res://assets/sprites/lorax/idle/lorax_idle_06.png" id="13_rcnet"]
+[ext_resource type="Texture2D" uid="uid://dvjbxdrihkg1b" path="res://assets/sprites/lorax/idle/lorax_idle_07.png" id="14_g2iis"]
+[ext_resource type="Texture2D" uid="uid://b4ttnn6blg8jh" path="res://assets/sprites/lorax/idle/lorax_idle_08.png" id="15_1dr63"]
+[ext_resource type="Texture2D" uid="uid://b18uj4fcnx2u5" path="res://assets/sprites/lorax/idle/lorax_idle_09.png" id="16_bouuk"]
 [ext_resource type="Texture2D" uid="uid://dq11u53yka8oh" path="res://assets/sprites/caterpillar/caterpillar_01.png" id="17_3coij"]
-[ext_resource type="Texture2D" uid="uid://7bcvl36fu7ch" path="res://assets/sprites/lorax/angry_walk_13.png" id="17_uxwq6"]
-[ext_resource type="Texture2D" uid="uid://c05frhiurb1ee" path="res://assets/sprites/lorax/angry_walk_14.png" id="18_1c5k7"]
-[ext_resource type="Texture2D" uid="uid://balmbrilmvrn5" path="res://assets/sprites/lorax/angry_walk_15.png" id="19_c1pjf"]
-[ext_resource type="Texture2D" uid="uid://chnuh3j6udqxo" path="res://assets/sprites/lorax/angry_walk_16.png" id="20_jbbts"]
-[ext_resource type="Texture2D" uid="uid://bfa75ghvgksrd" path="res://assets/sprites/lorax/angry_walk_17.png" id="21_otipn"]
+[ext_resource type="Texture2D" uid="uid://c6s83piy2vufo" path="res://assets/sprites/lorax/idle/lorax_idle_10.png" id="17_govyc"]
+[ext_resource type="Texture2D" uid="uid://b58jg5pfuqtxe" path="res://assets/sprites/lorax/idle/lorax_idle_11.png" id="18_um0sc"]
+[ext_resource type="Texture2D" uid="uid://chntk0rlujlyr" path="res://assets/sprites/lorax/idle/lorax_idle_12.png" id="19_k36gf"]
+[ext_resource type="Texture2D" uid="uid://dofp2d6kpd78o" path="res://assets/sprites/lorax/idle/lorax_idle_13.png" id="20_2r6kq"]
+[ext_resource type="Texture2D" uid="uid://esijnj4yhqg1" path="res://assets/sprites/lorax/idle/lorax_idle_14.png" id="21_30rjf"]
+[ext_resource type="Texture2D" uid="uid://dmfqc676huun4" path="res://assets/sprites/lorax/idle/lorax_idle_15.png" id="22_cbr2b"]
+[ext_resource type="Texture2D" uid="uid://ctfgfrqtubf7l" path="res://assets/sprites/lorax/idle/lorax_idle_16.png" id="23_ygse5"]
+[ext_resource type="Texture2D" uid="uid://bg1vayf2fqf5c" path="res://assets/sprites/lorax/idle/lorax_idle_17.png" id="24_xpq88"]
+[ext_resource type="Texture2D" uid="uid://d4m3tf6j2ihjl" path="res://assets/sprites/lorax/idle/lorax_idle_18.png" id="25_fhjw7"]
+[ext_resource type="Texture2D" uid="uid://chvuryruajyra" path="res://assets/sprites/lorax/idle/lorax_idle_19.png" id="26_8tmik"]
+[ext_resource type="Texture2D" uid="uid://n33qjwcvw4vu" path="res://assets/sprites/lorax/idle/lorax_idle_20.png" id="27_8crbx"]
+[ext_resource type="Texture2D" uid="uid://brhpaukdxdkdj" path="res://assets/sprites/lorax/idle/lorax_idle_21.png" id="28_u172y"]
 [ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="28_vji0t"]
+[ext_resource type="Texture2D" uid="uid://cya0j1db8jecl" path="res://assets/sprites/lorax/idle/lorax_idle_22.png" id="29_cufeb"]
 [ext_resource type="AudioStream" uid="uid://dj58n80154ccm" path="res://assets/audio/music/Forest of Almost-Friendship.mp3" id="29_d2n4m"]
+[ext_resource type="Texture2D" uid="uid://bqujxhtrptoxd" path="res://assets/sprites/lorax/idle/lorax_idle_23.png" id="30_jiq67"]
 [ext_resource type="AudioStream" uid="uid://345hqxa8f0dp" path="res://assets/audio/music/Forest at First Light.mp3" id="30_t4q7k"]
+[ext_resource type="Texture2D" uid="uid://d4d8m8wgl2253" path="res://assets/sprites/lorax/idle/lorax_idle_24.png" id="31_idvix"]
+[ext_resource type="Texture2D" uid="uid://8as30n6072i2" path="res://assets/sprites/lorax/idle/lorax_idle_25.png" id="32_5p1go"]
 [ext_resource type="Texture2D" uid="uid://bwbajyvutslne" path="res://assets/sprites/caterpillar/caterpillar_00.PNG" id="32_6fwp1"]
+[ext_resource type="Texture2D" uid="uid://domyn52og7vbm" path="res://assets/sprites/lorax/idle/lorax_idle_26.png" id="33_1yji7"]
+[ext_resource type="Texture2D" uid="uid://dm4bsdx82s4vr" path="res://assets/sprites/lorax/idle/lorax_idle_27.png" id="34_f5ktx"]
+[ext_resource type="Texture2D" uid="uid://dhxi1as4mjamg" path="res://assets/sprites/lorax/idle/lorax_idle_28.png" id="35_q74jp"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="36_c1pjf"]
+[ext_resource type="Texture2D" uid="uid://bok05707yaapa" path="res://assets/sprites/lorax/idle/lorax_idle_29.png" id="36_yrikb"]
+[ext_resource type="Texture2D" uid="uid://1lau7p2exnsq" path="res://assets/sprites/lorax/idle/lorax_idle_30.png" id="37_3cq77"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="37_jbbts"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="38_otipn"]
+[ext_resource type="Texture2D" uid="uid://ct0nquqi2jt24" path="res://assets/sprites/lorax/idle/lorax_idle_31.png" id="38_sc7j3"]
+[ext_resource type="Texture2D" uid="uid://b4ylu25svydxv" path="res://assets/sprites/lorax/idle/lorax_idle_32.png" id="39_y3tix"]
+[ext_resource type="Texture2D" uid="uid://cphdl3svbj3tj" path="res://assets/sprites/lorax/idle/lorax_idle_33.png" id="40_2q0tc"]
+[ext_resource type="Texture2D" uid="uid://c35k5yof0rwhk" path="res://assets/sprites/lorax/idle/lorax_idle_34.png" id="41_v2nxf"]
+[ext_resource type="Texture2D" uid="uid://bir87kjtkk5va" path="res://assets/sprites/lorax/idle/lorax_idle_35.png" id="42_s01x5"]
+[ext_resource type="Texture2D" uid="uid://cpt1bpt3wlgpm" path="res://assets/sprites/lorax/idle/lorax_idle_36.png" id="43_y6tyj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1c5k7"]
 animations = [{
@@ -52,66 +72,195 @@ size = Vector2(1402.3756, 402.84985)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("13_1e531")
+"texture": ExtResource("7_w7bs0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_3huvt")
+"texture": ExtResource("8_j12i1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_exxpo")
+"texture": ExtResource("9_u47m5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_qgl46")
+"texture": ExtResource("10_6voj2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_v5acc")
+"texture": ExtResource("11_80k7f")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_0wcv0")
+"texture": ExtResource("12_3xlgo")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_1c5k7")
+"texture": ExtResource("13_rcnet")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_tuvtb")
+"texture": ExtResource("14_g2iis")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_vji0t")
+"texture": ExtResource("15_1dr63")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_yr5o8")
+"texture": ExtResource("16_bouuk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_d2n4m")
+"texture": ExtResource("17_govyc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_t4q7k")
+"texture": ExtResource("18_um0sc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("15_wbnep")
+"texture": ExtResource("19_k36gf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_6fwp1")
+"texture": ExtResource("20_2r6kq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("17_uxwq6")
+"texture": ExtResource("21_30rjf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_c1pjf")
+"texture": ExtResource("22_cbr2b")
 }, {
 "duration": 1.0,
-"texture": ExtResource("20_jbbts")
+"texture": ExtResource("23_ygse5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("21_otipn")
+"texture": ExtResource("24_xpq88")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_fhjw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_8tmik")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_8crbx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_u172y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_cufeb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_jiq67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_idvix")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_5p1go")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_1yji7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_f5ktx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_q74jp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_yrikb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_3cq77")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_sc7j3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_y3tix")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_2q0tc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_v2nxf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_s01x5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y6tyj")
 }],
 "loop": true,
-"name": &"angry",
-"speed": 15.0
+"name": &"idle",
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(268.375, 269)
+size = Vector2(357.3333, 222.66663)
 
 [node name="LoraxLevel" type="Control"]
 layout_mode = 3
@@ -177,20 +326,21 @@ shape = SubResource("RectangleShape2D_otipn")
 [node name="Interactables" type="Node2D" parent="Node2D"]
 position = Vector2(122, -4)
 
-[node name="LoraxArea" type="Area2D" parent="Node2D/Interactables"]
+[node name="Lorax" type="Area2D" parent="Node2D/Interactables"]
 z_index = 10
-position = Vector2(269, 550)
-scale = Vector2(0.75, 0.75)
+position = Vector2(220, 539)
 monitorable = false
+script = ExtResource("7_j12i1")
 metadata/_edit_group_ = true
 
-[node name="Lorax" type="AnimatedSprite2D" parent="Node2D/Interactables/LoraxArea"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Interactables/Lorax"]
 scale = Vector2(0.22833045, 0.22833045)
 sprite_frames = SubResource("SpriteFrames_342io")
-animation = &"angry"
-frame_progress = 0.22377765
+animation = &"idle"
+frame_progress = 0.71635723
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Interactables/LoraxArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Interactables/Lorax"]
+position = Vector2(3.999878, 0.666687)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="Trees" type="Node2D" parent="Node2D"]
@@ -201,11 +351,11 @@ position = Vector2(312, 266)
 scale = Vector2(0.25, 0.25)
 
 [node name="TreeOrange2" parent="Node2D/Trees" instance=ExtResource("36_c1pjf")]
-position = Vector2(450.00003, 347)
+position = Vector2(450.00003, 325)
 scale = Vector2(0.3, 0.3)
 
 [node name="TreePurple2" parent="Node2D/Trees" instance=ExtResource("37_jbbts")]
-position = Vector2(381, 420)
+position = Vector2(380, 389)
 scale = Vector2(0.25, 0.25)
 
 [node name="TreeRed2" parent="Node2D/Trees" instance=ExtResource("38_otipn")]
