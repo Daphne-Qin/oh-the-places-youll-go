@@ -604,8 +604,9 @@ func _on_horton_response(message: String) -> void:
 		return
 
 	# Classic win / fail markers
-	if "[HORTON_WIN]" in message and not outcome_triggered:
-		outcome_triggered = true
+	# Note: outcome_triggered is set true before _trigger_jojo_finale() fires,
+	# so we gate on game_phase == "win" instead for the win path.
+	if "[HORTON_WIN]" in message and game_phase == "win":
 		_handle_horton_win()
 		return
 	if "[WHOS_LOST]" in message and not outcome_triggered:
@@ -821,7 +822,7 @@ func _trigger_baron_move() -> void:
 # Win — Horton wins → Baron retreats
 # ---------------------------------------------------------------------------
 func _handle_horton_win() -> void:
-	game_phase = "win"
+	game_phase = "win_baron_retreating"
 	_patience_timer.stop()
 	_interjection_timer.stop()
 	_update_horton_portrait_direct("happy")
@@ -871,6 +872,7 @@ func _handle_baron_wins() -> void:
 	_input_field.editable = false
 	_send_button.disabled = true
 	await get_tree().create_timer(3.0).timeout
+	GameState.baron_has_clover = true
 	baron_wins.emit()
 
 # ---------------------------------------------------------------------------
