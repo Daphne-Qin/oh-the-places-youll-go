@@ -10,6 +10,7 @@ extends Control
 # Signal emitted when movement state changes
 signal movement_state_changed(can_move: bool)
 var lorax_level: Node
+var baron_has_clover: bool = false  # Cross-level: set true when Baron grabs clover in Horton level
 
 # Level unlock system
 signal level_unlocked(level_id: String)
@@ -31,7 +32,7 @@ var levels := {
 		"scene_path": "res://scenes/HortonLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Lorax
 		"completed": false,
-		"map_sprite": preload("res://assets/sprites/levelselect/map2.png"),
+		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
 		"map_position": Vector2(1050, 553),
 		"icon": "res://assets/sprites/levelselect/icon_horton.png"
 	},

@@ -69,6 +69,9 @@ func _load_chat_interface() -> void:
 	if chat_instance.has_signal("cat_adventure_begins"):
 		chat_instance.cat_adventure_begins.connect(_on_cat_adventure_begins)
 		print("[CAT_LEVEL] Connected cat_adventure_begins signal")
+	if chat_instance.has_signal("cat_bored_out"):
+		chat_instance.cat_bored_out.connect(_on_cat_bored_out)
+		print("[CAT_LEVEL] Connected cat_bored_out signal")
 
 func _on_cat_adventure_begins() -> void:
 	GameState.set_can_move(true)
@@ -77,6 +80,14 @@ func _on_cat_adventure_begins() -> void:
 	$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
 	level_select.show()
 	print("[CAT_LEVEL] WIN — adventure begins!")
+
+func _on_cat_bored_out() -> void:
+	GameState.enable_movement()
+	if chat_instance:
+		chat_instance.hide()
+	$InteractionLabel.text = "The Cat has dismissed you. The storybook can take you somewhere else..."
+	level_select.show()
+	print("[CAT_LEVEL] FAIL — opening level select for retry.")
 
 # ---------------------------------------------------------------------------
 # Music crossfade
