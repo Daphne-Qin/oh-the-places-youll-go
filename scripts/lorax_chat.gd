@@ -491,6 +491,7 @@ func _detect_emotion(message: String) -> String:
 func _handle_forest_access() -> void:
 	"""Handle player being granted access to the forest."""
 	print("[LORAX_CHAT] Player granted access to Truffula Forest!")
+	GameState.player_has_seed = true
 	player_granted_access.emit()
 	# Complete the Lorax level - this unlocks Truffula Forest and Horton!
 	GameState.complete_level("lorax")
