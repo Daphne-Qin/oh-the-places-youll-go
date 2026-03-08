@@ -11,6 +11,7 @@ extends Control
 signal movement_state_changed(can_move: bool)
 var lorax_level: Node
 var baron_has_clover: bool = false  # Cross-level: set true when Baron grabs clover in Horton level
+var player_has_seed: bool = false   # Cross-level: set true when Lorax gives player the Truffula seed
 
 # Level unlock system
 signal level_unlocked(level_id: String)

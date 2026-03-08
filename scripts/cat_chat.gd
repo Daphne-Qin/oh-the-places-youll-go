@@ -266,6 +266,7 @@ func open_chat() -> void:
 	is_open = true
 	GameState.disable_movement()
 	baron_has_clover = GameState.baron_has_clover
+	player_has_seed = GameState.player_has_seed
 	_input_field.grab_focus()
 	if not intro_shown:
 		intro_shown = true
@@ -414,20 +415,9 @@ func _on_cat_response(raw: String) -> void:
 	# ----------------------------------------------------------------
 	# LOSE STATE 1: too boring
 	# ----------------------------------------------------------------
-	if flags.get("bored_out", false) or consecutive_boring >= 3:
+	if flags.get("bored_out", false) or consecutive_boring >= 5:
 		outcome_triggered = true
 		_lock_input()
-		await get_tree().create_timer(2.5).timeout
-		cat_bored_out.emit()
-		return
-
-	# ----------------------------------------------------------------
-	# LOSE STATE 2: chaos overflow
-	# ----------------------------------------------------------------
-	if flags.get("overflow", false) or happiness >= 100:
-		outcome_triggered = true
-		_lock_input()
-		_add_narrator_message("The Cat has reached MAXIMUM chaos. The hat has taken over. Everyone must leave immediately.")
 		await get_tree().create_timer(2.5).timeout
 		cat_bored_out.emit()
 		return
