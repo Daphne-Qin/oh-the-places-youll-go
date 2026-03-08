@@ -128,7 +128,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vkwyx"]
-size = Vector2(297, 1008)
+size = Vector2(950, 1008)
 
 [node name="Cat" type="Area2D"]
 scale = Vector2(0.4, 0.4)
@@ -139,5 +139,6 @@ sprite_frames = SubResource("SpriteFrames_yelc1")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(14.5, 75)
+position = Vector2(-7.5000367, 74.99997)
+scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("RectangleShape2D_vkwyx")
