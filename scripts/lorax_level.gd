@@ -5,7 +5,7 @@ extends Node2D
 
 @onready var lorax: Area2D = $Interactables/Lorax
 @onready var player: CharacterBody2D = $Player
-
+@onready var level_complete = false
 @onready var current_music: AudioStreamPlayer = null
 
 # Interaction prompt UI
@@ -82,7 +82,10 @@ func _on_lorax_area_exited(body: Node2D) -> void:
 	"""Called when player exits the Lorax interaction area."""
 	if body == player:
 		is_near_lorax = false
-		$InteractionLabel.text = "Walk up close to the Lorax!"
+		if not level_complete:
+			$InteractionLabel.text = "Walk up close to the Lorax!"
+		else:
+			$InteractionLabel.text = "Congrats! Enter the forest by clicking on the storybook above!"
 
 func _input(event: InputEvent) -> void:
 	"""Handle input events."""
@@ -102,6 +105,8 @@ func _input(event: InputEvent) -> void:
 		print("[LEVEL] Chat opened")
 		
 func _on_player_granted_access() -> void:
+	level_complete = true
+	GameState.set_can_move(true)
 	_switch_music($Music/Success)
 	chat_instance.hide()
 	$InteractionLabel.text = "Congrats! Enter the forest by clicking on the storybook above!"

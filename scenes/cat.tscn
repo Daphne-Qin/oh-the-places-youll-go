@@ -37,7 +37,7 @@ animations = [{
 "texture": ExtResource("1_o8rmy")
 }],
 "loop": true,
-"name": &"stand",
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -136,8 +136,7 @@ script = ExtResource("1_njgcu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_yelc1")
-animation = &"walk"
-frame_progress = 0.8160766
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(14.5, 75)

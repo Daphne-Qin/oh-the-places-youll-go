@@ -15,7 +15,7 @@ func _ready() -> void:
 func horton_enter() -> void:
 	$Horton.position.x = -400
 	$Horton/AnimatedSprite2D.flip_h = false
-	$Horton/AnimatedSprite2D.play("walk_noclover")
+	$Horton/AnimatedSprite2D.play("walk_clover")
 	var tween = create_tween()
 	tween.tween_property($Horton, "position:x", 300.0, 3.0).set_ease(Tween.EASE_OUT)
 	tween.finished.connect(func():
@@ -51,8 +51,8 @@ func baron_chase_horton() -> void:
 
 	# Horton flees
 	$Horton/AnimatedSprite2D.flip_h = true   # face left (fleeing)
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 24.0)
-	$Horton/AnimatedSprite2D.play("walk_noclover")
+	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 24.0)
+	$Horton/AnimatedSprite2D.play("walk_clover")
 	var horton_tween = create_tween()
 	horton_tween.tween_property($Horton, "position:x", flee_x, 2.2).set_ease(Tween.EASE_IN)
 
@@ -84,12 +84,12 @@ func baron_back_off() -> void:
 	# Horton returns to his resting spot
 	if is_instance_valid($Horton):
 		$Horton/AnimatedSprite2D.flip_h = false
-		$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 12.0)
-		$Horton/AnimatedSprite2D.play("walk_noclover")
+		$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
+		$Horton/AnimatedSprite2D.play("walk_clover")
 		var horton_tween = create_tween()
 		horton_tween.tween_property($Horton, "position:x", _horton_resting_x, 2.2).set_ease(Tween.EASE_OUT)
 		horton_tween.finished.connect(func():
-			$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 12.0)
+			$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
 			$Horton/AnimatedSprite2D.stop()
 		)
 
@@ -108,6 +108,7 @@ func baron_grab_clover() -> void:
 	# Horton slumps — stop walking, face forward
 	if is_instance_valid($Horton):
 		$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 12.0)
+		$Horton/AnimatedSprite2D.play("walk_noclover")
 		$Horton/AnimatedSprite2D.stop()
 		$Horton/AnimatedSprite2D.flip_h = false
 
@@ -141,10 +142,10 @@ func horton_reclaim_clover() -> void:
 func horton_react_happy() -> void:
 	if not is_instance_valid($Horton):
 		return
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 24.0)
-	$Horton/AnimatedSprite2D.play("walk_noclover")
+	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 24.0)
+	$Horton/AnimatedSprite2D.play("walk_clover")
 	await get_tree().create_timer(1.5).timeout
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 12.0)
+	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
 	$Horton/AnimatedSprite2D.stop()
 
 # ---------------------------------------------------------------------------

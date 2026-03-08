@@ -290,6 +290,7 @@ func _update_interaction_label() -> void:
 # Outcome handlers
 # ---------------------------------------------------------------------------
 func _on_horton_trusts_player() -> void:
+	GameState.set_can_move(true)
 	outcome_triggered = true
 	chase_timer.stop()
 	chase_resolve_timer.stop()
@@ -301,6 +302,7 @@ func _on_horton_trusts_player() -> void:
 	level_select.show()
 
 func _on_baron_wins() -> void:
+	GameState.set_can_move(true)
 	outcome_triggered = true
 	chase_timer.stop()
 	chase_resolve_timer.stop()
@@ -311,6 +313,7 @@ func _on_baron_wins() -> void:
 	interaction_label.text = "Baron Von Bitey has taken the clover for his soup... The Whos are in terrible danger. Try again."
 
 func _on_whos_lost() -> void:
+	GameState.set_can_move(true)
 	outcome_triggered = true
 	chase_timer.stop()
 	chase_resolve_timer.stop()

@@ -604,12 +604,14 @@ func _on_horton_response(message: String) -> void:
 		return
 
 	# Classic win / fail markers
-	if "[HORTON_WIN]" in message and not outcome_triggered:
-		outcome_triggered = true
+	if "[HORTON_WIN]" in message:
+		if not outcome_triggered:
+			outcome_triggered = true
 		_handle_horton_win()
 		return
-	if "[WHOS_LOST]" in message and not outcome_triggered:
-		outcome_triggered = true
+	if "[WHOS_LOST]" in message:
+		if not outcome_triggered:
+			outcome_triggered = true
 		_handle_whos_lost()
 		return
 

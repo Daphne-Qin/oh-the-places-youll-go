@@ -5,6 +5,8 @@ extends Control
 
 @onready var player: CharacterBody2D = $Node2D/Player
 @onready var cat: Area2D = $Node2D/Cat
+@onready var current_music: AudioStreamPlayer = null
+@onready var level_complete = false
 
 var is_near_cat: bool = false
 var chat_instance: Control = null
@@ -12,14 +14,13 @@ var level_select: Control = null
 
 func _ready() -> void:
 	GameState.enable_movement()
+	
+	cat.idle()
+	
+	_switch_music($Music/Default)
 
 	# Fix InteractionLabel — anchor to bottom center
 	var label = $InteractionLabel
-	label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	label.offset_top = -50
-	label.offset_bottom = 0
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", 18)
 	label.text = "Walk up to the Cat in the Hat!"
 
 	# Camera limits (single screen)
@@ -45,7 +46,10 @@ func _on_cat_area_entered(body: Node2D) -> void:
 func _on_cat_area_exited(body: Node2D) -> void:
 	if body == player:
 		is_near_cat = false
-		$InteractionLabel.text = "Walk up to the Cat in the Hat!"
+		if not level_complete:
+			$InteractionLabel.text = "Walk up to the Cat in the Hat!"
+		else:
+			$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
 
 func _input(event: InputEvent) -> void:
 	if not is_near_cat:
@@ -67,8 +71,27 @@ func _load_chat_interface() -> void:
 		print("[CAT_LEVEL] Connected cat_adventure_begins signal")
 
 func _on_cat_adventure_begins() -> void:
+	GameState.set_can_move(true)
 	GameState.complete_level("cat")
 	chat_instance.hide()
 	$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
 	level_select.show()
 	print("[CAT_LEVEL] WIN — adventure begins!")
+
+# ---------------------------------------------------------------------------
+# Music crossfade
+# ---------------------------------------------------------------------------
+func _switch_music(new_music: AudioStreamPlayer) -> void:
+	if new_music == current_music:
+		return
+	var fade_time = 1.0
+	var tween = create_tween()
+	if current_music and current_music.playing:
+		tween.tween_property(current_music, "volume_db", -40.0, fade_time)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+	if current_music and current_music != new_music:
+		current_music.stop()
+	current_music = new_music
+	current_music.volume_db = 0.0
+	current_music.play()
