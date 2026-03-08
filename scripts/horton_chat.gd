@@ -944,7 +944,7 @@ func _create_bubble(text: String, speaker: String, is_interjection: bool = false
 
 	var name_lbl = Label.new()
 	name_lbl.text = _get_speaker_label(speaker, is_interjection)
-	name_lbl.add_theme_font_size_override("font_size", 12)
+	name_lbl.add_theme_font_size_override("font_size", 16)
 	var name_color = _get_speaker_color(speaker).lightened(0.4)
 	name_color.a = 0.9
 	name_lbl.add_theme_color_override("font_color", name_color)
@@ -968,7 +968,7 @@ func _create_bubble(text: String, speaker: String, is_interjection: bool = false
 	var label = Label.new()
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.add_theme_font_size_override("font_size", 16 if not is_interjection else 14)
+	label.add_theme_font_size_override("font_size", 20 if not is_interjection else 18)
 	label.add_theme_color_override("font_color", Color(1, 1, 1, 0.92 if not is_interjection else 0.75))
 	label.add_theme_constant_override("line_spacing", 3)
 
