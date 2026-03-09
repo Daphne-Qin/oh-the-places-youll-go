@@ -28,13 +28,12 @@ func stand() -> void:
 # ---------------------------------------------------------------------------
 # Patrol — Baron paces back and forth between two x positions
 # ---------------------------------------------------------------------------
-func start_patrol(min_x: float = 650.0, max_x: float = 950.0, speed: float = 60.0) -> void:
+func start_patrol(min_x: float = 600, max_x: float = 980, speed: float = 60.0) -> void:
 	"""Begin Baron's circling patrol around the clover area."""
 	_patrol_min_x = min_x
 	_patrol_max_x = max_x
 	_patrol_speed = speed
 	_is_patrolling = true
-	await get_tree().create_timer(5).timeout
 	move()
 	_do_patrol_step()
 
@@ -92,24 +91,21 @@ func make_move_for_clover(clover_x: float = 310.0) -> void:
 # Defeat — Baron stumbles and retreats off-screen
 # ---------------------------------------------------------------------------
 func defeat_retreat() -> void:
-	"""Baron is knocked sideways and flees off the right edge of the screen."""
 	_is_patrolling = false
 	if _patrol_tween:
 		_patrol_tween.kill()
 
 	move()
-	sprite.flip_h = false  # face right (fleeing)
+	sprite.flip_h = false
 
-	# Stumble sideways + tumble down simultaneously, then run off screen
 	var stagger_x = position.x - 80.0
 	var stagger_y = position.y + 30.0
+
 	var stumble = create_tween()
 	stumble.set_parallel(true)
 	stumble.tween_property(self, "position:x", stagger_x, 0.3).set_ease(Tween.EASE_OUT)
 	stumble.tween_property(self, "position:y", stagger_y, 0.3)
-	stumble.finished.connect(func():
-		await get_tree().create_timer(0.2).timeout
-		var run = create_tween()
-		run.tween_property(self, "position:x", 1600.0, 1.4).set_ease(Tween.EASE_IN)
-		run.tween_callback(func(): visible = false)
-	)
+	stumble.set_parallel(false)  # back to sequential after the parallel block
+	stumble.tween_interval(0.2)  # replaces the await timer
+	stumble.tween_property(self, "position:x", 1600.0, 1.4).set_ease(Tween.EASE_IN)
+	stumble.tween_callback(func(): visible = false)

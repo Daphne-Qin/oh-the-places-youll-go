@@ -33,10 +33,10 @@ func baron_enter() -> void:
 	$Baron.sprite.flip_h = true  # face left on entry
 
 	var tween = create_tween()
-	tween.tween_property($Baron, "position:x", 850.0, 3.5).set_ease(Tween.EASE_OUT)
+	tween.tween_property($Baron, "position:x", 300, 8).set_ease(Tween.EASE_OUT)
 	tween.finished.connect(func():
 		$Baron.sprite.flip_h = false
-		$Baron.start_patrol(650.0, 1000.0, 55.0)
+		$Baron.start_patrol(600, 1000, 60)
 	)
 
 # ---------------------------------------------------------------------------
@@ -45,53 +45,37 @@ func baron_enter() -> void:
 func baron_chase_horton() -> void:
 	if not is_instance_valid($Horton) or not is_instance_valid($Baron):
 		return
-
+	
 	_horton_resting_x = $Horton.position.x
-	var flee_x = max(-900.0, $Horton.position.x - 350.0)
+	var _multiplier = -1 if _horton_resting_x > 0 else 1
+	var flee_x = 600*_multiplier
 
 	# Horton flees
-	$Horton/AnimatedSprite2D.flip_h = true   # face left (fleeing)
+	$Horton/AnimatedSprite2D.flip_h = _horton_resting_x > 0
 	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 24.0)
 	$Horton/AnimatedSprite2D.play("walk_clover")
 	var horton_tween = create_tween()
 	horton_tween.tween_property($Horton, "position:x", flee_x, 2.2).set_ease(Tween.EASE_IN)
 
-	# Baron charges
 	$Baron.stop_patrol()
-	$Baron.sprite.flip_h = true   # face left (toward Horton)
-	$Baron.sprite.speed_scale = 2.5
-	$Baron.move()
 	var baron_tween = create_tween()
-	baron_tween.tween_property($Baron, "position:x", flee_x + 120.0, 2.8).set_ease(Tween.EASE_IN)
+	baron_tween.tween_property($Baron, "position:x", flee_x, 2.8).set_ease(Tween.EASE_IN)
+	$Baron.sprite.speed_scale = 2.5
+	$Baron.sprite.flip_h = _horton_resting_x > 0
+	$Baron.move()
 
 # ---------------------------------------------------------------------------
 # CHASE RESOLVED: Player intervenes — Baron backs off, Horton returns
 # ---------------------------------------------------------------------------
 func baron_back_off() -> void:
-	if not is_instance_valid($Baron):
-		return
+	_horton_resting_x = $Horton.position.x
+	var _multiplier = 1 if _horton_resting_x > 0 else -1
 
-	# Baron retreats to patrol zone
-	$Baron.sprite.flip_h = false
 	$Baron.sprite.speed_scale = 1.0
-	var baron_tween = create_tween()
-	baron_tween.tween_property($Baron, "position:x", 800.0, 2.0).set_ease(Tween.EASE_OUT)
-	baron_tween.finished.connect(func():
-		$Baron.sprite.speed_scale = 1.0
-		$Baron.start_patrol(650.0, 1000.0, 55.0)
-	)
+	$Baron.start_patrol(600*_multiplier, 1000*_multiplier, 60)
 
-	# Horton returns to his resting spot
-	if is_instance_valid($Horton):
-		$Horton/AnimatedSprite2D.flip_h = false
-		$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
-		$Horton/AnimatedSprite2D.play("walk_clover")
-		var horton_tween = create_tween()
-		horton_tween.tween_property($Horton, "position:x", _horton_resting_x, 2.2).set_ease(Tween.EASE_OUT)
-		horton_tween.finished.connect(func():
-			$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
-			$Horton/AnimatedSprite2D.stop()
-		)
+	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
+	$Horton/AnimatedSprite2D.stop()
 
 # ---------------------------------------------------------------------------
 # CHASE FAILED: Baron grabs the clover

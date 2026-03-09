@@ -22,8 +22,10 @@ var clover_state: String = "horton"
 
 # Chase state
 var is_chase_active: bool = false
+var is_chase_buffer: bool = false
 var chase_timer: Timer
 var chase_resolve_timer: Timer
+var chase_buffer_timer: Timer
 const CHASE_BASE_INTERVAL := 28.0
 const CHASE_MIN_INTERVAL  := 9.0
 const CHASE_RESOLVE_TIME  := 8.0   # seconds player has to reach Horton
@@ -75,11 +77,23 @@ func _ready() -> void:
 	chase_resolve_timer.timeout.connect(_on_chase_resolve_timer_timeout)
 	add_child(chase_resolve_timer)
 
+	# Resolve timer — fires if player doesn't reach Horton in time
+	chase_buffer_timer = Timer.new()
+	chase_buffer_timer.wait_time = 2
+	chase_buffer_timer.one_shot = true
+	chase_buffer_timer.autostart = false
+	chase_buffer_timer.timeout.connect(_on_chase_buffer_timer_timeout)
+	add_child(chase_buffer_timer)
+
 	# Start entrances, then begin first chase countdown
 	$Node2D.horton_enter()
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(10).timeout
 	$Node2D.baron_enter()
-	await get_tree().create_timer(6.0).timeout   # give player time to settle
+	await get_tree().create_timer(5).timeout   # give player time to settle
+
+	# first time
+	chase_timer.wait_time = 2
+	chase_timer.start()
 	_start_next_chase_timer()
 
 # ---------------------------------------------------------------------------
@@ -152,7 +166,7 @@ func _process(_delta: float) -> void:
 
 	# During an active chase: did the player reach Horton in time?
 	if is_chase_active:
-		if player.global_position.distance_to(horton.global_position) < 200.0:
+		if horton.overlaps_body(player):
 			_resolve_chase(true)
 		return
 
@@ -209,16 +223,20 @@ func _on_chase_timer_timeout() -> void:
 	_start_chase()
 
 func _start_chase() -> void:
-	is_chase_active = true
-
 	# Force-close chat if open
 	if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("forced_close"):
 		chat_instance.forced_close("chase")
 
 	interaction_label.text = "The Baron is charging at Horton! RUN to help!"
+	is_chase_buffer = true
 	$Node2D.baron_chase_horton()
-	chase_resolve_timer.start()
+	chase_buffer_timer.start()
 	print("[LEVEL] Chase started!")
+
+func _on_chase_buffer_timer_timeout() -> void:
+	is_chase_buffer = false
+	is_chase_active = true
+	chase_resolve_timer.start()
 
 func _on_chase_resolve_timer_timeout() -> void:
 	if not is_chase_active:
@@ -292,6 +310,7 @@ func _update_interaction_label() -> void:
 # ---------------------------------------------------------------------------
 func _on_horton_trusts_player() -> void:
 	GameState.set_can_move(true)
+	_switch_music($Music/Success)
 	outcome_triggered = true
 	chase_timer.stop()
 	chase_resolve_timer.stop()
