@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=66 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
@@ -62,6 +62,7 @@
 [ext_resource type="Texture2D" uid="uid://d14y42dn57ima" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_24.png" id="30_2di5s"]
 [ext_resource type="Texture2D" uid="uid://bxl7jf1bcl0mr" path="res://assets/sprites/horton/walk_clover/walk_clover_24.png" id="30_oneg6"]
 [ext_resource type="Texture2D" uid="uid://bu0oabfu5ta1f" path="res://assets/sprites/horton/walk_clover/walk_clover_25.png" id="31_d5psp"]
+[ext_resource type="AudioStream" uid="uid://cxtgmfd0c7d8s" path="res://assets/audio/music/Crowning the Canopy.mp3" id="63_a7d31"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
 animations = [{
@@ -230,7 +231,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rrf0p"]
-size = Vector2(300.00006, 241.33331)
+size = Vector2(330.6667, 241.33331)
 
 [node name="HortonLevel" type="Control"]
 layout_mode = 3
@@ -270,7 +271,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 20
 theme_override_fonts/font = ExtResource("3_crd7h")
 theme_override_font_sizes/font_size = 32
-text = "Walk up to Horton!"
+text = "Walk up to Horton the Elephant!"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -295,7 +296,7 @@ animation = &"walk_clover"
 frame_progress = 0.4532232
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Horton"]
-position = Vector2(23.333344, -4.666687)
+position = Vector2(20.666687, -4.666992)
 shape = SubResource("RectangleShape2D_rrf0p")
 
 [node name="Baron" parent="Node2D" instance=ExtResource("11_dbhvm")]
@@ -311,7 +312,7 @@ scale = Vector2(0.35, 0.35)
 
 [node name="TreeRed" parent="Node2D/Trees" instance=ExtResource("10_rrf0p")]
 z_index = 1
-position = Vector2(693.00006, 397.99997)
+position = Vector2(689.00006, 397.99997)
 scale = Vector2(0.35, 0.35)
 
 [node name="TreePurple" parent="Node2D/Trees" instance=ExtResource("11_7ucuf")]
@@ -339,3 +340,6 @@ position = Vector2(1280, 380)
 
 [node name="Default" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource("16_ye3p4")
+
+[node name="Success" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("63_a7d31")

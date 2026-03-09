@@ -269,7 +269,8 @@ func _return_clover_to_horton() -> void:
 # Interaction label helper
 # ---------------------------------------------------------------------------
 func _update_interaction_label() -> void:
-	if is_chase_active:
+	print("update interaction label")
+	if is_chase_active or is_chase_buffer:
 		interaction_label.text = "RUN to Horton!"
 		return
 	match clover_state:
