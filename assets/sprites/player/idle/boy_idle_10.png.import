@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cn0f0d2x5v70d"
-path="res://.godot/imported/boy_walk_01.png-f50ec6061a55c5060ad348acfb26b317.ctex"
+uid="uid://dmkkj1t23qi23"
+path="res://.godot/imported/boy_idle_10.png-5af8eab26c3be4480d28181db4ec40dd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player/boy_walk_01.png"
-dest_files=["res://.godot/imported/boy_walk_01.png-f50ec6061a55c5060ad348acfb26b317.ctex"]
+source_file="res://assets/sprites/player/idle/boy_idle_10.png"
+dest_files=["res://.godot/imported/boy_idle_10.png-5af8eab26c3be4480d28181db4ec40dd.ctex"]
 
 [params]
 

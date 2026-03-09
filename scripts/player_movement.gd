@@ -19,6 +19,7 @@ func _ready() -> void:
 	# Connect to GameState signal
 	can_move = GameState.can_move  # initialize from global state
 	GameState.movement_state_changed.connect(_on_movement_state_changed)
+	$AnimatedSprite2D.play("idle")
 	
 func _on_movement_state_changed(value: bool) -> void:
 	"""Update local movement flag when GameState changes"""
@@ -39,7 +40,6 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.normalized()*speed
 		$AnimatedSprite2D.play("walk")
 	else:
-		$AnimatedSprite2D.stop()
-		$AnimatedSprite2D.animation = "stand"
+		$AnimatedSprite2D.play("idle")
 		
 	move_and_slide()
