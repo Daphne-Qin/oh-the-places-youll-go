@@ -9,6 +9,7 @@ extends Control
 @onready var close_button: Button = $ChatPanel/VBox/Header/CloseButton
 @onready var lorax_avatar: TextureRect = $ChatPanel/VBox/Header/LoraxAvatar
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
+var mic_button: Button = null
 
 @export var portrait_assets := {
 	"neutral": null,
@@ -66,6 +67,18 @@ func _ready() -> void:
 	send_button.pressed.connect(_on_send_pressed)
 	close_button.pressed.connect(_on_close_pressed)
 	input_field.text_submitted.connect(_on_input_submitted)
+
+	# Voice input button (web export only)
+	if VoiceInput.is_available():
+		mic_button = Button.new()
+		mic_button.text = "🎙"
+		mic_button.custom_minimum_size = Vector2(44, 0)
+		mic_button.add_theme_font_size_override("font_size", 18)
+		mic_button.tooltip_text = "Voice input"
+		mic_button.pressed.connect(_toggle_voice)
+		send_button.get_parent().add_child(mic_button)
+		VoiceInput.voice_result.connect(_on_voice_result)
+		VoiceInput.voice_error.connect(_on_voice_error)
 	
 	# Connect to API manager signals
 	if APIManager:
@@ -131,11 +144,38 @@ func open_chat(force_reset: bool = false) -> void:
 	# Disable player movement
 	GameState.disable_movement()
 
+func _toggle_voice() -> void:
+	if VoiceInput.is_listening:
+		VoiceInput.stop_listening()
+		mic_button.text = "🎙"
+		mic_button.remove_theme_color_override("font_color")
+	else:
+		VoiceInput.start_listening()
+		mic_button.text = "⏹"
+		mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+
+func _on_voice_result(transcript: String) -> void:
+	if not is_open or game_state.current_phase == "complete" or game_state.current_phase == "kicked_out":
+		return
+	mic_button.text = "🎙"
+	mic_button.remove_theme_color_override("font_color")
+	input_field.text = transcript
+	input_field.grab_focus()
+	await get_tree().create_timer(0.8).timeout
+	if input_field.text == transcript:
+		_send_message()
+
+func _on_voice_error(reason: String) -> void:
+	if mic_button:
+		mic_button.text = "🎙"
+		mic_button.remove_theme_color_override("font_color")
+
 func close_chat() -> void:
 	"""Close the chat interface."""
 	if not is_open:
 		return
-	
+	if VoiceInput.is_listening:
+		VoiceInput.stop_listening()
 	is_open = false
 	
 	# Animate out

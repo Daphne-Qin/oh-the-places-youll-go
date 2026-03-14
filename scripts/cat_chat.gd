@@ -42,6 +42,7 @@ var _scroll_container: ScrollContainer
 var _typing_indicator: Label
 var _input_field: LineEdit
 var _send_button: Button
+var _mic_button: Button
 var _cat_status: Label
 var _happiness_label: Label
 var _chaos_label: Label
@@ -258,6 +259,17 @@ func _build_ui() -> void:
 	_send_button.pressed.connect(_send_player_message)
 	input_row.add_child(_send_button)
 
+	if VoiceInput.is_available():
+		_mic_button = Button.new()
+		_mic_button.text = "🎙"
+		_mic_button.custom_minimum_size = Vector2(44, 0)
+		_mic_button.add_theme_font_size_override("font_size", 18)
+		_mic_button.tooltip_text = "Voice input"
+		_mic_button.pressed.connect(_toggle_voice)
+		input_row.add_child(_mic_button)
+		VoiceInput.voice_result.connect(_on_voice_result)
+		VoiceInput.voice_error.connect(_on_voice_error)
+
 # ---------------------------------------------------------------------------
 # open / close
 # ---------------------------------------------------------------------------
@@ -277,9 +289,39 @@ func open_chat() -> void:
 			_request_cat_response("[INTRO] The player arrives — but not the guest you expected. You were expecting Baron Von Bitey for your regular competitive potluck. This person is NOT the Baron. Greet them with theatrical suspicion and maximum flair.")
 
 func close_chat() -> void:
+	if VoiceInput.is_listening:
+		VoiceInput.stop_listening()
 	hide()
 	is_open = false
 	GameState.enable_movement()
+
+func _toggle_voice() -> void:
+	if VoiceInput.is_listening:
+		VoiceInput.stop_listening()
+		_mic_button.text = "🎙"
+		_mic_button.remove_theme_color_override("font_color")
+	else:
+		VoiceInput.start_listening()
+		_mic_button.text = "⏹"
+		_mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+
+func _on_voice_result(transcript: String) -> void:
+	if not is_open or outcome_triggered:
+		return
+	_mic_button.text = "🎙"
+	_mic_button.remove_theme_color_override("font_color")
+	_input_field.text = transcript
+	_input_field.grab_focus()
+	await get_tree().create_timer(0.8).timeout
+	if _input_field.text == transcript and not waiting_for_cat:
+		_send_player_message()
+
+func _on_voice_error(reason: String) -> void:
+	if _mic_button:
+		_mic_button.text = "🎙"
+		_mic_button.remove_theme_color_override("font_color")
+	if reason != "cancelled" and reason != "not_supported":
+		_add_narrator_message("(Voice input unavailable: %s)" % reason)
 
 # ---------------------------------------------------------------------------
 # Input

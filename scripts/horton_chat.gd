@@ -60,6 +60,7 @@ var _scroll_container: ScrollContainer
 var _typing_indicator: Label
 var _input_field: LineEdit
 var _send_button: Button
+var _mic_button: Button
 var _horton_portrait: TextureRect
 var _horton_status: Label
 var _baron_status: Label
@@ -394,6 +395,17 @@ func _build_ui() -> void:
 	_send_button.pressed.connect(_on_send_pressed)
 	input_panel.add_child(_send_button)
 
+	if VoiceInput.is_available():
+		_mic_button = Button.new()
+		_mic_button.text = "🎙"
+		_mic_button.custom_minimum_size = Vector2(44, 0)
+		_mic_button.add_theme_font_size_override("font_size", 18)
+		_mic_button.tooltip_text = "Voice input"
+		_mic_button.pressed.connect(_toggle_voice)
+		input_panel.add_child(_mic_button)
+		VoiceInput.voice_result.connect(_on_voice_result)
+		VoiceInput.voice_error.connect(_on_voice_error)
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
@@ -441,9 +453,37 @@ func open_chat(mode: String = "horton") -> void:
 		_patience_timer.start()
 		_interjection_timer.start()
 
+func _toggle_voice() -> void:
+	if VoiceInput.is_listening:
+		VoiceInput.stop_listening()
+		_mic_button.text = "🎙"
+		_mic_button.remove_theme_color_override("font_color")
+	else:
+		VoiceInput.start_listening()
+		_mic_button.text = "⏹"
+		_mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+
+func _on_voice_result(transcript: String) -> void:
+	if not is_open or outcome_triggered:
+		return
+	_mic_button.text = "🎙"
+	_mic_button.remove_theme_color_override("font_color")
+	_input_field.text = transcript
+	_input_field.grab_focus()
+	await get_tree().create_timer(0.8).timeout
+	if _input_field.text == transcript and not waiting_for_horton and not waiting_for_baron:
+		_on_send_pressed()
+
+func _on_voice_error(reason: String) -> void:
+	if _mic_button:
+		_mic_button.text = "🎙"
+		_mic_button.remove_theme_color_override("font_color")
+
 func close_chat() -> void:
 	if not is_open:
 		return
+	if VoiceInput.is_listening:
+		VoiceInput.stop_listening()
 	is_open = false
 	var tween = create_tween()
 	tween.set_parallel(true)

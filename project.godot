@@ -20,6 +20,7 @@ config/api/gemini_api_key="AIzaSyCwsby7zG31YB_LKjFxHdxcxAeDrpcvrSs"
 
 GameState="*res://scripts/game_state.gd"
 APIManager="*res://scripts/api_manager.gd"
+VoiceInput="*res://scripts/voice_input.gd"
 
 [display]
 
