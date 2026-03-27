@@ -670,7 +670,9 @@ func _on_horton_failed(error: String) -> void:
 	waiting_for_horton = false
 	pending_baron_after_horton = false
 	_hide_typing()
-	_add_message("*Horton is too anxious to speak right now* ...Give me a moment... (" + error + ")", "horton")
+	var msg = "*Horton is too anxious to speak right now* ...Give me a moment..." if "429" in error \
+		else "*Horton shuffles his feet nervously* ...I lost my train of thought. Could you say that again?"
+	_add_message(msg, "horton")
 
 # ---------------------------------------------------------------------------
 # Baron response handling
@@ -728,7 +730,9 @@ func _on_baron_failed(error: String) -> void:
 	waiting_for_baron = false
 	interjection_pending = false
 	_hide_typing()
-	_add_message("*adjusts monocle in silence* ...Baron Von Bitey has nothing to say. (" + error + ")", "baron")
+	var msg = "*adjusts monocle in silence* ...The Baron requires a moment to collect his thoughts." if "429" in error \
+		else "*adjusts monocle* ...Baron Von Bitey finds himself momentarily at a loss for words."
+	_add_message(msg, "baron")
 
 # ---------------------------------------------------------------------------
 # Story state

@@ -486,7 +486,10 @@ func _on_cat_failed(error: String) -> void:
 	_send_button.disabled = false
 	_typing_indicator.visible = false
 	print("[CAT_CHAT] API error: ", error)
-	_add_narrator_message("(The Cat appears momentarily distracted by something off-screen. Try again!)")
+	if "429" in error:
+		_add_narrator_message("(The Cat is pacing and mumbling to himself. Give him a moment, then try again.)")
+	else:
+		_add_narrator_message("(The Cat appears momentarily distracted by something off-screen. Try again!)")
 
 # ---------------------------------------------------------------------------
 # UI helpers

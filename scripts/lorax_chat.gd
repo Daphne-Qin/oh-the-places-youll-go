@@ -558,8 +558,10 @@ func on_lorax_message_failed(error_message: String) -> void:
 	"""Handle Lorax message failure."""
 	print("[LORAX_CHAT] Lorax message failed: ", error_message)
 	_hide_typing_indicator()
-	var error_text = "The trees rustle in anger! I'm left speechless. " + error_message
-	_add_message(error_text, false)
+	if "429" in error_message:
+		_add_message("*The Lorax strokes his mustache and gazes into the distance* ...A moment, please. The forest magic is taxed. Try again shortly.", false)
+	else:
+		_add_message("*The trees shudder* ...I seem to have lost my train of thought. Could you say that again?", false)
 
 func _find_messages_container() -> VBoxContainer:
 	"""Fallback method to find MessagesContainer by searching."""

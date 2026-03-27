@@ -22,7 +22,7 @@ func _ready() -> void:
 	add_child(_poll_timer)
 
 func is_available() -> bool:
-	if not JavaScriptBridge.is_available():
+	if not OS.has_feature("web"):
 		return false
 	var supported = JavaScriptBridge.eval(
 		"(typeof window.SpeechRecognition !== 'undefined' || typeof window.webkitSpeechRecognition !== 'undefined')"

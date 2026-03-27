@@ -606,7 +606,7 @@ func send_message_to_lorax(user_message: String, conversation_history: Array = [
 		lorax_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
 		return
 
-	var url = GEMINI_API_URL + api_key
+	var url = GEMINI_API_URL + api_key.strip_edges()
 
 	var state_context = "\n\n## CURRENT GAME_STATE:\n"
 	state_context += "- failures: %d\n" % game_state.get("failures", 0)
@@ -625,7 +625,7 @@ func send_message_to_lorax(user_message: String, conversation_history: Array = [
 
 	var request_body = JSON.stringify({
 		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"maxOutputTokens": 250, "temperature": 0.85}
+		"generationConfig": {"temperature": 0.85}
 	})
 	_execute_request("lorax", url, request_body)
 
@@ -662,7 +662,7 @@ func send_message_to_horton(user_message: String, conversation_history: Array = 
 
 	var request_body = JSON.stringify({
 		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"maxOutputTokens": 200, "temperature": 0.85}
+		"generationConfig": {"temperature": 0.85}
 	})
 	_execute_request("horton", url, request_body)
 
@@ -698,7 +698,7 @@ func send_message_to_baron(user_message: String, conversation_history: Array = [
 
 	var request_body = JSON.stringify({
 		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"maxOutputTokens": 200, "temperature": 0.95}
+		"generationConfig": {"temperature": 0.95}
 	})
 	_execute_request("baron", url, request_body)
 
@@ -733,7 +733,7 @@ func send_message_to_cat(user_message: String, conversation_history: Array = [],
 
 	var request_body = JSON.stringify({
 		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"maxOutputTokens": 350, "temperature": 0.95}
+		"generationConfig": {"temperature": 0.95}
 	})
 	_execute_request("cat", url, request_body)
 
