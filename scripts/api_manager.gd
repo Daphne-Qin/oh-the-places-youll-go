@@ -15,7 +15,7 @@ signal cat_message_failed(error_message: String)
 # Track which character we're currently processing
 var current_character: String = "lorax"
 
-const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
+const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
 var api_key: String = ""
 
 # Request queue — only one HTTPRequest can be in-flight at a time
