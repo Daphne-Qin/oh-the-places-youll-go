@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlulxqr8ypjyh"]
+
+[ext_resource type="Script" uid="uid://bfmk2wgp2qels" path="res://scripts/speech_to_text.gd" id="1_7cxg3"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_7cxg3"]
+
+[node name="SpeechToText" type="Node"]
+script = ExtResource("1_7cxg3")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamMicrophone_7cxg3")
+autoplay = true
+bus = &"Record"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

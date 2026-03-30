@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dkarciyqkys6f"]
+[gd_scene load_steps=6 format=3 uid="uid://dkarciyqkys6f"]
 
 [ext_resource type="Script" uid="uid://byrgbmpqr47wi" path="res://scripts/lorax_chat.gd" id="1_1"]
 [ext_resource type="Texture2D" uid="uid://cdwony7tg5i6i" path="res://assets/sprites/lorax/angry.png" id="2_h0vkm"]
+[ext_resource type="PackedScene" uid="uid://dlulxqr8ypjyh" path="res://scenes/speech_to_text.tscn" id="3_sbnvr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.101960786, 0.3019608, 0.101960786, 0.47843137)
@@ -137,3 +138,5 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_2")
 text = "Send"
+
+[node name="SpeechToText" parent="." instance=ExtResource("3_sbnvr")]

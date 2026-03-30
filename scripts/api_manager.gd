@@ -28,7 +28,7 @@ func _load_api_key() -> void:
 		while not file.eof_reached():
 			var line = file.get_line().strip_edges()
 			if line.begins_with("GEMINI_API_KEY="):
-				api_key = line.substr(15)
+				api_key = line.split("=")[1]
 				print("[APIManager] API key loaded from .env")
 				return
 		file.close()
