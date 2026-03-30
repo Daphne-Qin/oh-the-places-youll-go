@@ -10,7 +10,7 @@ extends Control
 @onready var lorax_avatar: TextureRect = $ChatPanel/VBox/Header/LoraxAvatar
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
 @onready var speech_to_text: Node = $SpeechToText
-var mic_button: Button = null
+@onready var mic_button: Button = $ChatPanel/VBox/InputPanel/MicButton
 
 @export var portrait_assets := {
 	"neutral": null,
@@ -71,7 +71,6 @@ func _ready() -> void:
 	speech_to_text.received.connect(_on_text_received)
 
 	# Voice input button
-	mic_button = Button.new()
 	mic_button.text = "🎙"
 	mic_button.custom_minimum_size = Vector2(44, 0)
 	mic_button.add_theme_font_size_override("font_size", 18)

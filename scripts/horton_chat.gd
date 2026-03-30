@@ -10,6 +10,9 @@ extends Control
 ## FAIL1: Baron's patience runs out → he takes the clover for Mischief Minestrone
 ## FAIL2: Player ignores messages too long → Whos are lost
 
+# speech to text
+@onready var speech_to_text: Node = $SpeechToText
+
 # ---------------------------------------------------------------------------
 # Signals
 # ---------------------------------------------------------------------------
@@ -395,17 +398,15 @@ func _build_ui() -> void:
 	_send_button.pressed.connect(_on_send_pressed)
 	input_panel.add_child(_send_button)
 
-	if VoiceInput.is_available():
-		_mic_button = Button.new()
-		_mic_button.text = "🎙"
-		_mic_button.custom_minimum_size = Vector2(44, 0)
-		_mic_button.add_theme_font_size_override("font_size", 18)
-		_mic_button.tooltip_text = "Voice input"
-		_mic_button.pressed.connect(_toggle_voice)
-		input_panel.add_child(_mic_button)
-		VoiceInput.voice_result.connect(_on_voice_result)
-		VoiceInput.voice_error.connect(_on_voice_error)
-
+	# speech to text stuff
+	speech_to_text.received.connect(_on_text_received)
+	_mic_button = Button.new()
+	_mic_button.text = "🎙"
+	_mic_button.custom_minimum_size = Vector2(44, 0)
+	_mic_button.add_theme_font_size_override("font_size", 18)
+	_mic_button.tooltip_text = "Voice Input"
+	_mic_button.pressed.connect(_toggle_voice)
+	_send_button.get_parent().add_child(_mic_button)
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
@@ -454,37 +455,30 @@ func open_chat(mode: String = "horton") -> void:
 		_interjection_timer.start()
 
 func _toggle_voice() -> void:
-	if VoiceInput.is_listening:
-		VoiceInput.stop_listening()
+	if speech_to_text.is_recording:
 		_mic_button.text = "🎙"
 		_mic_button.remove_theme_color_override("font_color")
+		speech_to_text.stop_recording()
+
 	else:
-		VoiceInput.start_listening()
 		_mic_button.text = "⏹"
 		_mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+		speech_to_text.start_recording()
 
-func _on_voice_result(transcript: String) -> void:
-	if not is_open or outcome_triggered:
-		return
-	_mic_button.text = "🎙"
-	_mic_button.remove_theme_color_override("font_color")
-	_input_field.text = transcript
-	_input_field.grab_focus()
-	await get_tree().create_timer(0.8).timeout
-	if _input_field.text == transcript and not waiting_for_horton and not waiting_for_baron:
-		_on_send_pressed()
-
-func _on_voice_error(reason: String) -> void:
-	if _mic_button:
-		_mic_button.text = "🎙"
-		_mic_button.remove_theme_color_override("font_color")
+func _on_text_received(text: String) -> void:
+	# add a space if there is already text
+	if _input_field.text != "":
+		_input_field.text += " "
+	# then add on the voice stuff
+	_input_field.text += text
 
 func close_chat() -> void:
 	if not is_open:
 		return
-	if VoiceInput.is_listening:
-		VoiceInput.stop_listening()
+	if speech_to_text.is_recording:
+		_toggle_voice()
 	is_open = false
+
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "modulate:a", 0.0, 0.2)
@@ -498,6 +492,8 @@ func forced_close(reason: String = "") -> void:
 	print("[HORTON_CHAT] Forced close: ", reason)
 	is_open = false
 	visible = false
+	if speech_to_text.is_recording:
+		_toggle_voice()
 	GameState.enable_movement()
 
 # ---------------------------------------------------------------------------

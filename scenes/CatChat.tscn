@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cat_chat_scene"]
+[gd_scene load_steps=3 format=3 uid="uid://dlyqgq4jc8uk8"]
 
-[ext_resource type="Script" uid="uid://cat_chat_script" path="res://scripts/cat_chat.gd" id="1_catcht"]
+[ext_resource type="Script" uid="uid://cr7s6vt5expw2" path="res://scripts/cat_chat.gd" id="1_catcht"]
+[ext_resource type="PackedScene" uid="uid://dlulxqr8ypjyh" path="res://scenes/speech_to_text.tscn" id="2_y4e1h"]
 
 [node name="CatChat" type="Control"]
 z_index = 100
@@ -11,3 +12,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_catcht")
+
+[node name="SpeechToText" parent="." instance=ExtResource("2_y4e1h")]

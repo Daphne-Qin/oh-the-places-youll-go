@@ -4,6 +4,9 @@ extends Control
 ## WIN:  consecutive_happy_turns >= 3 AND narrative_beat >= 5 → cat_adventure_begins
 ## FAIL: (1) boring/overflow, (2) baron arrives first, (3) seed cooked, (4) baron_arrived
 
+# speech to text
+@onready var speech_to_text: Node = $SpeechToText
+
 # ---------------------------------------------------------------------------
 # Signals
 # ---------------------------------------------------------------------------
@@ -259,16 +262,15 @@ func _build_ui() -> void:
 	_send_button.pressed.connect(_send_player_message)
 	input_row.add_child(_send_button)
 
-	if VoiceInput.is_available():
-		_mic_button = Button.new()
-		_mic_button.text = "🎙"
-		_mic_button.custom_minimum_size = Vector2(44, 0)
-		_mic_button.add_theme_font_size_override("font_size", 18)
-		_mic_button.tooltip_text = "Voice input"
-		_mic_button.pressed.connect(_toggle_voice)
-		input_row.add_child(_mic_button)
-		VoiceInput.voice_result.connect(_on_voice_result)
-		VoiceInput.voice_error.connect(_on_voice_error)
+	# speech to text stuff
+	speech_to_text.received.connect(_on_text_received)
+	_mic_button = Button.new()
+	_mic_button.text = "🎙"
+	_mic_button.custom_minimum_size = Vector2(44, 0)
+	_mic_button.add_theme_font_size_override("font_size", 18)
+	_mic_button.tooltip_text = "Voice Input"
+	_mic_button.pressed.connect(_toggle_voice)
+	_send_button.get_parent().add_child(_mic_button)
 
 # ---------------------------------------------------------------------------
 # open / close
@@ -288,40 +290,38 @@ func open_chat() -> void:
 		else:
 			_request_cat_response("[INTRO] The player arrives — but not the guest you expected. You were expecting Baron Von Bitey for your regular competitive potluck. This person is NOT the Baron. Greet them with theatrical suspicion and maximum flair.")
 
-func close_chat() -> void:
-	if VoiceInput.is_listening:
-		VoiceInput.stop_listening()
-	hide()
-	is_open = false
-	GameState.enable_movement()
-
 func _toggle_voice() -> void:
-	if VoiceInput.is_listening:
-		VoiceInput.stop_listening()
+	if speech_to_text.is_recording:
 		_mic_button.text = "🎙"
 		_mic_button.remove_theme_color_override("font_color")
+		speech_to_text.stop_recording()
+
 	else:
-		VoiceInput.start_listening()
 		_mic_button.text = "⏹"
 		_mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+		speech_to_text.start_recording()
 
-func _on_voice_result(transcript: String) -> void:
-	if not is_open or outcome_triggered:
+func _on_text_received(text: String) -> void:
+	# add a space if there is already text
+	if _input_field.text != "":
+		_input_field.text += " "
+	# then add on the voice stuff
+	_input_field.text += text
+
+func close_chat() -> void:
+	if not is_open:
 		return
-	_mic_button.text = "🎙"
-	_mic_button.remove_theme_color_override("font_color")
-	_input_field.text = transcript
-	_input_field.grab_focus()
-	await get_tree().create_timer(0.8).timeout
-	if _input_field.text == transcript and not waiting_for_cat:
-		_send_player_message()
+	if speech_to_text.is_recording:
+		_toggle_voice()
+	is_open = false
 
-func _on_voice_error(reason: String) -> void:
-	if _mic_button:
-		_mic_button.text = "🎙"
-		_mic_button.remove_theme_color_override("font_color")
-	if reason != "cancelled" and reason != "not_supported":
-		_add_narrator_message("(Voice input unavailable: %s)" % reason)
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate:a", 0.0, 0.2)
+	tween.tween_property(self, "scale", Vector2(0.92, 0.92), 0.2)
+	await tween.finished
+	visible = false
+	GameState.enable_movement()
 
 # ---------------------------------------------------------------------------
 # Input
