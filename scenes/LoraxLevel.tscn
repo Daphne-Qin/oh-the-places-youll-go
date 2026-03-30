@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://b0rvkijyq6fr0"]
+[gd_scene load_steps=51 format=3 uid="uid://b0rvkijyq6fr0"]
 
 [ext_resource type="Texture2D" uid="uid://bglljlu8hv2tk" path="res://assets/background/lorax_forest.png" id="2_6fwp1"]
 [ext_resource type="Script" uid="uid://bvc1qpe4kn53y" path="res://scripts/lorax_level.gd" id="2_lorax_level"]
@@ -15,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://dvjbxdrihkg1b" path="res://assets/sprites/lorax/idle/lorax_idle_07.png" id="14_g2iis"]
 [ext_resource type="Texture2D" uid="uid://b4ttnn6blg8jh" path="res://assets/sprites/lorax/idle/lorax_idle_08.png" id="15_1dr63"]
 [ext_resource type="Texture2D" uid="uid://b18uj4fcnx2u5" path="res://assets/sprites/lorax/idle/lorax_idle_09.png" id="16_bouuk"]
-[ext_resource type="Texture2D" uid="uid://dq11u53yka8oh" path="res://assets/sprites/caterpillar/caterpillar_01.png" id="17_3coij"]
 [ext_resource type="Texture2D" uid="uid://c6s83piy2vufo" path="res://assets/sprites/lorax/idle/lorax_idle_10.png" id="17_govyc"]
 [ext_resource type="Texture2D" uid="uid://b58jg5pfuqtxe" path="res://assets/sprites/lorax/idle/lorax_idle_11.png" id="18_um0sc"]
 [ext_resource type="Texture2D" uid="uid://chntk0rlujlyr" path="res://assets/sprites/lorax/idle/lorax_idle_12.png" id="19_k36gf"]
@@ -35,7 +34,6 @@
 [ext_resource type="AudioStream" uid="uid://345hqxa8f0dp" path="res://assets/audio/music/Forest at First Light.mp3" id="30_t4q7k"]
 [ext_resource type="Texture2D" uid="uid://d4d8m8wgl2253" path="res://assets/sprites/lorax/idle/lorax_idle_24.png" id="31_idvix"]
 [ext_resource type="Texture2D" uid="uid://8as30n6072i2" path="res://assets/sprites/lorax/idle/lorax_idle_25.png" id="32_5p1go"]
-[ext_resource type="Texture2D" uid="uid://bwbajyvutslne" path="res://assets/sprites/caterpillar/caterpillar_00.PNG" id="32_6fwp1"]
 [ext_resource type="Texture2D" uid="uid://domyn52og7vbm" path="res://assets/sprites/lorax/idle/lorax_idle_26.png" id="33_1yji7"]
 [ext_resource type="Texture2D" uid="uid://dm4bsdx82s4vr" path="res://assets/sprites/lorax/idle/lorax_idle_27.png" id="34_f5ktx"]
 [ext_resource type="Texture2D" uid="uid://dhxi1as4mjamg" path="res://assets/sprites/lorax/idle/lorax_idle_28.png" id="35_q74jp"]
@@ -50,23 +48,6 @@
 [ext_resource type="Texture2D" uid="uid://c35k5yof0rwhk" path="res://assets/sprites/lorax/idle/lorax_idle_34.png" id="41_v2nxf"]
 [ext_resource type="Texture2D" uid="uid://bir87kjtkk5va" path="res://assets/sprites/lorax/idle/lorax_idle_35.png" id="42_s01x5"]
 [ext_resource type="Texture2D" uid="uid://cpt1bpt3wlgpm" path="res://assets/sprites/lorax/idle/lorax_idle_36.png" id="43_y6tyj"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_1c5k7"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("32_6fwp1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_3coij")
-}],
-"loop": true,
-"name": &"default",
-"speed": 2.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_otipn"]
-size = Vector2(1402.3756, 402.84985)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_342io"]
 animations = [{
@@ -307,21 +288,6 @@ vertical_alignment = 1
 
 [node name="Player" parent="Node2D" instance=ExtResource("5_vji0t")]
 position = Vector2(1055, 505)
-
-[node name="Caterpillar" type="Area2D" parent="Node2D"]
-position = Vector2(1485, 491)
-scale = Vector2(0.263125, 0.263125)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Caterpillar"]
-scale = Vector2(0.99999994, 0.99999994)
-sprite_frames = SubResource("SpriteFrames_1c5k7")
-frame_progress = 0.5713741
-flip_h = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Caterpillar"]
-position = Vector2(9.50293, 140.61731)
-scale = Vector2(0.99999976, 0.99999976)
-shape = SubResource("RectangleShape2D_otipn")
 
 [node name="Interactables" type="Node2D" parent="Node2D"]
 position = Vector2(122, -4)
