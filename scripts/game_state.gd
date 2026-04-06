@@ -13,6 +13,12 @@ var lorax_level: Node
 var baron_has_clover: bool = false  # Cross-level: set true when Baron grabs clover in Horton level
 var player_has_seed: bool = false   # Cross-level: set true when Lorax gives player the Truffula seed
 
+# settings
+var background_volume = 100
+var tts_on = true
+var stt_on = false
+var font_size = 14 # dummy var right now
+
 # Level unlock system
 signal level_unlocked(level_id: String)
 signal level_completed(level_id: String)
@@ -55,6 +61,25 @@ func set_can_move(value: bool) -> void:
 	if can_move != value:
 		can_move = value
 		movement_state_changed.emit(can_move)
+		
+func set_background_volume(value: int) -> void:
+	'''
+	Accounts for TTS and STT being on
+	'''
+	background_volume = value
+	var effective_volume = 0.0 if stt_on else background_volume / 100.0
+	var idx = AudioServer.get_bus_index("Music")
+	AudioServer.set_bus_volume_linear(idx, effective_volume)
+
+func toggle_background_volume_dim(value: bool) -> void:
+	set_background_volume(min(20, background_volume))
+
+func toggle_tts(value: bool) -> void:
+	tts_on = value
+
+func toggle_stt(value: bool) -> void:
+	stt_on = value
+	set_background_volume(background_volume)
 
 func enable_movement() -> void:
 	"""Enable player movement."""

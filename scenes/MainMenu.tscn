@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://lresojblyp2w"]
+[gd_scene load_steps=6 format=3 uid="uid://lresojblyp2w"]
 
 [ext_resource type="Script" uid="uid://cnyxwqh425hn4" path="res://scripts/main_menu.gd" id="1_1"]
 [ext_resource type="Texture2D" uid="uid://b27mm8duxvln1" path="res://assets/background/otpywgART.png" id="2_0ykhv"]
 [ext_resource type="AudioStream" uid="uid://41mhvcly5nw" path="res://assets/audio/music/Curious Clockwork Kingdom.mp3" id="3_2wh52"]
+[ext_resource type="PackedScene" uid="uid://dul3jtv58gj1x" path="res://scenes/Settings.tscn" id="3_ow34m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.2, 0.6, 0.3, 1)
@@ -31,9 +32,21 @@ grow_vertical = 2
 texture = ExtResource("2_0ykhv")
 expand_mode = 2
 
-[node name="MenuLayer" type="CanvasLayer" parent="."]
+[node name="Settings" parent="." instance=ExtResource("3_ow34m")]
+layout_mode = 1
+
+[node name="MenuLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ButtonContainer" type="VBoxContainer" parent="MenuLayer"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -62,3 +75,4 @@ text = "Quit"
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_2wh52")
+bus = &"Music"

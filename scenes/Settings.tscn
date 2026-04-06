@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dul3jtv58gj1x"]
+[gd_scene load_steps=5 format=3 uid="uid://dul3jtv58gj1x"]
 
+[ext_resource type="Script" uid="uid://kevojham7vfv" path="res://scripts/settings.gd" id="1_46duy"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="1_rbmmp"]
+[ext_resource type="FontFile" uid="uid://mvpjblq8dq57" path="res://assets/fonts/Seuss-G4Ra.ttf" id="2_i47rn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbmmp"]
-content_margin_left = 50.0
-content_margin_top = 50.0
-content_margin_right = 50.0
+content_margin_left = 75.0
+content_margin_top = 60.0
+content_margin_right = 75.0
 content_margin_bottom = 50.0
 bg_color = Color(0.5891145, 0.7660162, 0.9160739, 1)
 border_width_left = 5
@@ -25,9 +27,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_46duy")
 
-[node name="BackgroundOverlay" type="ColorRect" parent="."]
-layout_mode = 1
+[node name="OpenButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 187.0
+offset_bottom = 69.0
+text = "Settings
+I will get icon later lol"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -35,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.5019608)
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ColorRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -50,7 +63,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_rbmmp")
 
-[node name="SettingsLabel" type="Label" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ColorRect/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="SettingsLabel" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -62,28 +79,98 @@ theme_override_font_sizes/font_size = 50
 text = "Settings"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 30
+columns = 3
 
-[node name="Volume" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="VolumeDescriptor" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Volume"]
-layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_i47rn")
+theme_override_font_sizes/font_size = 30
 text = "Background Music Volume"
 horizontal_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="PanelContainer/VBoxContainer/Volume"]
+[node name="VolumeLabel" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_i47rn")
+theme_override_font_sizes/font_size = 30
+text = "100"
+horizontal_alignment = 1
 
-[node name="ToggleTTS" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="VolumeSlider" type="HSlider" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+rounded = true
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/ToggleTTS"]
+[node name="TTSDescriptor" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_i47rn")
+theme_override_font_sizes/font_size = 30
 text = "Enable character voices?"
+horizontal_alignment = 1
 
-[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/ToggleTTS"]
+[node name="TTSLabel" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_i47rn")
+theme_override_font_sizes/font_size = 30
+text = "Yes"
+horizontal_alignment = 1
+
+[node name="TTSCheckbox" type="CheckBox" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+button_pressed = true
+
+[node name="FontDescriptor" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_i47rn")
+theme_override_font_sizes/font_size = 30
+text = "Font Size"
+horizontal_alignment = 1
+
+[node name="FontLabel" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_i47rn")
+theme_override_font_sizes/font_size = 30
+text = "14"
+horizontal_alignment = 1
+
+[node name="FontSlider" type="HSlider" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/ColorRect/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = " X "
+
+[connection signal="pressed" from="OpenButton" to="." method="_on_open_button_pressed"]
+[connection signal="value_changed" from="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="toggled" from="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/TTSCheckbox" to="." method="_on_tts_checkbox_toggled"]
+[connection signal="value_changed" from="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/FontSlider" to="." method="_on_font_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/PanelContainer/CloseButton" to="." method="_on_close_button_pressed"]

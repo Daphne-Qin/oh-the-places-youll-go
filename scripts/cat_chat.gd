@@ -292,11 +292,13 @@ func open_chat() -> void:
 
 func _toggle_voice() -> void:
 	if speech_to_text.is_recording:
+		GameState.toggle_stt(false)
 		_mic_button.text = "🎙"
 		_mic_button.remove_theme_color_override("font_color")
 		speech_to_text.stop_recording()
 
 	else:
+		GameState.toggle_stt(true)
 		_mic_button.text = "⏹"
 		_mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
 		speech_to_text.start_recording()

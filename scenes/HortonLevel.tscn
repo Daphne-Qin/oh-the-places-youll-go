@@ -1,9 +1,10 @@
-[gd_scene load_steps=66 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=67 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="3_crd7h"]
 [ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scripts/horton_level_sprites.gd" id="3_yp8v0"]
+[ext_resource type="PackedScene" uid="uid://dul3jtv58gj1x" path="res://scenes/Settings.tscn" id="4_icids"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="4_rrf0p"]
 [ext_resource type="Texture2D" uid="uid://bjsvl70anvhv4" path="res://assets/sprites/horton/walk_clover/walk_clover_00.png" id="6_0dju6"]
 [ext_resource type="Texture2D" uid="uid://dhacetpl7iix1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_00.png" id="6_qecdo"]
@@ -276,6 +277,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
+[node name="Settings" parent="CanvasLayer" instance=ExtResource("4_icids")]
+
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("3_yp8v0")
 
@@ -340,6 +343,8 @@ position = Vector2(1280, 380)
 
 [node name="Default" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource("16_ye3p4")
+bus = &"Music"
 
 [node name="Success" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource("63_a7d31")
+bus = &"Music"

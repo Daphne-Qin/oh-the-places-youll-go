@@ -90,6 +90,7 @@ func _play_menu_theme() -> void:
 		var music_path = "res://assets/audio/music/menu_theme.ogg"
 		if ResourceLoader.exists(music_path):
 			background_music.stream = load(music_path)
+			background_music.bus = "Music"
 			background_music.play()
 		else:
 			print("Menu theme not found. Add music to: assets/audio/music/menu_theme.ogg")

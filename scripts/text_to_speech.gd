@@ -100,6 +100,9 @@ func play_voice() -> void:
 	audio_player.play()
 
 func load_voice(character: String, text: String):
+	if not GameState.tts_on:
+		return
+
 	if not voice_models.has(character):
 		printerr("[TTS] Unknown character:", character)
 		return

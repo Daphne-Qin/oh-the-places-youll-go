@@ -106,6 +106,9 @@ func open_chat(force_reset: bool = false) -> void:
 		print("[LORAX_CHAT] Chat already open, returning")
 		return
 
+	# make music quieter
+	GameState.toggle_background_volume_dim(true)
+
 	# Reset if player was kicked out or forced reset
 	if force_reset or game_state.current_phase == "kicked_out":
 		reset_conversation()
@@ -146,11 +149,13 @@ func open_chat(force_reset: bool = false) -> void:
 
 func _toggle_voice() -> void:
 	if speech_to_text.is_recording:
+		GameState.toggle_stt(false)
 		mic_button.text = "🎙"
 		mic_button.remove_theme_color_override("font_color")
 		speech_to_text.stop_recording()
 
 	else:
+		GameState.toggle_stt(true)
 		mic_button.text = "⏹"
 		mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
 		speech_to_text.start_recording()
@@ -181,6 +186,9 @@ func close_chat() -> void:
 	
 	# Re-enable player movement
 	GameState.enable_movement()
+
+	# make music louder
+	GameState.toggle_background_volume_dim(false)
 
 func _add_welcome_message() -> void:
 	"""Add a welcome message from the Lorax."""
@@ -231,7 +239,7 @@ func _send_message() -> void:
 
 func _add_message(text: String, is_user: bool) -> void:
 	# if lorax, load the voice
-	if not is_user:
+	if GameState.tts_on and not is_user:
 		text_to_speech.load_voice('lorax', text)
 		_show_typing_indicator()
 		await text_to_speech.voice_loaded
