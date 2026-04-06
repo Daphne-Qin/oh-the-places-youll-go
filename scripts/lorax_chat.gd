@@ -139,7 +139,7 @@ func open_chat(force_reset: bool = false) -> void:
 	if chat_container.get_child_count() == 0:
 		print("[LORAX_CHAT] Chat is empty, adding welcome message...")
 		await get_tree().process_frame  # Wait one more frame
-		_add_welcome_message()
+		_add_welcome_message_api()
 
 	# Focus input field
 	input_field.grab_focus()
@@ -190,13 +190,16 @@ func close_chat() -> void:
 	# make music louder
 	GameState.toggle_background_volume_dim(false)
 
-func _add_welcome_message() -> void:
-	"""Add a welcome message from the Lorax."""
+func _add_welcome_message_api() -> void:
+	"""Trigger the Lorax's opening message via API so it includes the forest threat."""
 	print("[LORAX_CHAT] Adding welcome message...")
-	var welcome_text = "I am the Lorax! I speak for the trees! You wish to enter my forest, I see... But first you must answer to ME! Tell me, small one - WHY do you seek the Truffula trees? What brings you here, if you please?"
-	_add_message(welcome_text, false)  # false = from Lorax
-	# Add to history
-	conversation_history.append({"text": welcome_text, "is_user": false})
+	_show_typing_indicator()
+	# Send an intro cue — NOT added to conversation history as a player message.
+	# The Lorax's response comes back via on_lorax_message_received as normal.
+	APIManager.send_message_to_lorax(
+		"[INTRO] You are meeting this player for the first time at the edge of your forest. Greet them with theatrical suspicion — ask who they are and what they want. You are visibly on edge. Naturally mention something specific you've been noticing lately: the survey flags staked into the ground, OR the strange sounds at night, OR the brochure you found. Let your worry show without being melodramatic. Do not give a speech — ask them something.",
+		[], game_state
+	)
 
 func _on_send_pressed() -> void:
 	"""Handle send button press."""
