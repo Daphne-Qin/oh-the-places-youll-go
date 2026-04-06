@@ -25,19 +25,19 @@ signal baron_drops_clover     # Baron drops clover — player gets it, must retu
 # The 5 garbled Who messages (indexed by decode_stage 0-4)
 # ---------------------------------------------------------------------------
 const DECODE_MESSAGES: Array[String] = [
-	"\"SHAKING... BIG... NEARBY... HELP!\"",
-	"\"MAYOR... GONE... MISSING... SEARCHING...\"",
-	"\"FOUND... CRACK... HALL... SOMEONE... THERE!\"",
-	"\"MAYOR!... STUCK... CALLING... INSIDE...\"",
-	"\"EVERYONE... SHOUT... JOJO... TOGETHER... NOW!\""
+	"\"MACHINES... UNDERGROUND... NIGHT... GETTING CLOSER\"",
+	"\"BLUEPRINTS... FOUND ONE... SAYS GRAND MONOTONY... EVERYTHING IDENTICAL\"",
+	"\"BARON'S WORKERS... DON'T KNOW WE EXIST... THEY THINK LAND IS EMPTY\"",
+	"\"MAYOR WENT TO CONFRONT FOREMAN... HASN'T COME BACK\"",
+	"\"WE ARE ALL SHOUTING NOW... CAN YOU HEAR US... WE ARE HERE\""
 ]
 
 const DECODE_HINTS: Array[String] = [
-	"Decoded: Baron's footsteps = Whoville earthquakes",
-	"Decoded: The Mayor went missing!",
-	"Decoded: Found a crack in Town Hall",
-	"Decoded: Mayor trapped inside the crack!",
-	"Decoded: JoJo rallies everyone to shout!"
+	"Decoded: Machines are tunneling beneath Whoville at night",
+	"Decoded: The Grand Monotony — Baron's plan to build everywhere",
+	"Decoded: Baron erased the Whos from his surveys — he thinks the land is empty",
+	"Decoded: The Mayor went to confront the foreman and hasn't returned",
+	"Decoded: Every Who is shouting — they will be heard!"
 ]
 
 # ---------------------------------------------------------------------------
