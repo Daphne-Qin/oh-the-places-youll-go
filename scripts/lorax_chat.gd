@@ -66,7 +66,7 @@ func _ready() -> void:
 	
 	print("[LORAX_CHAT] All nodes found. Chat container: ", chat_container.name)
 	
-	# Connect signals
+	# connect signals
 	send_button.pressed.connect(_on_send_pressed)
 	close_button.pressed.connect(_on_close_pressed)
 	input_field.text_submitted.connect(_on_input_submitted)
