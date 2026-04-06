@@ -112,5 +112,8 @@ func load_voice(character: String, text: String):
 	attempts = 0
 	_process_request(_pending_character, _pending_text)
 
+func stop_voice():
+	audio_player.stop()
+
 func _on_timer_timeout() -> void:
 	_process_request(_pending_character, _pending_text)

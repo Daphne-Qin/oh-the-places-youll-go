@@ -140,6 +140,8 @@ func open_chat(force_reset: bool = false) -> void:
 		print("[LORAX_CHAT] Chat is empty, adding welcome message...")
 		await get_tree().process_frame  # Wait one more frame
 		_add_welcome_message()
+	else:
+		_enable_stt()
 
 	# Focus input field
 	input_field.grab_focus()
@@ -160,6 +162,13 @@ func _toggle_voice() -> void:
 		mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
 		speech_to_text.start_recording()
 
+func _enable_stt() -> void:
+	mic_button.disabled = false
+
+func _disable_stt() -> void:
+	mic_button.disabled = true
+	
+
 func _on_text_received(text: String) -> void:
 	# add a space if there is already text
 	if input_field.text != "":
@@ -173,6 +182,7 @@ func close_chat() -> void:
 		return
 	if speech_to_text.is_recording:
 		_toggle_voice()
+	text_to_speech.stop_voice()
 	is_open = false
 	
 	# Animate out
@@ -240,6 +250,7 @@ func _send_message() -> void:
 func _add_message(text: String, is_user: bool) -> void:
 	# if lorax, load the voice
 	if GameState.tts_on and not is_user:
+		_disable_stt()
 		text_to_speech.load_voice('lorax', text)
 		_show_typing_indicator()
 		await text_to_speech.voice_loaded
@@ -374,7 +385,8 @@ func _scroll_to_bottom() -> void:
 func on_lorax_message_received(message: String) -> void:
 	"""Handle Lorax message received from API."""
 	print("[LORAX_CHAT] Lorax message received: ", message)
-	_hide_typing_indicator()
+	if not GameState.tts_on:
+		_hide_typing_indicator()
 
 	# Filter out any leaked state/meta information (LLM prompt leakage protection)
 	var filtered_message = _filter_leaked_state(message)
@@ -619,3 +631,5 @@ func reset_conversation() -> void:
 
 func _on_text_to_speech_voice_loaded() -> void:
 	text_to_speech.play_voice()
+	await get_tree().create_timer(text_to_speech.audio_player.stream.get_length()).timeout
+	_enable_stt()
