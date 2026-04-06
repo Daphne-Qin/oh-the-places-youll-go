@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://0itfsmny8ewi"]
+
+[ext_resource type="Script" uid="uid://dcfjnycl4jij8" path="res://node.gd" id="1_6r00q"]
+[ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="2_ignic"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_6r00q")
+
+[node name="TextToSpeech" parent="." instance=ExtResource("2_ignic")]
+
+[connection signal="voice_loaded" from="TextToSpeech" to="." method="_on_text_to_speech_voice_loaded"]

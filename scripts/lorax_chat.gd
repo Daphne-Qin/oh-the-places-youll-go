@@ -9,8 +9,10 @@ extends Control
 @onready var close_button: Button = $ChatPanel/VBox/Header/CloseButton
 @onready var lorax_avatar: TextureRect = $ChatPanel/VBox/Header/LoraxAvatar
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
-@onready var speech_to_text: Node = $SpeechToText
 @onready var mic_button: Button = $ChatPanel/VBox/InputPanel/MicButton
+
+@onready var speech_to_text: Node = $SpeechToText
+@onready var text_to_speech: Node = $TextToSpeech
 
 @export var portrait_assets := {
 	"neutral": null,
@@ -228,6 +230,13 @@ func _send_message() -> void:
 	print("[LORAX_CHAT] Message sent to API manager")
 
 func _add_message(text: String, is_user: bool) -> void:
+	# if lorax, load the voice
+	if not is_user:
+		text_to_speech.load_voice('lorax', text)
+		_show_typing_indicator()
+		await text_to_speech.voice_loaded
+		_hide_typing_indicator()
+
 	"""Add a message bubble to the chat."""
 	print("[LORAX_CHAT] Adding message: ", text, " (user: ", is_user, ")")
 	
@@ -277,12 +286,12 @@ func _create_message_bubble(text: String, is_user: bool) -> Control:
 		style.corner_radius_top_left = 15
 		style.corner_radius_top_right = 15
 		style.corner_radius_bottom_left = 15
-		style.corner_radius_bottom_right = 5
+		style.corner_radius_bottom_right = 15
 	else:
 		style.bg_color = Color(0.9, 0.6, 0.2, 1)  # Orange for Lorax
 		style.corner_radius_top_left = 15
 		style.corner_radius_top_right = 15
-		style.corner_radius_bottom_left = 5
+		style.corner_radius_bottom_left = 15
 		style.corner_radius_bottom_right = 15
 	
 	style.border_width_left = 2
@@ -312,10 +321,7 @@ func _create_message_bubble(text: String, is_user: bool) -> Control:
 	
 	# Set size
 	bubble.custom_minimum_size = Vector2(200, 0)
-	if is_user:
-		bubble.size_flags_horizontal = Control.SIZE_SHRINK_END
-	else:
-		bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	
 	container.add_child(bubble)
 	
@@ -602,3 +608,6 @@ func reset_conversation() -> void:
 		send_button.disabled = false
 	# Reset portrait
 	_set_portrait("neutral")
+
+func _on_text_to_speech_voice_loaded() -> void:
+	text_to_speech.play_voice()

@@ -407,6 +407,7 @@ func _build_ui() -> void:
 	_mic_button.tooltip_text = "Voice Input"
 	_mic_button.pressed.connect(_toggle_voice)
 	_send_button.get_parent().add_child(_mic_button)
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------

@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://btscgh4enexa5"]
+
+[ext_resource type="Script" uid="uid://bcibugoeqic8j" path="res://scripts/text_to_speech.gd" id="1_yvkng"]
+
+[node name="TextToSpeech" type="Node"]
+script = ExtResource("1_yvkng")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

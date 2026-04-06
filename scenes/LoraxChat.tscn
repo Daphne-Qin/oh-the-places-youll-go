@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkarciyqkys6f"]
+[gd_scene load_steps=7 format=3 uid="uid://dkarciyqkys6f"]
 
 [ext_resource type="Script" uid="uid://byrgbmpqr47wi" path="res://scripts/lorax_chat.gd" id="1_1"]
 [ext_resource type="Texture2D" uid="uid://cdwony7tg5i6i" path="res://assets/sprites/lorax/angry.png" id="2_h0vkm"]
 [ext_resource type="PackedScene" uid="uid://dlulxqr8ypjyh" path="res://scenes/speech_to_text.tscn" id="3_sbnvr"]
+[ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="4_7jtgw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.101960786, 0.3019608, 0.101960786, 0.47843137)
@@ -145,3 +146,7 @@ theme_override_font_sizes/font_size = 18
 text = "🎙"
 
 [node name="SpeechToText" parent="." instance=ExtResource("3_sbnvr")]
+
+[node name="TextToSpeech" parent="." instance=ExtResource("4_7jtgw")]
+
+[connection signal="voice_loaded" from="TextToSpeech" to="." method="_on_text_to_speech_voice_loaded"]

@@ -4,8 +4,10 @@ var effect
 var recording
 var attempts = 0
 var MAX_ATTEMPTS = 3
-const save_path = "user://temp_wav.wav"
+const save_path = "user://temp_wav_stt.wav"
 var is_recording = false
+
+var _pending_data = null
 
 var api_key = ""
 
@@ -29,11 +31,7 @@ func _load_api_key() -> void:
 		file.close()
 	print("[STT] ERROR: No API key found! Create a .env file with HUGGINGFACE_API_KEY=your_key")
 
-
-func processRequest(data):
-	# reset attempts
-	attempts = 0
-	
+func _process_request(data):
 	# send to Whisper
 	print("Sending %d bytes to HuggingFace..." % data.size())
 	$HTTPRequest.request_raw(
@@ -84,14 +82,10 @@ func stop_recording():
 		printerr("FileAccess error: ", FileAccess.get_open_error())
 		return
 	
-	var data := file.get_buffer(file.get_length())
+	_pending_data = file.get_buffer(file.get_length())
 	file.close()
-	processRequest(data)
-
-func parse_file(fileLocation):
-	var file := FileAccess.open(fileLocation, FileAccess.READ)
-	var data := file.get_buffer(file.get_length())
-	processRequest(data)
+	attempts = 0
+	_process_request(_pending_data)
 
 func _on_timer_timeout() -> void:
-	stop_recording()
+	_process_request(_pending_data)
