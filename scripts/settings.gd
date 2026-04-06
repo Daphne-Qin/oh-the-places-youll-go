@@ -1,15 +1,15 @@
 extends Control
 
-@onready var tts_checkbox = $CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/TTSCheckbox
-@onready var tts_label = $CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/TTSLabel
+@onready var tts_checkbox = $SettingsMenu/ColorRect/PanelContainer/VBoxContainer/GridContainer/TTSCheckbox
+@onready var tts_label = $SettingsMenu/ColorRect/PanelContainer/VBoxContainer/GridContainer/TTSLabel
 
-@onready var volume_slider = $CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/VolumeSlider
-@onready var volume_label = $CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/VolumeLabel
+@onready var volume_slider = $SettingsMenu/ColorRect/PanelContainer/VBoxContainer/GridContainer/VolumeSlider
+@onready var volume_label = $SettingsMenu/ColorRect/PanelContainer/VBoxContainer/GridContainer/VolumeLabel
 
-@onready var font_slider = $CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/FontSlider
-@onready var font_label = $CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer/FontLabel
+@onready var font_slider = $SettingsMenu/ColorRect/PanelContainer/VBoxContainer/GridContainer/FontSlider
+@onready var font_label = $SettingsMenu/ColorRect/PanelContainer/VBoxContainer/GridContainer/FontLabel
 
-@onready var settings_menu = $CanvasLayer
+@onready var settings_menu = $SettingsMenu
 
 
 # Called when the node enters the scene tree for the first time.
@@ -39,6 +39,11 @@ func _on_font_slider_value_changed(value: int) -> void:
 	font_label.text = str(value)
 
 
+func _on_font_slider_drag_ended(value_changed: bool) -> void:
+	var value = int(font_slider.value)
+	GameState.set_font_size(value)
+
+
 func _on_close_button_pressed() -> void:
 	if settings_menu.visible:
 		settings_menu.hide()
@@ -47,3 +52,5 @@ func _on_close_button_pressed() -> void:
 func _on_open_button_pressed() -> void:
 	if not settings_menu.visible:
 		settings_menu.show()
+	else:
+		settings_menu.hide()

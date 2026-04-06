@@ -31,6 +31,7 @@ texture = ExtResource("1_m4pvi")
 expand_mode = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2000
 
 [node name="Settings" parent="CanvasLayer" instance=ExtResource("3_aqdbe")]
 

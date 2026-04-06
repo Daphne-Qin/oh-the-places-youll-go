@@ -71,6 +71,7 @@ func _ready() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	input_field.text_submitted.connect(_on_input_submitted)
 	speech_to_text.received.connect(_on_text_received)
+	GameState.font_size_changed.connect(_on_font_size_changed)
 
 	# Voice input button
 	mic_button.text = "🎙"
@@ -329,7 +330,7 @@ func _create_message_bubble(text: String, is_user: bool) -> Control:
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_color_override("font_color", Color.WHITE)
-	label.add_theme_font_size_override("font_size", 18)
+	label.add_theme_font_size_override("font_size", GameState.font_size)
 	label.add_theme_constant_override("line_spacing", 4)
 	
 	var margin = MarginContainer.new()
@@ -636,3 +637,16 @@ func _on_text_to_speech_voice_loaded() -> void:
 	text_to_speech.play_voice()
 	await get_tree().create_timer(text_to_speech.audio_player.stream.get_length()).timeout
 	_enable_stt()
+
+func _on_font_size_changed(font_size: int) -> void:
+	"""Update font size on all existing message bubbles."""
+	if not chat_container:
+		return
+	for container in chat_container.get_children():
+		for bubble in container.get_children():
+			if bubble is PanelContainer:
+				var margin = bubble.get_child(0)
+				if margin is MarginContainer:
+					var label = margin.get_child(0)
+					if label is Label:
+						label.add_theme_font_size_override("font_size", font_size)

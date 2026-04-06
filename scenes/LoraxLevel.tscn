@@ -262,9 +262,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_6fwp1")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Settings" parent="CanvasLayer" instance=ExtResource("2_w7bs0")]
+[node name="Settings" parent="." instance=ExtResource("2_w7bs0")]
+layout_mode = 1
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("2_lorax_level")

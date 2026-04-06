@@ -255,6 +255,7 @@ grow_horizontal = 0
 texture = ExtResource("1_piuc7")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2000
 
 [node name="InteractionLabel" type="Label" parent="CanvasLayer"]
 z_index = 10
