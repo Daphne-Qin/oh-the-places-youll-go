@@ -46,7 +46,7 @@ func _process_request(character: String, text: String):
 	})
 	
 	# send to Fish Audio
-	print("Sending %d characters to Fish Audio model %s..." % [text.length(), character])
+	print("[TTS] Sending %d characters to Fish Audio model %s..." % [text.length(), character])
 	var err = $HTTPRequest.request(
 		"https://api.fish.audio/v1/tts",
 		[
@@ -88,9 +88,13 @@ func _on_http_request_request_completed(result: int, response_code: int, headers
 	emit_signal("voice_loaded")
 	print("[TTS] Audio saved (%d bytes)..." % body.size())
 
-func play_voice() -> void:
+func play_voice(filepath: String = "") -> void:
 	var stream = AudioStreamMP3.new()
-	var file = FileAccess.open(save_path, FileAccess.READ)
+	var file = null
+	if filepath == "":
+		file = FileAccess.open(save_path, FileAccess.READ)
+	else:
+		file = FileAccess.open(filepath, FileAccess.READ)
 	if file == null:
 		printerr("[TTS] Could not read saved audio.")
 		return

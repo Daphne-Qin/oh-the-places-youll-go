@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dul3jtv58gj1x"]
+[gd_scene load_steps=6 format=3 uid="uid://dul3jtv58gj1x"]
 
 [ext_resource type="Script" uid="uid://kevojham7vfv" path="res://scripts/settings.gd" id="1_46duy"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="1_rbmmp"]
+[ext_resource type="Texture2D" uid="uid://d3nx8vfkrr5oh" path="res://assets/sprites/settings/icon_settings.png" id="2_1dggd"]
 [ext_resource type="FontFile" uid="uid://mvpjblq8dq57" path="res://assets/fonts/Seuss-G4Ra.ttf" id="2_i47rn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbmmp"]
@@ -33,10 +34,11 @@ script = ExtResource("1_46duy")
 layout_mode = 0
 offset_left = 15.0
 offset_top = 15.0
-offset_right = 187.0
-offset_bottom = 69.0
-text = "Settings
-I will get icon later lol"
+offset_right = 136.0
+offset_bottom = 136.0
+icon = ExtResource("2_1dggd")
+icon_alignment = 1
+expand_icon = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
@@ -145,7 +147,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 15
 theme_override_fonts/font = ExtResource("2_i47rn")
 theme_override_font_sizes/font_size = 30
-text = "Font Size"
+text = "Chat Font Size"
 horizontal_alignment = 1
 
 [node name="FontLabel" type="Label" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
@@ -161,6 +163,9 @@ horizontal_alignment = 1
 [node name="FontSlider" type="HSlider" parent="CanvasLayer/ColorRect/PanelContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+min_value = 10.0
+max_value = 30.0
+value = 14.0
 rounded = true
 
 [node name="CloseButton" type="Button" parent="CanvasLayer/ColorRect/PanelContainer"]

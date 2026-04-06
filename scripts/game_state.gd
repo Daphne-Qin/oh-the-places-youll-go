@@ -72,7 +72,10 @@ func set_background_volume(value: int) -> void:
 	AudioServer.set_bus_volume_linear(idx, effective_volume)
 
 func toggle_background_volume_dim(value: bool) -> void:
-	set_background_volume(min(20, background_volume))
+	if value:
+		set_background_volume(min(20, background_volume))
+	else:
+		set_background_volume(background_volume)
 
 func toggle_tts(value: bool) -> void:
 	tts_on = value
