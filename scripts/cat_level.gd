@@ -76,10 +76,21 @@ func _load_chat_interface() -> void:
 func _on_cat_adventure_begins() -> void:
 	GameState.set_can_move(true)
 	GameState.complete_level("cat")
-	chat_instance.hide()
-	$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
+	level_complete = true
+	if has_node("Music/Success"):
+		_switch_music($Music/Success)
+	if chat_instance:
+		await get_tree().create_timer(3.0).timeout
+		chat_instance.hide()
+	# Two endings depending on whether Baron had the clover
+	if GameState.baron_has_clover:
+		# PATH B — Cat rejected Baron's job application
+		$InteractionLabel.text = "The Cat tore up the job application. The Chest is open. The forest returns. Open the storybook above to continue..."
+	else:
+		# PATH A — Player made the deal
+		$InteractionLabel.text = "The Chest is open! The Truffula seed and the clover, connected to everything they belong to. The adventure begins! Open the storybook above to continue..."
 	level_select.show()
-	print("[CAT_LEVEL] WIN — adventure begins!")
+	print("[CAT_LEVEL] WIN — baron_path=%s" % str(GameState.baron_has_clover))
 
 func _on_cat_bored_out() -> void:
 	GameState.enable_movement()

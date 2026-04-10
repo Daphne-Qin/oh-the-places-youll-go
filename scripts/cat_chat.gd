@@ -1,8 +1,11 @@
 extends Control
 
-## Cat in the Hat Chat UI — 7-Beat Narrative System
-## WIN:  consecutive_happy_turns >= 3 AND narrative_beat >= 5 → cat_adventure_begins
-## FAIL: (1) boring/overflow, (2) baron arrives first, (3) seed cooked, (4) baron_arrived
+## Cat in the Hat Chat UI — Dual Path System
+## PATH A (baron_has_clover=false): 7-beat deal negotiation, deal_progress 0→3
+##   WIN: deal_progress >= 3 → cat_adventure_begins
+## PATH B (baron_has_clover=true): Cat ate Baron's soup, is compliant/boring
+##   WIN: cat_wakeup_stage >= 3 → cat_adventure_begins
+##   Methods: targeted chaos / catch Baron's lie / make Cat notice his own compliance
 
 # speech to text
 @onready var speech_to_text: Node = $SpeechToText
@@ -10,7 +13,7 @@ extends Control
 # ---------------------------------------------------------------------------
 # Signals
 # ---------------------------------------------------------------------------
-signal cat_adventure_begins   # WIN  — Cat recruits player for the adventure
+signal cat_adventure_begins   # WIN  — Cat recruits player / rejects Baron's job application
 signal cat_bored_out          # FAIL — all lose states collapse to this; cat_level handles UX
 
 # ---------------------------------------------------------------------------
@@ -18,12 +21,13 @@ signal cat_bored_out          # FAIL — all lose states collapse to this; cat_l
 # ---------------------------------------------------------------------------
 const CAT_BG     := Color(0.45, 0.06, 0.06, 1.0)
 const CAT_MSG    := Color(0.60, 0.10, 0.10, 1.0)
+const BARON_MSG  := Color(0.30, 0.08, 0.48, 1.0)
 const PLAYER_MSG := Color(0.22, 0.38, 0.60, 1.0)
 const PANEL_W    := 900.0
 const PANEL_H    := 600.0
 
 # ---------------------------------------------------------------------------
-# Beat names (indices 0–6)
+# Beat names (indices 0–6)  — Path A narrative arc
 # ---------------------------------------------------------------------------
 const BEAT_NAMES := [
 	"An unexpected guest...",
@@ -34,6 +38,12 @@ const BEAT_NAMES := [
 	"The chaos argument",
 	"The moment of truth"
 ]
+
+# ---------------------------------------------------------------------------
+# Deal / wakeup stage labels
+# ---------------------------------------------------------------------------
+const DEAL_STAGES   := ["Skeptical", "Intrigued", "Convinced", "Deal Closed!"]
+const WAKEUP_STAGES := ["...agreeable. Too agreeable.", "Flickering...", "Waking up...", "FULLY AWAKE!"]
 
 # ---------------------------------------------------------------------------
 # UI nodes (built in _build_ui)
@@ -47,8 +57,7 @@ var _input_field: LineEdit
 var _send_button: Button
 var _mic_button: Button
 var _cat_status: Label
-var _happiness_label: Label
-var _chaos_label: Label
+var _progress_label: Label
 var _beat_label: Label
 
 # ---------------------------------------------------------------------------
@@ -60,26 +69,27 @@ var intro_shown: bool = false
 var conversation_history: Array = []
 var waiting_for_cat: bool = false
 
-# Narrative progress
-var narrative_beat: int = 0                # 0–6 (story beat index)
-var consecutive_happy_turns: int = 0       # turns with happiness_delta > 0 after beat 5
-var player_turn_count: int = 0             # total player messages sent
+# Path routing
+var is_baron_path: bool = false
+
+# Path A — deal negotiation
+var deal_progress: int = 0             # 0→3 (Skeptical→Intrigued→Convinced→Deal Closed)
+var narrative_beat: int = 0            # 0–6
+
+# Path B — wakeup mechanic
+var cat_wakeup_stage: int = 0          # 0→3 (soup-compliant → fully awake)
+var baron_speak_counter: int = 0       # how many Cat turns have elapsed in Path B
+var last_player_message: String = ""
+
+# Shared tracking
+var player_turn_count: int = 0
+var consecutive_boring: int = 0
+var times_player_bored_you: int = 0
+var chaos_meter: int = 0
+var happiness: int = 50
 
 # Cross-level state (from GameState)
-var baron_has_clover: bool = false
-
-# Chaos / happiness meters
-var happiness: int = 50         # 0–100
-var chaos_meter: int = 0        # can go negative
-var times_player_bored_you: int = 0
-var consecutive_boring: int = 0
-
-# Item flags
-var player_has_clover: bool = false
 var player_has_seed: bool = false
-
-# Lose-state trackers
-var seed_cooking_temptation: int = 0      # increments when Cat considers cooking the seed
 
 # ---------------------------------------------------------------------------
 # _ready
@@ -90,6 +100,8 @@ func _ready() -> void:
 	if APIManager:
 		APIManager.cat_message_received.connect(_on_cat_response)
 		APIManager.cat_message_failed.connect(_on_cat_failed)
+		APIManager.baron_message_received.connect(_on_baron_response)
+		APIManager.baron_message_failed.connect(_on_baron_failed)
 	visible = false
 	print("[CAT_CHAT] Ready.")
 
@@ -172,25 +184,18 @@ func _build_ui() -> void:
 	_beat_label.add_theme_color_override("font_color", Color(0.7, 0.7, 1.0, 0.85))
 	title_col.add_child(_beat_label)
 
-	# Meters (happiness + chaos)
+	# Progress meter column (right side of header)
 	var meters_col = VBoxContainer.new()
 	meters_col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	meters_col.add_theme_constant_override("separation", 4)
 	header_hbox.add_child(meters_col)
 
-	_happiness_label = Label.new()
-	_happiness_label.text = "♥ Happiness: 50"
-	_happiness_label.add_theme_font_size_override("font_size", 13)
-	_happiness_label.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6, 1.0))
-	_happiness_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	meters_col.add_child(_happiness_label)
-
-	_chaos_label = Label.new()
-	_chaos_label.text = "⚡ Chaos: 0"
-	_chaos_label.add_theme_font_size_override("font_size", 13)
-	_chaos_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.3, 1.0))
-	_chaos_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	meters_col.add_child(_chaos_label)
+	_progress_label = Label.new()
+	_progress_label.text = "◆ Skeptical → ○ Intrigued → ○ Convinced → ○ Deal"
+	_progress_label.add_theme_font_size_override("font_size", 12)
+	_progress_label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.4, 1.0))
+	_progress_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	meters_col.add_child(_progress_label)
 
 	var close_btn = Button.new()
 	close_btn.text = "✕"
@@ -262,7 +267,7 @@ func _build_ui() -> void:
 	_send_button.pressed.connect(_send_player_message)
 	input_row.add_child(_send_button)
 
-	# speech to text stuff
+	# speech to text
 	speech_to_text.received.connect(_on_text_received)
 	_mic_button = Button.new()
 	_mic_button.text = "🎙"
@@ -279,16 +284,22 @@ func open_chat() -> void:
 	show()
 	is_open = true
 	GameState.disable_movement()
-	baron_has_clover = GameState.baron_has_clover
+	is_baron_path = GameState.baron_has_clover
 	player_has_seed = GameState.player_has_seed
 	_input_field.grab_focus()
+
 	if not intro_shown:
 		intro_shown = true
-		_add_narrator_message("The Cat in the Hat appears — hat first, naturally.")
-		if baron_has_clover:
-			_request_cat_response("[INTRO] The player arrives — but not the guest you expected. Also: you just found out someone named Baron Von Bitey is trying to make soup out of a clover that has a tiny civilization on it. Greet the player theatrically but let slip you're already aware of the Baron situation.")
+		_update_meters()
+
+		if is_baron_path:
+			# PATH B: Baron arrived first, Cat ate the soup, is compliant
+			_add_narrator_message("The Cat in the Hat answers the door — but something is wrong. He's very... polite.")
+			_request_cat_response("[INTRO] PATH B: You are in your soup-compliant state — calm, agreeable, unnervingly pleasant. The player has just arrived. The Baron is already inside, pitching his Grand Monotony project. Greet the player with excessive politeness. Mention that you're considering the Baron's business proposal. Something feels off about you.")
 		else:
-			_request_cat_response("[INTRO] The player arrives — but not the guest you expected. You were expecting Baron Von Bitey for your regular competitive potluck. This person is NOT the Baron. Greet them with theatrical suspicion and maximum flair.")
+			# PATH A: Player arrived before Baron
+			_add_narrator_message("The Cat in the Hat appears — hat first, naturally.")
+			_request_cat_response("[INTRO] PATH A: The player has arrived at your house. You were expecting Baron Von Bitey for your regular Catastrophic Cookoff — but this is NOT the Baron. Greet them with theatrical suspicion and maximum flair. You are yourself: chaotic, mercurial, bored of ordinary visitors.")
 
 func _toggle_voice() -> void:
 	if speech_to_text.is_recording:
@@ -296,7 +307,6 @@ func _toggle_voice() -> void:
 		_mic_button.text = "🎙"
 		_mic_button.remove_theme_color_override("font_color")
 		speech_to_text.stop_recording()
-
 	else:
 		GameState.toggle_stt(true)
 		_mic_button.text = "⏹"
@@ -304,10 +314,8 @@ func _toggle_voice() -> void:
 		speech_to_text.start_recording()
 
 func _on_text_received(text: String) -> void:
-	# add a space if there is already text
 	if _input_field.text != "":
 		_input_field.text += " "
-	# then add on the voice stuff
 	_input_field.text += text
 
 func close_chat() -> void:
@@ -337,12 +345,13 @@ func _send_player_message() -> void:
 		return
 	_input_field.text = ""
 	player_turn_count += 1
+	last_player_message = text
 	_add_message(text, "You", PLAYER_MSG)
 	conversation_history.append({"label": "Player", "text": text})
 	_request_cat_response(text)
 
 # ---------------------------------------------------------------------------
-# API request
+# Cat API request
 # ---------------------------------------------------------------------------
 func _request_cat_response(user_message: String) -> void:
 	waiting_for_cat = true
@@ -350,32 +359,41 @@ func _request_cat_response(user_message: String) -> void:
 	_send_button.disabled = true
 	_typing_indicator.visible = true
 
-	var baron_arriving_soon = baron_has_clover and player_turn_count >= 7
 	var game_state = {
-		"happiness":               happiness,
-		"chaos":                   chaos_meter,
-		"narrative_beat":          narrative_beat,
-		"consecutive_happy_turns": consecutive_happy_turns,
-		"player_turn_count":       player_turn_count,
-		"player_has_clover":       player_has_clover,
-		"player_has_seed":         player_has_seed,
-		"baron_has_clover":        baron_has_clover,
-		"baron_arriving_soon":     baron_arriving_soon,
-		"seed_cooking_temptation": seed_cooking_temptation,
-		"times_player_bored_you":  times_player_bored_you
+		"happiness":           happiness,
+		"chaos":               chaos_meter,
+		"narrative_beat":      narrative_beat,
+		"deal_progress":       deal_progress,
+		"cat_wakeup_stage":    cat_wakeup_stage,
+		"player_turn_count":   player_turn_count,
+		"player_has_seed":     player_has_seed,
+		"baron_has_clover":    is_baron_path,
+		"baron_arriving_soon": false,
+		"times_player_bored_you": times_player_bored_you
 	}
 	APIManager.send_message_to_cat(user_message, conversation_history, game_state)
 
 # ---------------------------------------------------------------------------
-# Response handler
+# Baron API request (Path B only)
+# ---------------------------------------------------------------------------
+func _request_baron_pitch() -> void:
+	var state = {
+		"at_cat_house":     true,
+		"cat_wakeup_stage": cat_wakeup_stage,
+		"player_turn_count": player_turn_count
+	}
+	# Pass last player message as context so Baron can react to it
+	var context = "[AT_CAT_HOUSE] The player just said: \"%s\". Respond as Baron Von Bitey — you are pitching your Grand Monotony plan to the Cat. React to what the player said if relevant." % last_player_message
+	APIManager.send_message_to_baron(context, conversation_history, state)
+
+# ---------------------------------------------------------------------------
+# Cat response handler
 # ---------------------------------------------------------------------------
 func _on_cat_response(raw: String) -> void:
 	waiting_for_cat = false
-	_input_field.editable = true
-	_send_button.disabled = false
 	_typing_indicator.visible = false
 
-	# --- Parse JSON ---
+	# Parse JSON
 	var clean_raw = _strip_json_markdown(raw)
 	var json = JSON.new()
 	var err = json.parse(clean_raw)
@@ -384,7 +402,8 @@ func _on_cat_response(raw: String) -> void:
 	var happiness_delta: int = 0
 	var chaos_delta: int = 0
 	var next_beat: int = narrative_beat
-	var seed_temptation_delta: int = 0
+	var new_deal_progress: int = deal_progress
+	var new_wakeup: int = cat_wakeup_stage
 	var flags: Dictionary = {}
 
 	if err == OK and json.data is Dictionary:
@@ -393,94 +412,105 @@ func _on_cat_response(raw: String) -> void:
 		happiness_delta = int(data.get("happiness_delta", 0))
 		chaos_delta = int(data.get("chaos_delta", 0))
 		next_beat = int(data.get("next_beat", narrative_beat))
-		seed_temptation_delta = int(data.get("seed_temptation_delta", 0))
+		new_deal_progress = int(data.get("deal_progress", deal_progress))
+		new_wakeup = int(data.get("cat_waking", cat_wakeup_stage))
 		flags = data.get("flags", {})
 	else:
-		# Fallback: treat raw as plain text
 		dialogue = raw
-		if "[CAT_ADVENTURE_BEGINS]" in raw:
-			dialogue = raw.replace("[CAT_ADVENTURE_BEGINS]", "").strip_edges()
+		if "[CAT_ADVENTURE_BEGINS]" in raw or "[CHEST_UNLOCKED]" in raw:
+			dialogue = raw.replace("[CAT_ADVENTURE_BEGINS]", "").replace("[CHEST_UNLOCKED]", "").strip_edges()
 			flags["chest_unlocked"] = true
 		happiness_delta = 5
 
-	# Display dialogue
 	_add_message(dialogue, "Cat", CAT_MSG)
 	conversation_history.append({"label": "Cat", "text": dialogue})
 
-	# Apply deltas
+	# Apply meter deltas
 	happiness = clamp(happiness + happiness_delta, 0, 100)
 	chaos_meter += chaos_delta
-	seed_cooking_temptation = clamp(seed_cooking_temptation + seed_temptation_delta, 0, 5)
 
-	# Advance narrative beat (only forward)
+	# Advance narrative beat (Path A — only forward)
 	if next_beat > narrative_beat and next_beat < BEAT_NAMES.size():
 		narrative_beat = next_beat
 
-	# Track boring / happy streaks
+	# Deal progress never goes backward (Path A)
+	deal_progress = max(deal_progress, new_deal_progress)
+
+	# Wakeup stage never goes backward (Path B)
+	cat_wakeup_stage = max(cat_wakeup_stage, new_wakeup)
+
+	# Track boring streaks
 	if happiness_delta < 0 and chaos_delta <= 0:
 		consecutive_boring += 1
 		times_player_bored_you = consecutive_boring
-		consecutive_happy_turns = 0
-	elif happiness_delta > 0:
-		consecutive_boring = 0
-		times_player_bored_you = 0
-		if narrative_beat >= 5:
-			consecutive_happy_turns += 1
 	else:
 		consecutive_boring = 0
 
 	_update_meters()
 
+	# Re-enable input
+	_input_field.editable = true
+	_send_button.disabled = false
+
 	if outcome_triggered:
 		return
 
 	# ----------------------------------------------------------------
-	# LOSE STATE 3: seed cooked (temptation maxed)
+	# WIN — Path A: deal closed
 	# ----------------------------------------------------------------
-	if flags.get("seed_cooked", false) or seed_cooking_temptation >= 4:
-		outcome_triggered = true
-		_lock_input()
-		_add_narrator_message("The Cat pops the Truffula seed into a small copper pot. It smells incredible. This is a disaster.")
-		await get_tree().create_timer(2.5).timeout
-		cat_bored_out.emit()
-		return
+	if not is_baron_path:
+		if flags.get("chest_unlocked", false) or flags.get("deal_closed", false) or deal_progress >= 3:
+			outcome_triggered = true
+			_lock_input()
+			_add_narrator_message("The Cat has struck a deal! The Chest opens — forest, clover, seed, chaos. Everything connects.")
+			await get_tree().create_timer(2.5).timeout
+			cat_adventure_begins.emit()
+			return
 
 	# ----------------------------------------------------------------
-	# LOSE STATE 4: Baron arrives with clover before player convinces Cat
+	# WIN — Path B: Cat fully awake, rejects Baron
 	# ----------------------------------------------------------------
-	if flags.get("baron_arrived", false) or (baron_has_clover and player_turn_count >= 10):
-		outcome_triggered = true
-		_lock_input()
-		_add_narrator_message("The doorbell rings. It rings with tremendous aristocratic authority. Baron Von Bitey has arrived — with the clover, and a very large soup pot.")
-		await get_tree().create_timer(2.5).timeout
-		cat_bored_out.emit()
-		return
+	if is_baron_path:
+		if flags.get("cat_fully_awake", false) or flags.get("baron_rejected", false) or cat_wakeup_stage >= 3:
+			outcome_triggered = true
+			_lock_input()
+			_add_narrator_message("Something shifts in the Cat's eyes. The hat tilts. The real Cat is back.")
+			await get_tree().create_timer(2.0).timeout
+			_add_narrator_message("He turns to the Baron. 'The job application,' he says, 'is rejected.'")
+			await get_tree().create_timer(2.5).timeout
+			cat_adventure_begins.emit()
+			return
 
 	# ----------------------------------------------------------------
-	# LOSE STATE 1: too boring
+	# LOSE: too boring
 	# ----------------------------------------------------------------
 	if flags.get("bored_out", false) or consecutive_boring >= 5:
 		outcome_triggered = true
 		_lock_input()
+		await get_tree().create_timer(2.0).timeout
+		cat_bored_out.emit()
+		return
+
+	# ----------------------------------------------------------------
+	# LOSE — Path B only: Baron signs the deal (Cat never woke up)
+	# ----------------------------------------------------------------
+	if is_baron_path and flags.get("baron_signed_deal", false):
+		outcome_triggered = true
+		_lock_input()
+		_add_narrator_message("The Baron produces a fountain pen. The Cat nods pleasantly. The contract is signed.")
 		await get_tree().create_timer(2.5).timeout
 		cat_bored_out.emit()
 		return
 
 	# ----------------------------------------------------------------
-	# WIN: chest unlocked OR maintained happiness for 3 turns after beat 5
+	# Path B: Baron weighs in after every 2 Cat turns (every turn when waking up)
 	# ----------------------------------------------------------------
-	if flags.get("chest_unlocked", false) or flags.get("true_chaos_path", false) \
-	   or (consecutive_happy_turns >= 3 and narrative_beat >= 5):
-		outcome_triggered = true
-		_lock_input()
-		_add_narrator_message("The Cat has judged you worthy of the greatest chaos! The adventure begins!")
-		await get_tree().create_timer(2.5).timeout
-		cat_adventure_begins.emit()
-		return
-
-	# Drawing mode easter egg
-	if flags.get("drawing_mode", false):
-		_add_narrator_message("(The Cat demands a drawing. Use your imagination — describe it in words!)")
+	if is_baron_path and not waiting_for_cat:
+		baron_speak_counter += 1
+		var threshold = 1 if cat_wakeup_stage >= 2 else 2
+		if baron_speak_counter >= threshold:
+			baron_speak_counter = 0
+			_request_baron_pitch()
 
 func _on_cat_failed(error: String) -> void:
 	waiting_for_cat = false
@@ -492,6 +522,36 @@ func _on_cat_failed(error: String) -> void:
 		_add_narrator_message("(The Cat is pacing and mumbling to himself. Give him a moment, then try again.)")
 	else:
 		_add_narrator_message("(The Cat appears momentarily distracted by something off-screen. Try again!)")
+
+# ---------------------------------------------------------------------------
+# Baron response handler (Path B)
+# ---------------------------------------------------------------------------
+func _on_baron_response(raw: String) -> void:
+	if not is_baron_path or outcome_triggered:
+		return
+
+	var clean_raw = _strip_json_markdown(raw)
+	var json = JSON.new()
+	var err = json.parse(clean_raw)
+
+	var dialogue: String
+	if err == OK and json.data is Dictionary:
+		var data: Dictionary = json.data
+		dialogue = data.get("dialogue", raw)
+		# Strip any Horton-specific markers that might bleed through
+		dialogue = dialogue.replace("[MESSAGE_DECODED]", "").replace("[BARON_DROPS_CLOVER]", "").strip_edges()
+	else:
+		dialogue = raw
+
+	if not dialogue.is_empty():
+		_add_message(dialogue, "Baron Von Bitey", BARON_MSG)
+		conversation_history.append({"label": "Baron", "text": dialogue})
+		await get_tree().process_frame
+		_scroll_container.scroll_vertical = int(_scroll_container.get_v_scroll_bar().max_value)
+
+func _on_baron_failed(_error: String) -> void:
+	# Baron silence is fine — just skip his turn
+	pass
 
 # ---------------------------------------------------------------------------
 # UI helpers
@@ -555,51 +615,79 @@ func _add_narrator_message(text: String) -> void:
 	_scroll_container.scroll_vertical = int(_scroll_container.get_v_scroll_bar().max_value)
 
 func _update_meters() -> void:
-	# Happiness
-	_happiness_label.text = "♥ Happiness: %d" % happiness
-	if happiness <= 30:
-		_happiness_label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3, 1.0))
-	elif happiness >= 80:
-		_happiness_label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.2, 1.0))
-	else:
-		_happiness_label.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6, 1.0))
+	if is_baron_path:
+		# PATH B — show Cat wakeup stage
+		var stage_idx = clamp(cat_wakeup_stage, 0, WAKEUP_STAGES.size() - 1)
+		_progress_label.text = "Cat: %s" % WAKEUP_STAGES[stage_idx]
+		match cat_wakeup_stage:
+			0:
+				_progress_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1.0))
+			1:
+				_progress_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3, 1.0))
+			2:
+				_progress_label.add_theme_color_override("font_color", Color(1.0, 0.6, 0.1, 1.0))
+			3:
+				_progress_label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3, 1.0))
 
-	# Chaos — grey when negative, green when high
-	_chaos_label.text = "⚡ Chaos: %d" % chaos_meter
-	if chaos_meter < 0:
-		_chaos_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 1.0))
-	elif chaos_meter >= 60:
-		_chaos_label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3, 1.0))
-	else:
-		_chaos_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.3, 1.0))
+		# Status line
+		match cat_wakeup_stage:
+			0:
+				_cat_status.text = "Suspiciously pleasant..."
+				_cat_status.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1.0))
+			1:
+				_cat_status.text = "Something stirs..."
+				_cat_status.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3, 1.0))
+			2:
+				_cat_status.text = "The hat is tilting!"
+				_cat_status.add_theme_color_override("font_color", Color(1.0, 0.55, 0.1, 1.0))
+			3:
+				_cat_status.text = "HE'S BACK!"
+				_cat_status.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3, 1.0))
 
-	# Beat progress
-	var beat_idx = clamp(narrative_beat, 0, BEAT_NAMES.size() - 1)
-	_beat_label.text = "Beat %d/6 — %s" % [narrative_beat, BEAT_NAMES[beat_idx]]
-	if narrative_beat >= 5:
-		_beat_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5, 0.9))
-	else:
-		_beat_label.add_theme_color_override("font_color", Color(0.7, 0.7, 1.0, 0.85))
+		# Beat label repurposed for wakeup hint
+		_beat_label.text = "Baron is pitching inside — wake the Cat up!"
+		_beat_label.add_theme_color_override("font_color", Color(0.8, 0.5, 1.0, 0.85))
 
-	# Win progress indicator (after beat 5)
-	if narrative_beat >= 5 and consecutive_happy_turns > 0:
-		_cat_status.text = "Keep going! (%d/3)" % consecutive_happy_turns
-		_cat_status.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
-	elif happiness <= 30:
-		_cat_status.text = "Bored. Dangerously."
-		_cat_status.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3, 1.0))
-	elif happiness <= 60:
-		_cat_status.text = "Testing you..."
-		_cat_status.add_theme_color_override("font_color", Color(1.0, 0.75, 0.75, 1.0))
-	elif happiness <= 80:
-		_cat_status.text = "Actually entertained!"
-		_cat_status.add_theme_color_override("font_color", Color(1.0, 0.9, 0.5, 1.0))
-	elif happiness < 100:
-		_cat_status.text = "CHAOTICALLY DELIGHTED"
-		_cat_status.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
 	else:
-		_cat_status.text = "OVERFLOW IMMINENT"
-		_cat_status.add_theme_color_override("font_color", Color(1.0, 0.4, 1.0, 1.0))
+		# PATH A — show deal progress bar
+		var stages = ["◆ Skeptical", "○ Intrigued", "○ Convinced", "○ Deal"]
+		for i in range(min(deal_progress + 1, stages.size())):
+			stages[i] = stages[i].replace("○", "◆")
+		_progress_label.text = " → ".join(stages)
+		match deal_progress:
+			0:
+				_progress_label.add_theme_color_override("font_color", Color(0.8, 0.6, 0.4, 1.0))
+			1:
+				_progress_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3, 1.0))
+			2:
+				_progress_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5, 1.0))
+			3:
+				_progress_label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3, 1.0))
+
+		# Status line
+		if deal_progress >= 2:
+			_cat_status.text = "Make the argument that matters."
+			_cat_status.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
+		elif happiness <= 30:
+			_cat_status.text = "Bored. Dangerously."
+			_cat_status.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3, 1.0))
+		elif happiness <= 60:
+			_cat_status.text = "Testing you..."
+			_cat_status.add_theme_color_override("font_color", Color(1.0, 0.75, 0.75, 1.0))
+		elif happiness <= 80:
+			_cat_status.text = "Actually entertained!"
+			_cat_status.add_theme_color_override("font_color", Color(1.0, 0.9, 0.5, 1.0))
+		else:
+			_cat_status.text = "CHAOTICALLY DELIGHTED"
+			_cat_status.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
+
+		# Beat label
+		var beat_idx = clamp(narrative_beat, 0, BEAT_NAMES.size() - 1)
+		_beat_label.text = "Beat %d/6 — %s" % [narrative_beat, BEAT_NAMES[beat_idx]]
+		if narrative_beat >= 5:
+			_beat_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5, 0.9))
+		else:
+			_beat_label.add_theme_color_override("font_color", Color(0.7, 0.7, 1.0, 0.85))
 
 func _strip_json_markdown(text: String) -> String:
 	var s = text.strip_edges()
