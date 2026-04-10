@@ -1,6 +1,7 @@
 extends Node
 
-## API Manager - Handles all Gemini API communication
+## API Manager - Multi-provider LLM communication (Gemini + OpenAI)
+## Switch providers by changing active_provider: "gemini" | "openai"
 ## This is an autoload singleton accessible as APIManager
 
 signal lorax_message_received(message: String)
@@ -12,10 +13,23 @@ signal baron_message_failed(error_message: String)
 signal cat_message_received(message: String)
 signal cat_message_failed(error_message: String)
 
-# Track which character we're currently processing
-var current_character: String = "lorax"
+# ---- Provider selection — flip this to switch ----
+var active_provider: String = "openai"   # "gemini" | "openai"
 
+# Track which character/provider are in-flight
+var current_character: String = "lorax"
+var current_provider: String = "openai"
+
+# Gemini
 const GEMINI_API_URL: String = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
+var gemini_api_key: String = ""
+
+# OpenAI
+const OPENAI_API_URL: String = "https://api.openai.com/v1/chat/completions"
+const OPENAI_MODEL: String = "gpt-4.1-mini-2025-04-14"
+var openai_api_key: String = ""
+
+# Legacy alias so existing code that reads api_key still works
 var api_key: String = ""
 
 # Request queue — only one HTTPRequest can be in-flight at a time
@@ -24,15 +38,54 @@ var is_requesting: bool = false
 
 func _load_api_key() -> void:
 	var file = FileAccess.open("res://.env", FileAccess.READ)
-	if file:
-		while not file.eof_reached():
-			var line = file.get_line().strip_edges()
-			if line.begins_with("GEMINI_API_KEY="):
-				api_key = line.split("=")[1]
-				print("[APIManager] API key loaded from .env")
-				return
-		file.close()
-	print("[APIManager] ERROR: No API key found! Create a .env file with GEMINI_API_KEY=your_key")
+	if not file:
+		print("[APIManager] ERROR: No .env file found!")
+		return
+	while not file.eof_reached():
+		var line = file.get_line().strip_edges()
+		if line.begins_with("GEMINI_API_KEY="):
+			gemini_api_key = line.substr("GEMINI_API_KEY=".length())
+			api_key = gemini_api_key   # legacy alias
+			print("[APIManager] Gemini API key loaded")
+		elif line.begins_with("OPENAI_API_KEY="):
+			openai_api_key = line.substr("OPENAI_API_KEY=".length())
+			print("[APIManager] OpenAI API key loaded")
+	file.close()
+	if gemini_api_key == "" and openai_api_key == "":
+		print("[APIManager] ERROR: No API keys found in .env")
+
+# ---------------------------------------------------------------------------
+# Provider helpers — build URL + body from the assembled prompt
+# ---------------------------------------------------------------------------
+func _make_request(system_and_history: String, user_message: String, character_suffix: String, temperature: float) -> Dictionary:
+	"""Returns {url, body, headers} for the active provider."""
+	if active_provider == "openai":
+		var headers = [
+			"Content-Type: application/json",
+			"Authorization: Bearer " + openai_api_key
+		]
+		var body = JSON.stringify({
+			"model": OPENAI_MODEL,
+			"messages": [
+				{"role": "system", "content": system_and_history},
+				{"role": "user", "content": user_message}
+			],
+			"temperature": temperature
+		})
+		return {"url": OPENAI_API_URL, "body": body, "headers": headers}
+	else:
+		var headers = ["Content-Type: application/json"]
+		var full_prompt = system_and_history + "\nPlayer: " + user_message + "\n\n" + character_suffix
+		var body = JSON.stringify({
+			"contents": [{"parts": [{"text": full_prompt}]}],
+			"generationConfig": {"temperature": temperature}
+		})
+		return {"url": GEMINI_API_URL + gemini_api_key.strip_edges(), "body": body, "headers": headers}
+
+func _active_key_missing() -> bool:
+	if active_provider == "openai":
+		return openai_api_key == ""
+	return gemini_api_key == ""
 
 # ---------------------------------------------------------------------------
 # LORAX SYSTEM PROMPT (unchanged)
@@ -656,18 +709,20 @@ func _ready() -> void:
 # Internal queue helpers
 # ---------------------------------------------------------------------------
 
-func _execute_request(character: String, url: String, body: String) -> void:
+func _execute_request(character: String, url: String, body: String, headers: Array = ["Content-Type: application/json"], provider: String = "") -> void:
 	"""Queue a request, or start it immediately if none is in-flight."""
+	var prov = provider if provider != "" else active_provider
 	if is_requesting:
-		request_queue.append({"character": character, "url": url, "body": body})
-		print("[APIManager] Queued request for: ", character, " (queue size: ", request_queue.size(), ")")
+		request_queue.append({"character": character, "url": url, "body": body, "headers": headers, "provider": prov})
+		print("[APIManager] Queued request for: ", character, " (", prov, ") queue size: ", request_queue.size())
 		return
-	_start_request(character, url, body)
+	_start_request(character, url, body, headers, prov)
 
-func _start_request(character: String, url: String, body: String) -> void:
+func _start_request(character: String, url: String, body: String, headers: Array = ["Content-Type: application/json"], provider: String = "") -> void:
 	is_requesting = true
 	current_character = character
-	var headers = ["Content-Type: application/json"]
+	current_provider = provider if provider != "" else active_provider
+	print("[APIManager] Sending (", current_provider, ") → ", character)
 	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, body)
 	if error != OK:
 		print("[APIManager] ERROR: Failed to start request for ", character, ". Error: ", error)
@@ -679,7 +734,7 @@ func _process_queue() -> void:
 	if request_queue.is_empty() or is_requesting:
 		return
 	var next = request_queue.pop_front()
-	_start_request(next.character, next.url, next.body)
+	_start_request(next.character, next.url, next.body, next.get("headers", ["Content-Type: application/json"]), next.get("provider", active_provider))
 
 func _emit_failure(character: String, error_msg: String) -> void:
 	match character:
@@ -693,14 +748,9 @@ func _emit_failure(character: String, error_msg: String) -> void:
 # ---------------------------------------------------------------------------
 
 func send_message_to_lorax(user_message: String, conversation_history: Array = [], game_state: Dictionary = {}) -> void:
-	"""Send a message to the Lorax (via Gemini API)."""
-	print("[APIManager] Sending to Lorax: ", user_message)
-
-	if api_key == "":
-		lorax_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+	if _active_key_missing():
+		lorax_message_failed.emit("No API key configured for provider: " + active_provider)
 		return
-
-	var url = GEMINI_API_URL + api_key.strip_edges()
 
 	var state_context = "\n\n## CURRENT GAME_STATE:\n"
 	state_context += "- failures: %d\n" % game_state.get("failures", 0)
@@ -715,25 +765,14 @@ func send_message_to_lorax(user_message: String, conversation_history: Array = [
 		else:
 			history_text += "Lorax: " + msg.get("text", "") + "\n"
 
-	var full_prompt = LORAX_SYSTEM_PROMPT + state_context + history_text + "\nPlayer: " + user_message + "\n\nLorax (respond in character):"
-
-	var request_body = JSON.stringify({
-		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"temperature": 0.85}
-	})
-	_execute_request("lorax", url, request_body)
+	var req = _make_request(LORAX_SYSTEM_PROMPT + state_context + history_text, user_message, "Lorax (respond in character):", 0.85)
+	_execute_request("lorax", req.url, req.body, req.headers)
 
 func send_message_to_horton(user_message: String, conversation_history: Array = [], game_state: Dictionary = {}) -> void:
-	"""Send a message to Horton (via Gemini API) — uses the crisis narrative prompt."""
-	print("[APIManager] Sending to Horton: ", user_message)
-
-	if api_key == "":
-		horton_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+	if _active_key_missing():
+		horton_message_failed.emit("No API key configured for provider: " + active_provider)
 		return
 
-	var url = GEMINI_API_URL + api_key
-
-	# Build detailed game state context for the decode / mayor arc
 	var state_context = "\n\n## CURRENT GAME_STATE:\n"
 	state_context += "- decode_stage: %d (number of Who messages decoded so far, out of 5)\n" % game_state.get("decode_stage", 0)
 	state_context += "- current_message: %s (the current garbled Who fragment — relay this to the player!)\n" % game_state.get("current_message", "\"SHAKING... BIG... NEARBY... HELP!\"")
@@ -752,23 +791,14 @@ func send_message_to_horton(user_message: String, conversation_history: Array = 
 	for msg in conversation_history:
 		history_text += msg.get("label", "Player") + ": " + msg.get("text", "") + "\n"
 
-	var full_prompt = HORTON_SYSTEM_PROMPT + state_context + history_text + "\nPlayer: " + user_message + "\n\nHorton (respond in character, short, anxious, use \"...\" for pauses — remember: ONLY include [MESSAGE_DECODED] if player correctly decoded the current_message, NEVER include it otherwise):"
-
-	var request_body = JSON.stringify({
-		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"temperature": 0.85}
-	})
-	_execute_request("horton", url, request_body)
+	var suffix = "Horton (respond in character, short, anxious, use \"...\" for pauses — ONLY include [MESSAGE_DECODED] if player correctly decoded the current_message):"
+	var req = _make_request(HORTON_SYSTEM_PROMPT + state_context + history_text, user_message, suffix, 0.85)
+	_execute_request("horton", req.url, req.body, req.headers)
 
 func send_message_to_baron(user_message: String, conversation_history: Array = [], game_state: Dictionary = {}) -> void:
-	"""Send a message to Baron Von Bitey (via Gemini API)."""
-	print("[APIManager] Sending to Baron: ", user_message)
-
-	if api_key == "":
-		baron_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+	if _active_key_missing():
+		baron_message_failed.emit("No API key configured for provider: " + active_provider)
 		return
-
-	var url = GEMINI_API_URL + api_key
 
 	var state_context = "\n\n## CURRENT GAME_STATE:\n"
 	state_context += "- baron_stage: %d (0=calm browsing, 1=aware of clock, 2=worried/named it Clementine, 3=desperate, 4=committed)\n" % game_state.get("baron_stage", 0)
@@ -790,23 +820,14 @@ func send_message_to_baron(user_message: String, conversation_history: Array = [
 	for msg in conversation_history:
 		history_text += msg.get("label", "Player") + ": " + msg.get("text", "") + "\n"
 
-	var full_prompt = BARON_SYSTEM_PROMPT + state_context + history_text + "\nPlayer: " + user_message + "\n\nBaron Von Bitey (respond in character, third person, theatrical — ONLY include [BARON_DROPS_CLOVER] if player reveals Cat already knows about the pasta plan):"
-
-	var request_body = JSON.stringify({
-		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"temperature": 0.95}
-	})
-	_execute_request("baron", url, request_body)
+	var suffix = "Baron Von Bitey (respond in character, third person, theatrical — ONLY include [BARON_DROPS_CLOVER] if player reveals Cat already knows about the pasta plan):"
+	var req = _make_request(BARON_SYSTEM_PROMPT + state_context + history_text, user_message, suffix, 0.95)
+	_execute_request("baron", req.url, req.body, req.headers)
 
 func send_message_to_cat(user_message: String, conversation_history: Array = [], game_state: Dictionary = {}) -> void:
-	"""Send a message to the Cat in the Hat (via Gemini API) — chaos system."""
-	print("[APIManager] Sending to Cat: ", user_message)
-
-	if api_key == "":
-		cat_message_failed.emit("No API key configured. Add GEMINI_API_KEY to .env file.")
+	if _active_key_missing():
+		cat_message_failed.emit("No API key configured for provider: " + active_provider)
 		return
-
-	var url = GEMINI_API_URL + api_key
 
 	var state_context = "\n\n## CURRENT GAME_STATE:\n"
 	state_context += "- HAPPINESS: %d/100\n" % game_state.get("happiness", 50)
@@ -823,13 +844,9 @@ func send_message_to_cat(user_message: String, conversation_history: Array = [],
 	for msg in conversation_history:
 		history_text += msg.get("label", "Player") + ": " + msg.get("text", "") + "\n"
 
-	var full_prompt = CAT_SYSTEM_PROMPT + state_context + history_text + "\nPlayer: " + user_message + "\n\nRespond ONLY as a valid JSON object (no markdown, no extra text):"
-
-	var request_body = JSON.stringify({
-		"contents": [{"parts": [{"text": full_prompt}]}],
-		"generationConfig": {"temperature": 0.95}
-	})
-	_execute_request("cat", url, request_body)
+	var suffix = "Respond ONLY as a valid JSON object (no markdown, no extra text):"
+	var req = _make_request(CAT_SYSTEM_PROMPT + state_context + history_text, user_message, suffix, 0.95)
+	_execute_request("cat", req.url, req.body, req.headers)
 
 # ---------------------------------------------------------------------------
 # Response handling
@@ -866,12 +883,20 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 
 	var response_data = json.data
 	var response_text = ""
-	if response_data.has("candidates") and response_data["candidates"].size() > 0:
-		var candidate = response_data["candidates"][0]
-		if candidate.has("content") and candidate["content"].has("parts"):
-			var parts = candidate["content"]["parts"]
-			if parts.size() > 0 and parts[0].has("text"):
-				response_text = parts[0]["text"].strip_edges()
+	if current_provider == "openai":
+		# OpenAI: choices[0].message.content
+		if response_data.has("choices") and response_data["choices"].size() > 0:
+			var choice = response_data["choices"][0]
+			if choice.has("message") and choice["message"].has("content"):
+				response_text = choice["message"]["content"].strip_edges()
+	else:
+		# Gemini: candidates[0].content.parts[0].text
+		if response_data.has("candidates") and response_data["candidates"].size() > 0:
+			var candidate = response_data["candidates"][0]
+			if candidate.has("content") and candidate["content"].has("parts"):
+				var parts = candidate["content"]["parts"]
+				if parts.size() > 0 and parts[0].has("text"):
+					response_text = parts[0]["text"].strip_edges()
 
 	if response_text == "":
 		print("[APIManager] Empty response from API")
