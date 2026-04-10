@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c2f3xqj7ypugt"]
+[gd_scene load_steps=14 format=3 uid="uid://c2f3xqj7ypugt"]
 
 [ext_resource type="Texture2D" uid="uid://bglljlu8hv2tk" path="res://assets/background/lorax_forest.png" id="1_kkok4"]
 [ext_resource type="Script" uid="uid://denehi51cg7bk" path="res://scripts/end_scene_success.gd" id="1_l7ija"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="5_xcg4p"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="6_edy2i"]
 [ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="11_xcg4p"]
+[ext_resource type="AudioStream" uid="uid://cwhsdwauabp2w" path="res://assets/audio/music/Tiny Hero on the Hill.mp3" id="12_edy2i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fv0ke"]
 bg_color = Color(0.7227, 0.89199, 0.99, 0.78431374)
@@ -154,3 +155,9 @@ grow_vertical = 2
 texture = ExtResource("2_vb4bd")
 
 [node name="TextToSpeech" parent="." instance=ExtResource("11_xcg4p")]
+
+[node name="Music" type="Node" parent="."]
+
+[node name="Default" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("12_edy2i")
+bus = &"Music"

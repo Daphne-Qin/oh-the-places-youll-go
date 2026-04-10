@@ -12,8 +12,11 @@ func _ready() -> void:
 			scene.hide()
 	captions.show()
 	
-	# turn TTS on
-	GameState.tts_on = true
+	# make music quieter
+	GameState.toggle_background_volume_dim(true)
+	
+	# play music
+	$Music/Default.play()
 	
 	# Lorax scene
 	_transition(null, $LoraxScene, _lorax_scene)
@@ -25,6 +28,10 @@ func _ready() -> void:
 	
 	# Baron scene
 	_transition($HortonScene, $BaronScene, _baron_scene)
+	await get_tree().create_timer(15).timeout
+	
+	# make music louder
+	GameState.toggle_background_volume_dim(false)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
