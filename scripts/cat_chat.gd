@@ -229,7 +229,7 @@ func _build_ui() -> void:
 
 	# ---- Typing indicator ----
 	_typing_indicator = Label.new()
-	_typing_indicator.add_theme_font_size_override("font_size", 13)
+	_typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
 	_typing_indicator.add_theme_color_override("font_color", Color(0.9, 0.9, 0.3, 1.0))
 	_typing_indicator.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_show_typing_indicator("*hat tilts thoughtfully...*")
@@ -611,7 +611,7 @@ func _add_message(text: String, sender: String, bg_color: Color) -> void:
 
 	var sender_label = Label.new()
 	sender_label.text = sender
-	sender_label.add_theme_font_size_override("font_size", 11)
+	sender_label.add_theme_font_size_override("font_size", GameState.font_size - 4)
 	sender_label.add_theme_color_override("font_color", Color(1, 1, 1, 0.65))
 	if sender == "You":
 		sender_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -619,7 +619,7 @@ func _add_message(text: String, sender: String, bg_color: Color) -> void:
 
 	var msg_label = Label.new()
 	msg_label.text = text
-	msg_label.add_theme_font_size_override("font_size", 15)
+	msg_label.add_theme_font_size_override("font_size", GameState.font_size)
 	msg_label.add_theme_color_override("font_color", Color.WHITE)
 	msg_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	msg_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -635,7 +635,7 @@ func _add_narrator_message(text: String) -> void:
 	var lbl = Label.new()
 	lbl.text = "— " + text + " —"
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl.add_theme_font_size_override("font_size", 13)
+	lbl.add_theme_font_size_override("font_size", GameState.font_size - 2)
 	lbl.add_theme_color_override("font_color", Color(0.55, 0.90, 0.55, 0.9))
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -775,3 +775,4 @@ func _on_font_size_changed(font_size: int) -> void:
 						# Keep sender label smaller (relative to base size)
 						var adjusted = font_size - 4 if i == 0 else font_size
 						lbl.add_theme_font_size_override("font_size", adjusted)
+	_typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)

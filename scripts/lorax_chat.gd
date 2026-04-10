@@ -81,6 +81,9 @@ func _ready() -> void:
 	mic_button.tooltip_text = "Voice Input"
 	mic_button.pressed.connect(_toggle_voice)
 	send_button.get_parent().add_child(mic_button)
+
+	# typing indicator
+	typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
 	
 	# Connect to API manager signals
 	if APIManager:
@@ -655,3 +658,4 @@ func _on_font_size_changed(font_size: int) -> void:
 			var label = margin.get_child(0)
 			if label is Label:
 				label.add_theme_font_size_override("font_size", font_size)
+	typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
