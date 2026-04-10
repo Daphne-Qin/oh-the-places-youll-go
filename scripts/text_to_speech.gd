@@ -21,8 +21,8 @@ var voice_models = {
 	'lorax': 'b2790e333a6e40f69a8b9bc8865b530b',
 	'cat': 'e96f323d076249adb2ff0f97ebb23bbe',
 	'horton': 'f3f61e8ceb924f3482afb76ab0f86829',
-	'bitey': '0df921d5e269420684e4ab96f1ee576e',
-	'baron': '0df921d5e269420684e4ab96f1ee576e' # bitey/baron used interchangably so are the same
+	'bitey': '75c860b53da84405aa49718cdda8c83e',
+	'baron': '75c860b53da84405aa49718cdda8c83e' # bitey/baron used interchangably so are the same
 }
 
 func _ready():

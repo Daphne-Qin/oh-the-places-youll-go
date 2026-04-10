@@ -286,7 +286,12 @@ func open_chat() -> void:
 	# make music quieter
 	GameState.toggle_background_volume_dim(true)
 
-	show()
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate:a", 1.0, 0.2)
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2)
+	await tween.finished
+
 	is_open = true
 	GameState.disable_movement()
 	is_baron_path = GameState.baron_has_clover
@@ -343,6 +348,7 @@ func close_chat() -> void:
 	tween.tween_property(self, "modulate:a", 0.0, 0.2)
 	tween.tween_property(self, "scale", Vector2(0.92, 0.92), 0.2)
 	await tween.finished
+
 	visible = false
 	GameState.enable_movement()
 

@@ -69,8 +69,7 @@ func set_background_volume(value: int) -> void:
 	'''
 	Accounts for TTS and STT being on
 	'''
-	background_volume = value
-	var effective_volume = background_volume / 100.0
+	var effective_volume = value / 100.0
 	var idx = AudioServer.get_bus_index("Music")
 	AudioServer.set_bus_volume_linear(idx, effective_volume)
 

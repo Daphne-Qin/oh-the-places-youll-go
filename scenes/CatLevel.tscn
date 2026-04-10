@@ -68,7 +68,7 @@ position = Vector2(0, 360)
 position = Vector2(1280, 360)
 
 [node name="Baron" parent="Node2D" instance=ExtResource("7_imxnq")]
-position = Vector2(500, 506)
+position = Vector2(1647.9999, 351)
 scale = Vector2(0.4, 0.4)
 
 [node name="Music" type="Node" parent="."]
