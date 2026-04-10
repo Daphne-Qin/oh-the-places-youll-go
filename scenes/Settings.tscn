@@ -36,6 +36,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [node name="Settings" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,14 +51,15 @@ layer = 2000
 [node name="OpenButton" type="Button" parent="OpenButton"]
 offset_left = 15.0
 offset_top = 15.0
-offset_right = 136.0
-offset_bottom = 136.0
+offset_right = 65.0
+offset_bottom = 65.0
 icon = ExtResource("2_1dggd")
 icon_alignment = 1
 expand_icon = true
 
 [node name="SettingsMenu" type="CanvasLayer" parent="."]
 layer = 1999
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="SettingsMenu"]
 anchors_preset = 15

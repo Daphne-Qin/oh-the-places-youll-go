@@ -220,6 +220,9 @@ func _on_chase_timer_timeout() -> void:
 		# Baron already has the clover — no need to chase
 		_start_next_chase_timer()
 		return
+	# if TTS on, wait for the current speaker
+	if GameState.tts_on:
+		await get_tree().create_timer(chat_instance.text_to_speech.audio_length).timeout
 	_start_chase()
 
 func _start_chase() -> void:

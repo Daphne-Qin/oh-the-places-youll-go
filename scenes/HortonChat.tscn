@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://txeqiwo1iljl"]
+[gd_scene load_steps=4 format=3 uid="uid://txeqiwo1iljl"]
 
 [ext_resource type="Script" uid="uid://2yicsmd30n5f" path="res://scripts/horton_chat.gd" id="1_sl4rf"]
 [ext_resource type="PackedScene" uid="uid://dlulxqr8ypjyh" path="res://scenes/speech_to_text.tscn" id="2_sl4rf"]
+[ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="3_e0bh3"]
 
 [node name="HortonChat" type="Control"]
 z_index = 100
@@ -14,3 +15,7 @@ grow_vertical = 2
 script = ExtResource("1_sl4rf")
 
 [node name="SpeechToText" parent="." instance=ExtResource("2_sl4rf")]
+
+[node name="TextToSpeech" parent="." instance=ExtResource("3_e0bh3")]
+
+[connection signal="voice_loaded" from="TextToSpeech" to="." method="_on_text_to_speech_voice_loaded"]

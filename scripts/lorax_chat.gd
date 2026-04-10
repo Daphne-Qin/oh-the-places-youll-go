@@ -11,6 +11,7 @@ extends Control
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
 @onready var mic_button: Button = $ChatPanel/VBox/InputPanel/MicButton
 
+# STT and TTS
 @onready var speech_to_text: Node = $SpeechToText
 @onready var text_to_speech: Node = $TextToSpeech
 
@@ -252,7 +253,7 @@ func _send_message() -> void:
 	print("[LORAX_CHAT] Message sent to API manager")
 
 func _add_message(text: String, is_user: bool) -> void:
-	# if lorax, load the voice
+	# if not player, load the voice
 	if GameState.tts_on and not is_user:
 		_disable_stt()
 		text_to_speech.load_voice('lorax', text)
@@ -635,7 +636,7 @@ func reset_conversation() -> void:
 
 func _on_text_to_speech_voice_loaded() -> void:
 	text_to_speech.play_voice()
-	await get_tree().create_timer(text_to_speech.audio_player.stream.get_length()).timeout
+	await get_tree().create_timer(text_to_speech.audio_length).timeout
 	_enable_stt()
 
 func _on_font_size_changed(font_size: int) -> void:
@@ -643,10 +644,14 @@ func _on_font_size_changed(font_size: int) -> void:
 	if not chat_container:
 		return
 	for container in chat_container.get_children():
+		if not container is HBoxContainer:
+			continue
 		for bubble in container.get_children():
-			if bubble is PanelContainer:
-				var margin = bubble.get_child(0)
-				if margin is MarginContainer:
-					var label = margin.get_child(0)
-					if label is Label:
-						label.add_theme_font_size_override("font_size", font_size)
+			if not bubble is PanelContainer:
+				continue
+			var margin = bubble.get_child(0)
+			if not margin is MarginContainer:
+				continue
+			var label = margin.get_child(0)
+			if label is Label:
+				label.add_theme_font_size_override("font_size", font_size)

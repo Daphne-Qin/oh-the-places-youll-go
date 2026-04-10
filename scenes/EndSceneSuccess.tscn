@@ -1,0 +1,156 @@
+[gd_scene load_steps=13 format=3 uid="uid://c2f3xqj7ypugt"]
+
+[ext_resource type="Texture2D" uid="uid://bglljlu8hv2tk" path="res://assets/background/lorax_forest.png" id="1_kkok4"]
+[ext_resource type="Script" uid="uid://denehi51cg7bk" path="res://scripts/end_scene_success.gd" id="1_l7ija"]
+[ext_resource type="FontFile" uid="uid://mvpjblq8dq57" path="res://assets/fonts/Seuss-G4Ra.ttf" id="2_fv0ke"]
+[ext_resource type="Texture2D" uid="uid://b0qxii6odt3cl" path="res://assets/cutscenes/bars.png" id="2_vb4bd"]
+[ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="3_0i1ki"]
+[ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="4_0u2qm"]
+[ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="4_wx7db"]
+[ext_resource type="PackedScene" uid="uid://bevi2c8eisuoe" path="res://scenes/horton.tscn" id="5_psdmx"]
+[ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="5_xcg4p"]
+[ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="6_edy2i"]
+[ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="11_xcg4p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fv0ke"]
+bg_color = Color(0.7227, 0.89199, 0.99, 0.78431374)
+border_width_top = 5
+border_color = Color(0, 0, 0, 1)
+
+[node name="EndSceneSuccess" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l7ija")
+
+[node name="Captions" type="Label" parent="."]
+z_index = 10
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -170.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("2_fv0ke")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_fv0ke")
+text = "Young one, your help, it made things right!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LoraxScene" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="LoraxScene"]
+z_index = -5
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_kkok4")
+
+[node name="TreeRed" parent="LoraxScene" instance=ExtResource("4_0u2qm")]
+position = Vector2(154, 288)
+scale = Vector2(0.25, 0.25)
+
+[node name="TreePurple" parent="LoraxScene" instance=ExtResource("5_xcg4p")]
+position = Vector2(1154, 360)
+scale = Vector2(0.25, 0.25)
+
+[node name="TreeOrange" parent="LoraxScene" instance=ExtResource("6_edy2i")]
+position = Vector2(651, 315)
+scale = Vector2(0.25, 0.25)
+
+[node name="TreeRed2" parent="LoraxScene" instance=ExtResource("4_0u2qm")]
+position = Vector2(918, 403)
+scale = Vector2(0.4, 0.4)
+
+[node name="TreePurple2" parent="LoraxScene" instance=ExtResource("5_xcg4p")]
+position = Vector2(440, 400)
+scale = Vector2(0.3, 0.3)
+
+[node name="TreeOrange2" parent="LoraxScene" instance=ExtResource("6_edy2i")]
+position = Vector2(222, 376)
+scale = Vector2(0.4, 0.4)
+
+[node name="HortonScene" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HortonScene"]
+z_index = -5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_wx7db")
+
+[node name="Horton" parent="HortonScene" instance=ExtResource("5_psdmx")]
+position = Vector2(585, 452)
+script = null
+
+[node name="TreeRed" parent="HortonScene" instance=ExtResource("4_0u2qm")]
+position = Vector2(169, 379)
+scale = Vector2(0.35, 0.35)
+
+[node name="TreePurple" parent="HortonScene" instance=ExtResource("5_xcg4p")]
+position = Vector2(1142, 411)
+scale = Vector2(0.4, 0.4)
+
+[node name="TreeOrange" parent="HortonScene" instance=ExtResource("6_edy2i")]
+z_index = -1
+position = Vector2(797, 346.00003)
+scale = Vector2(0.3, 0.3)
+
+[node name="BaronScene" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="BaronScene"]
+z_index = -5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.23, 0.23, 0.23, 1)
+
+[node name="Baron" parent="BaronScene" instance=ExtResource("3_0i1ki")]
+position = Vector2(648, 443)
+
+[node name="TextureRect" type="TextureRect" parent="BaronScene"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vb4bd")
+
+[node name="TextToSpeech" parent="." instance=ExtResource("11_xcg4p")]

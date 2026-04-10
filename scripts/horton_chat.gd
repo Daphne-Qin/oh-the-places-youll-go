@@ -10,8 +10,9 @@ extends Control
 ## FAIL1: Baron's patience runs out → he takes the clover for Mischief Minestrone
 ## FAIL2: Player ignores messages too long → Whos are lost
 
-# speech to text
+# STT and TTS
 @onready var speech_to_text: Node = $SpeechToText
+@onready var text_to_speech: Node = $TextToSpeech
 
 # ---------------------------------------------------------------------------
 # Signals
@@ -71,6 +72,9 @@ var _horton_section: PanelContainer
 var _baron_section: PanelContainer
 var _decode_progress: Label
 
+var _message_queue: Array = []
+var _message_queue_busy: bool = false
+
 # ---------------------------------------------------------------------------
 # Story / game state
 # ---------------------------------------------------------------------------
@@ -126,6 +130,7 @@ func _ready() -> void:
 		APIManager.horton_message_failed.connect(_on_horton_failed)
 		APIManager.baron_message_received.connect(_on_baron_response)
 		APIManager.baron_message_failed.connect(_on_baron_failed)
+	GameState.font_size_changed.connect(_on_font_size_changed)
 
 	_patience_timer = Timer.new()
 	_patience_timer.wait_time = PATIENCE_TICK_SEC
@@ -428,6 +433,9 @@ func open_chat(mode: String = "horton") -> void:
 			chat_mode = mode
 			_update_chat_mode_ui()
 		return
+	
+	# make music quieter
+	GameState.toggle_background_volume_dim(true)
 
 	chat_mode = mode
 	is_open = true
@@ -457,6 +465,7 @@ func open_chat(mode: String = "horton") -> void:
 
 func _toggle_voice() -> void:
 	if speech_to_text.is_recording:
+		text_to_speech.stop_voice()
 		GameState.toggle_stt(false)
 		_mic_button.text = "🎙"
 		_mic_button.remove_theme_color_override("font_color")
@@ -480,6 +489,7 @@ func close_chat() -> void:
 		return
 	if speech_to_text.is_recording:
 		_toggle_voice()
+	text_to_speech.stop_voice()
 	is_open = false
 
 	var tween = create_tween()
@@ -490,6 +500,9 @@ func close_chat() -> void:
 	visible = false
 	GameState.enable_movement()
 
+	# make music louder
+	GameState.toggle_background_volume_dim(false)
+
 func forced_close(reason: String = "") -> void:
 	"""Close the chat immediately (e.g. during a Baron chase)."""
 	print("[HORTON_CHAT] Forced close: ", reason)
@@ -497,7 +510,11 @@ func forced_close(reason: String = "") -> void:
 	visible = false
 	if speech_to_text.is_recording:
 		_toggle_voice()
+	text_to_speech.stop_voice()
 	GameState.enable_movement()
+
+	# make music louder
+	GameState.toggle_background_volume_dim(false)
 
 # ---------------------------------------------------------------------------
 # Intro (shown once, immediate — no API call)
@@ -686,10 +703,10 @@ func _on_baron_response(message: String) -> void:
 	# Handle interjection round-trip (Horton reacts to Baron)
 	if interjection_pending:
 		interjection_pending = false
-		var display = _strip_markers(message)
-		_add_message(display, "baron", true)
-		shared_history.append({"label": "Baron (to Horton)", "text": display})
-		baron_interjection_text = display
+		var _display = _strip_markers(message)
+		_add_message(_display, "baron", true)
+		shared_history.append({"label": "Baron (to Horton)", "text": _display})
+		baron_interjection_text = _display
 		await get_tree().create_timer(0.7).timeout
 		if game_phase == "active":
 			_is_interjection_react = true
@@ -936,7 +953,32 @@ func _handle_whos_lost() -> void:
 # ---------------------------------------------------------------------------
 # UI helpers
 # ---------------------------------------------------------------------------
+
 func _add_message(text: String, speaker: String, is_interjection: bool = false) -> void:
+	if GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+		_message_queue.append({"text": text, "speaker": speaker, "is_interjection": is_interjection})
+		if not _message_queue_busy:
+			_process_message_queue()
+	else:
+		_display_message(text, speaker, is_interjection)
+
+func _process_message_queue() -> void:
+	if _message_queue.is_empty():
+		_message_queue_busy = false
+		return
+	_message_queue_busy = true
+	var msg = _message_queue.pop_front()
+	await _display_message(msg.text, msg.speaker, msg.is_interjection)
+	_process_message_queue()
+
+func _display_message(text: String, speaker: String, is_interjection: bool = false) -> void:
+	if GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+		if speaker.begins_with('horton'):
+			text_to_speech.load_voice('horton', text)
+		else:
+			text_to_speech.load_voice('baron', text)
+		await text_to_speech.voice_loaded
+
 	if not is_instance_valid(_messages_container):
 		return
 	var row = _create_bubble(text, speaker, is_interjection)
@@ -949,6 +991,11 @@ func _add_message(text: String, speaker: String, is_interjection: bool = false) 
 	tween.tween_property(row, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT)
 	await get_tree().process_frame
 	_scroll_to_bottom()
+
+	# Now wait for playback to finish
+	if GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+		var duration = text_to_speech.audio_player.stream.get_length()
+		await get_tree().create_timer(duration).timeout
 
 func _add_narrator_message(text: String) -> void:
 	"""Centered system message (for decode events, chase warnings, etc.)"""
@@ -1060,6 +1107,14 @@ func _hide_typing() -> void:
 	_typing_indicator.visible = false
 	_typing_indicator.text = ""
 
+func _hide_typing_indicator() -> void:
+	"""Hide typing indicator."""
+	var tween = create_tween()
+	tween.tween_property(_typing_indicator, "modulate:a", 0.0, 0.2)
+	await tween.finished
+	_typing_indicator.visible = false
+	_typing_indicator.modulate.a = 1.0
+
 func _scroll_to_bottom() -> void:
 	if not is_instance_valid(_scroll_container):
 		return
@@ -1155,3 +1210,37 @@ func _reset_conversation() -> void:
 	_update_horton_portrait_direct("anxious")
 	_update_horton_status()
 	_update_baron_status()
+
+func _on_text_to_speech_voice_loaded() -> void:
+	text_to_speech.play_voice()
+	await get_tree().create_timer(text_to_speech.audio_player.stream.get_length()).timeout
+
+func _on_font_size_changed(font_size: int) -> void:
+	if not is_instance_valid(_messages_container):
+		return
+	for child in _messages_container.get_children():
+		# Narrator messages: MarginContainer > Label
+		if child is MarginContainer:
+			var lbl = child.get_child(0)
+			if lbl is Label:
+				lbl.add_theme_font_size_override("font_size", font_size)
+			continue
+		# Chat bubbles: HBoxContainer > VBoxContainer > [name Label, PanelContainer > MarginContainer > Label]
+		if not child is HBoxContainer:
+			continue
+		for col_child in child.get_children():
+			if not col_child is VBoxContainer:
+				continue
+			for i in col_child.get_child_count():
+				var item = col_child.get_child(i)
+				if item is Label:
+					# Speaker name label — keep it proportionally smaller
+					item.add_theme_font_size_override("font_size", font_size - 4)
+				elif item is PanelContainer:
+					var margin = item.get_child(0)
+					if margin is MarginContainer:
+						var lbl = margin.get_child(0)
+						if lbl is Label:
+							# Interjection bubbles are built 2px smaller — preserve that
+							var font_size_int = font_size - 2 if lbl.get_theme_font_size("font_size") < 20 else font_size
+							lbl.add_theme_font_size_override("font_size", font_size_int)

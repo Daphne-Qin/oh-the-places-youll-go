@@ -4,8 +4,9 @@ extends Control
 ## WIN:  consecutive_happy_turns >= 3 AND narrative_beat >= 5 → cat_adventure_begins
 ## FAIL: (1) boring/overflow, (2) baron arrives first, (3) seed cooked, (4) baron_arrived
 
-# speech to text
+# STT and TTS
 @onready var speech_to_text: Node = $SpeechToText
+@onready var text_to_speech: Node = $TextToSpeech
 
 # ---------------------------------------------------------------------------
 # Signals
@@ -90,6 +91,7 @@ func _ready() -> void:
 	if APIManager:
 		APIManager.cat_message_received.connect(_on_cat_response)
 		APIManager.cat_message_failed.connect(_on_cat_failed)
+	GameState.font_size_changed.connect(_on_font_size_changed)
 	visible = false
 	print("[CAT_CHAT] Ready.")
 
@@ -221,11 +223,10 @@ func _build_ui() -> void:
 
 	# ---- Typing indicator ----
 	_typing_indicator = Label.new()
-	_typing_indicator.text = "*hat tilts thoughtfully*"
 	_typing_indicator.add_theme_font_size_override("font_size", 13)
 	_typing_indicator.add_theme_color_override("font_color", Color(0.9, 0.9, 0.3, 1.0))
 	_typing_indicator.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_typing_indicator.visible = false
+	_show_typing_indicator("*hat tilts thoughtfully...*")
 	_typing_indicator.custom_minimum_size = Vector2(0, 22)
 	root_vbox.add_child(_typing_indicator)
 
@@ -276,6 +277,9 @@ func _build_ui() -> void:
 # open / close
 # ---------------------------------------------------------------------------
 func open_chat() -> void:
+	# make music quieter
+	GameState.toggle_background_volume_dim(true)
+
 	show()
 	is_open = true
 	GameState.disable_movement()
@@ -284,6 +288,7 @@ func open_chat() -> void:
 	_input_field.grab_focus()
 	if not intro_shown:
 		intro_shown = true
+		_show_typing_indicator("*hat tilts thoughtfully...*")
 		_add_narrator_message("The Cat in the Hat appears — hat first, naturally.")
 		if baron_has_clover:
 			_request_cat_response("[INTRO] The player arrives — but not the guest you expected. Also: you just found out someone named Baron Von Bitey is trying to make soup out of a clover that has a tiny civilization on it. Greet the player theatrically but let slip you're already aware of the Baron situation.")
@@ -303,6 +308,12 @@ func _toggle_voice() -> void:
 		_mic_button.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
 		speech_to_text.start_recording()
 
+func _enable_stt() -> void:
+	_mic_button.disabled = false
+
+func _disable_stt() -> void:
+	_mic_button.disabled = true
+
 func _on_text_received(text: String) -> void:
 	# add a space if there is already text
 	if _input_field.text != "":
@@ -315,6 +326,7 @@ func close_chat() -> void:
 		return
 	if speech_to_text.is_recording:
 		_toggle_voice()
+	text_to_speech.stop_voice()
 	is_open = false
 
 	var tween = create_tween()
@@ -324,6 +336,9 @@ func close_chat() -> void:
 	await tween.finished
 	visible = false
 	GameState.enable_movement()
+
+	# make music louder
+	GameState.toggle_background_volume_dim(false)
 
 # ---------------------------------------------------------------------------
 # Input
@@ -348,7 +363,7 @@ func _request_cat_response(user_message: String) -> void:
 	waiting_for_cat = true
 	_input_field.editable = false
 	_send_button.disabled = true
-	_typing_indicator.visible = true
+	_show_typing_indicator("*hat tilts thoughtfully...*")
 
 	var baron_arriving_soon = baron_has_clover and player_turn_count >= 7
 	var game_state = {
@@ -373,7 +388,8 @@ func _on_cat_response(raw: String) -> void:
 	waiting_for_cat = false
 	_input_field.editable = true
 	_send_button.disabled = false
-	_typing_indicator.visible = false
+	if not GameState.tts_on:
+		_hide_typing_indicator()
 
 	# --- Parse JSON ---
 	var clean_raw = _strip_json_markdown(raw)
@@ -486,7 +502,7 @@ func _on_cat_failed(error: String) -> void:
 	waiting_for_cat = false
 	_input_field.editable = true
 	_send_button.disabled = false
-	_typing_indicator.visible = false
+	_hide_typing_indicator()
 	print("[CAT_CHAT] API error: ", error)
 	if "429" in error:
 		_add_narrator_message("(The Cat is pacing and mumbling to himself. Give him a moment, then try again.)")
@@ -501,6 +517,14 @@ func _lock_input() -> void:
 	_send_button.disabled = true
 
 func _add_message(text: String, sender: String, bg_color: Color) -> void:
+	# if not player, load the voice
+	if GameState.tts_on and sender != "You":
+		_disable_stt()
+		text_to_speech.load_voice('cat', text)
+		_show_typing_indicator("*hat tilts thoughtfully...*")
+		await text_to_speech.voice_loaded
+		_hide_typing_indicator()
+
 	var panel = PanelContainer.new()
 	var style = StyleBoxFlat.new()
 	style.bg_color = bg_color
@@ -601,6 +625,25 @@ func _update_meters() -> void:
 		_cat_status.text = "OVERFLOW IMMINENT"
 		_cat_status.add_theme_color_override("font_color", Color(1.0, 0.4, 1.0, 1.0))
 
+func _show_typing_indicator(msg: String) -> void:
+	"""Show typing indicator."""
+	_typing_indicator.visible = true
+	_typing_indicator.text = msg
+	
+	# Animate typing dots
+	var tween = create_tween()
+	tween.set_loops()
+	tween.tween_property(_typing_indicator, "modulate:a", 0.5, 0.5)
+	tween.tween_property(_typing_indicator, "modulate:a", 1.0, 0.5)
+
+func _hide_typing_indicator() -> void:
+	"""Hide typing indicator."""
+	var tween = create_tween()
+	tween.tween_property(_typing_indicator, "modulate:a", 0.0, 0.2)
+	await tween.finished
+	_typing_indicator.visible = false
+	_typing_indicator.modulate.a = 1.0
+
 func _strip_json_markdown(text: String) -> String:
 	var s = text.strip_edges()
 	if s.begins_with("```"):
@@ -609,3 +652,29 @@ func _strip_json_markdown(text: String) -> String:
 		if end != -1:
 			s = s.substr(0, end)
 	return s.strip_edges()
+
+func _on_text_to_speech_voice_loaded() -> void:
+	text_to_speech.play_voice()
+	await get_tree().create_timer(text_to_speech.audio_length).timeout
+	_enable_stt()
+
+func _on_font_size_changed(font_size: int) -> void:
+	"""Update font size on all existing message bubbles."""
+	if not _messages_container:
+		return
+	for child in _messages_container.get_children():
+		# Narrator messages: MarginContainer > Label
+		if child is MarginContainer:
+			var lbl = child.get_child(0)
+			if lbl is Label:
+				lbl.add_theme_font_size_override("font_size", font_size)
+		# Chat bubbles: PanelContainer > VBoxContainer > [sender Label, message Label]
+		elif child is PanelContainer:
+			var vbox = child.get_child(0)
+			if vbox is VBoxContainer:
+				for i in vbox.get_child_count():
+					var lbl = vbox.get_child(i)
+					if lbl is Label:
+						# Keep sender label smaller (relative to base size)
+						var adjusted = font_size - 4 if i == 0 else font_size
+						lbl.add_theme_font_size_override("font_size", adjusted)

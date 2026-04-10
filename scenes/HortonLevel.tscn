@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://dp5wlstdvcrv7"]
+[gd_scene load_steps=15 format=3 uid="uid://dp5wlstdvcrv7"]
 
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="1_piuc7"]
 [ext_resource type="Script" uid="uid://cfsvgfxacnwo3" path="res://scripts/horton_level.gd" id="1_rrf0p"]
@@ -6,233 +6,14 @@
 [ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scripts/horton_level_sprites.gd" id="3_yp8v0"]
 [ext_resource type="PackedScene" uid="uid://dul3jtv58gj1x" path="res://scenes/Settings.tscn" id="4_icids"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="4_rrf0p"]
-[ext_resource type="Texture2D" uid="uid://bjsvl70anvhv4" path="res://assets/sprites/horton/walk_clover/walk_clover_00.png" id="6_0dju6"]
-[ext_resource type="Texture2D" uid="uid://dhacetpl7iix1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_00.png" id="6_qecdo"]
-[ext_resource type="Texture2D" uid="uid://bftn1m4d4243l" path="res://assets/sprites/horton/walk_clover/walk_clover_01.png" id="7_a7d31"]
-[ext_resource type="Texture2D" uid="uid://bvgf5hn21ub5e" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_01.png" id="7_x6ors"]
-[ext_resource type="Texture2D" uid="uid://dtbrqfw3jltg" path="res://assets/sprites/horton/walk_clover/walk_clover_02.png" id="8_icids"]
-[ext_resource type="Texture2D" uid="uid://c311x34jfcxoh" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_02.png" id="8_r44yw"]
+[ext_resource type="PackedScene" uid="uid://5ib58hc2nf3j" path="res://scenes/Horton.tscn" id="7_crd7h"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="9_fgenl"]
-[ext_resource type="Texture2D" uid="uid://dosxmxtwu64hh" path="res://assets/sprites/horton/walk_clover/walk_clover_03.png" id="9_uqyxj"]
-[ext_resource type="Texture2D" uid="uid://hku50o3polwa" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_03.png" id="9_xnft6"]
-[ext_resource type="Texture2D" uid="uid://btqreiu0s4jmj" path="res://assets/sprites/horton/walk_clover/walk_clover_04.png" id="10_qmoh8"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="10_rrf0p"]
-[ext_resource type="Texture2D" uid="uid://bli7c6bjd8sde" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_04.png" id="10_yjdu3"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="11_7ucuf"]
-[ext_resource type="Texture2D" uid="uid://c300cahyd0ebn" path="res://assets/sprites/horton/walk_clover/walk_clover_05.png" id="11_18fg6"]
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="11_dbhvm"]
-[ext_resource type="Texture2D" uid="uid://bt44ftt4twts5" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_05.png" id="11_s8x3g"]
-[ext_resource type="Texture2D" uid="uid://dluijpnvhmtol" path="res://assets/sprites/horton/walk_clover/walk_clover_06.png" id="12_egjnr"]
-[ext_resource type="Texture2D" uid="uid://x0ido7jg3pia" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_06.png" id="12_jhn8p"]
 [ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="13_7ucuf"]
-[ext_resource type="Texture2D" uid="uid://c4euoygcljpr7" path="res://assets/sprites/horton/walk_clover/walk_clover_07.png" id="13_53xqc"]
-[ext_resource type="Texture2D" uid="uid://ca40yi6hho4wc" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_07.png" id="13_c0xef"]
-[ext_resource type="Texture2D" uid="uid://3rofg3g1jc06" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_08.png" id="14_keug4"]
-[ext_resource type="Texture2D" uid="uid://cs6sr5gafcrtx" path="res://assets/sprites/horton/walk_clover/walk_clover_08.png" id="14_xypfm"]
-[ext_resource type="Texture2D" uid="uid://bmcn7aslfjbvp" path="res://assets/sprites/horton/walk_clover/walk_clover_09.png" id="15_l8wyl"]
-[ext_resource type="Texture2D" uid="uid://bxt7vwlndlom3" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_09.png" id="15_puh50"]
-[ext_resource type="Texture2D" uid="uid://b0hucr823faeg" path="res://assets/sprites/horton/walk_clover/walk_clover_10.png" id="16_10tec"]
-[ext_resource type="Texture2D" uid="uid://iokuuompu056" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_10.png" id="16_e5abh"]
 [ext_resource type="AudioStream" uid="uid://ca1xbh1nlolq4" path="res://assets/audio/music/Guardians of the Green Path.mp3" id="16_ye3p4"]
-[ext_resource type="Texture2D" uid="uid://dgjyp1oljknrm" path="res://assets/sprites/horton/walk_clover/walk_clover_11.png" id="17_8ni1x"]
-[ext_resource type="Texture2D" uid="uid://cqnboxvl36i30" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_11.png" id="17_enxcu"]
-[ext_resource type="Texture2D" uid="uid://chaj1ynp7rrx3" path="res://assets/sprites/horton/walk_clover/walk_clover_12.png" id="18_0x3s0"]
-[ext_resource type="Texture2D" uid="uid://dy1qoc2anjbb5" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_12.png" id="18_lh3ob"]
-[ext_resource type="Texture2D" uid="uid://oui5eqmf0tm2" path="res://assets/sprites/horton/walk_clover/walk_clover_13.png" id="19_8eyal"]
-[ext_resource type="Texture2D" uid="uid://b8st26pwoqpgx" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_13.png" id="19_ejwsa"]
-[ext_resource type="Texture2D" uid="uid://pmahmo72g0ky" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_14.png" id="20_lhp8s"]
-[ext_resource type="Texture2D" uid="uid://csx0vv0i0ctiq" path="res://assets/sprites/horton/walk_clover/walk_clover_14.png" id="20_oxq73"]
-[ext_resource type="Texture2D" uid="uid://dqt8udqsm8v36" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_15.png" id="21_dv076"]
-[ext_resource type="Texture2D" uid="uid://bwtvuc36cyxc0" path="res://assets/sprites/horton/walk_clover/walk_clover_15.png" id="21_s5fgo"]
-[ext_resource type="Texture2D" uid="uid://dneciotxeo1a6" path="res://assets/sprites/horton/walk_clover/walk_clover_16.png" id="22_44ilv"]
-[ext_resource type="Texture2D" uid="uid://wq5e6hwpescq" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_16.png" id="22_mf0ft"]
-[ext_resource type="Texture2D" uid="uid://dor6i8excnipa" path="res://assets/sprites/horton/walk_clover/walk_clover_17.png" id="23_3jo30"]
-[ext_resource type="Texture2D" uid="uid://scv7ub34hwa3" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_17.png" id="23_s28b7"]
-[ext_resource type="Texture2D" uid="uid://dpa0hpek6m6kb" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_18.png" id="24_fh0n6"]
-[ext_resource type="Texture2D" uid="uid://44qymtp6offj" path="res://assets/sprites/horton/walk_clover/walk_clover_18.png" id="24_gmvao"]
-[ext_resource type="Texture2D" uid="uid://bqx3wgyc3gcb" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_19.png" id="25_craed"]
-[ext_resource type="Texture2D" uid="uid://dwbvlnakeqmbi" path="res://assets/sprites/horton/walk_clover/walk_clover_19.png" id="25_d8428"]
-[ext_resource type="Texture2D" uid="uid://d0qlxguiui4a1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_20.png" id="26_dbwbb"]
-[ext_resource type="Texture2D" uid="uid://b2jg1a3ctqvml" path="res://assets/sprites/horton/walk_clover/walk_clover_20.png" id="26_w5pbk"]
-[ext_resource type="Texture2D" uid="uid://cvlkyrap286vk" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_21.png" id="27_ixni6"]
-[ext_resource type="Texture2D" uid="uid://cdmb3c77spjyk" path="res://assets/sprites/horton/walk_clover/walk_clover_21.png" id="27_qhvwu"]
-[ext_resource type="Texture2D" uid="uid://ch0ifcqnnftgv" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_22.png" id="28_ei668"]
-[ext_resource type="Texture2D" uid="uid://buk77ep8v6vgg" path="res://assets/sprites/horton/walk_clover/walk_clover_22.png" id="28_h0241"]
-[ext_resource type="Texture2D" uid="uid://4uplbssiwk6x" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_23.png" id="29_ocec0"]
-[ext_resource type="Texture2D" uid="uid://dnxhu0vn2a2qd" path="res://assets/sprites/horton/walk_clover/walk_clover_23.png" id="29_s2xjr"]
-[ext_resource type="Texture2D" uid="uid://d14y42dn57ima" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_24.png" id="30_2di5s"]
-[ext_resource type="Texture2D" uid="uid://bxl7jf1bcl0mr" path="res://assets/sprites/horton/walk_clover/walk_clover_24.png" id="30_oneg6"]
-[ext_resource type="Texture2D" uid="uid://bu0oabfu5ta1f" path="res://assets/sprites/horton/walk_clover/walk_clover_25.png" id="31_d5psp"]
 [ext_resource type="AudioStream" uid="uid://cxtgmfd0c7d8s" path="res://assets/audio/music/Crowning the Canopy.mp3" id="63_a7d31"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_0dju6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_a7d31")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_icids")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_uqyxj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_qmoh8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_18fg6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_egjnr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_53xqc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_xypfm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_l8wyl")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_10tec")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_8ni1x")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_0x3s0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_8eyal")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_oxq73")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_s5fgo")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_44ilv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("23_3jo30")
-}, {
-"duration": 1.0,
-"texture": ExtResource("24_gmvao")
-}, {
-"duration": 1.0,
-"texture": ExtResource("25_d8428")
-}, {
-"duration": 1.0,
-"texture": ExtResource("26_w5pbk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("27_qhvwu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("28_h0241")
-}, {
-"duration": 1.0,
-"texture": ExtResource("29_s2xjr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("30_oneg6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("31_d5psp")
-}],
-"loop": true,
-"name": &"walk_clover",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_qecdo")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_x6ors")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_r44yw")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_xnft6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_yjdu3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_s8x3g")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_jhn8p")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_c0xef")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_keug4")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_puh50")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_e5abh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_enxcu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_lh3ob")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_ejwsa")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_lhp8s")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_dv076")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_mf0ft")
-}, {
-"duration": 1.0,
-"texture": ExtResource("23_s28b7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("24_fh0n6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("25_craed")
-}, {
-"duration": 1.0,
-"texture": ExtResource("26_dbwbb")
-}, {
-"duration": 1.0,
-"texture": ExtResource("27_ixni6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("28_ei668")
-}, {
-"duration": 1.0,
-"texture": ExtResource("29_ocec0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("30_2di5s")
-}],
-"loop": true,
-"name": &"walk_noclover",
-"speed": 20.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rrf0p"]
-size = Vector2(330.6667, 241.33331)
 
 [node name="HortonLevel" type="Control"]
 layout_mode = 3
@@ -254,8 +35,10 @@ offset_bottom = 720.0
 grow_horizontal = 0
 texture = ExtResource("1_piuc7")
 
+[node name="Settings" parent="." instance=ExtResource("4_icids")]
+layout_mode = 1
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2000
 
 [node name="InteractionLabel" type="Label" parent="CanvasLayer"]
 z_index = 10
@@ -278,8 +61,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="Settings" parent="CanvasLayer" instance=ExtResource("4_icids")]
-
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("3_yp8v0")
 
@@ -287,21 +68,8 @@ script = ExtResource("3_yp8v0")
 z_index = 0
 position = Vector2(919, 488)
 
-[node name="Horton" type="Area2D" parent="Node2D"]
+[node name="Horton" parent="Node2D" instance=ExtResource("7_crd7h")]
 position = Vector2(-691, 477.00003)
-scale = Vector2(1.5, 1.5)
-metadata/_edit_group_ = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Horton"]
-position = Vector2(13.266665, 0)
-scale = Vector2(0.3, 0.3)
-sprite_frames = SubResource("SpriteFrames_fgenl")
-animation = &"walk_clover"
-frame_progress = 0.4532232
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Horton"]
-position = Vector2(20.666687, -4.666992)
-shape = SubResource("RectangleShape2D_rrf0p")
 
 [node name="Baron" parent="Node2D" instance=ExtResource("11_dbhvm")]
 position = Vector2(1532, 514)

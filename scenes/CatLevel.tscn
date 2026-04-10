@@ -30,10 +30,8 @@ grow_vertical = 2
 texture = ExtResource("1_m4pvi")
 expand_mode = 3
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2000
-
-[node name="Settings" parent="CanvasLayer" instance=ExtResource("3_aqdbe")]
+[node name="Settings" parent="." instance=ExtResource("3_aqdbe")]
+layout_mode = 1
 
 [node name="InteractionLabel" type="Label" parent="."]
 layout_mode = 1

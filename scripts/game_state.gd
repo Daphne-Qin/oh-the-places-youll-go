@@ -70,7 +70,7 @@ func set_background_volume(value: int) -> void:
 	Accounts for TTS and STT being on
 	'''
 	background_volume = value
-	var effective_volume = 0.0 if stt_on else background_volume / 100.0
+	var effective_volume = background_volume / 100.0
 	var idx = AudioServer.get_bus_index("Music")
 	AudioServer.set_bus_volume_linear(idx, effective_volume)
 
@@ -85,7 +85,8 @@ func toggle_tts(value: bool) -> void:
 
 func toggle_stt(value: bool) -> void:
 	stt_on = value
-	set_background_volume(background_volume)
+	# mute all audio
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), value)
 
 func set_font_size(value: int) -> void:
 	if font_size != value:
