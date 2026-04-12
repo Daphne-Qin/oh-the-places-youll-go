@@ -130,6 +130,7 @@ func load_voice(character: String, text: String):
 	var regex = RegEx.new()
 	regex.compile("\\*[^*]*\\s[^*]*\\*")
 	_pending_text = regex.sub(text, "", true)
+	_pending_text = _pending_text.replace("*", "")
 	attempts = 0
 	_process_request(_pending_character, _pending_text)
 
