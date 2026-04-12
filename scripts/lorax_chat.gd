@@ -659,3 +659,6 @@ func _on_font_size_changed(font_size: int) -> void:
 			if label is Label:
 				label.add_theme_font_size_override("font_size", font_size)
 	typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
+
+func _exit_tree() -> void:
+	text_to_speech.stop_voice()

@@ -14,16 +14,25 @@ var _is_patrolling: bool = false
 var _patrol_direction: int = -1    # -1 left, 1 right
 
 func _ready() -> void:
-	move()
+	walk()
 
-func move() -> void:
+func walk(speed: float = 20.0) -> void:
 	"""Play the walk animation (used on ready and for patrol)."""
-	sprite.sprite_frames.set_animation_speed("walk", 24.0)
+	sprite.sprite_frames.set_animation_speed("walk", speed)
 	sprite.play("walk")
 
-func stand() -> void:
-	"""Play the stand/idle animation."""
-	sprite.play("stand")
+func idle_noclover(speed: float = 20.0) -> void:
+	"""Play the stand/idle animation where Baron does not have the clover."""
+	sprite.sprite_frames.set_animation_speed("idle_noclover", speed)
+	sprite.play("idle_noclover")
+
+func idle_clover(speed: float = 20.0) -> void:
+	"""Play the stand/idle animation where Baron has the clover."""
+	sprite.sprite_frames.set_animation_speed("idle_clover", speed)
+	sprite.play("idle_clover")
+
+func flip_h(value: bool):
+	sprite.flip_h = value
 
 # ---------------------------------------------------------------------------
 # Patrol — Baron paces back and forth between two x positions
@@ -34,7 +43,7 @@ func start_patrol(min_x: float = 600, max_x: float = 980, speed: float = 60.0) -
 	_patrol_max_x = max_x
 	_patrol_speed = speed
 	_is_patrolling = true
-	move()
+	walk(24)
 	_do_patrol_step()
 
 func _do_patrol_step() -> void:
@@ -66,7 +75,7 @@ func stop_patrol() -> void:
 	_is_patrolling = false
 	if _patrol_tween:
 		_patrol_tween.kill()
-	stand()
+	idle_noclover()
 
 # ---------------------------------------------------------------------------
 # Escalation — run toward the clover (Horton's position area)
@@ -77,8 +86,7 @@ func make_move_for_clover(clover_x: float = 310.0) -> void:
 	if _patrol_tween:
 		_patrol_tween.kill()
 
-	move()
-	sprite.speed_scale = 2.5   # doubled animation speed to imply running
+	walk(48)
 	sprite.flip_h = (clover_x < position.x)
 
 	var distance = abs(clover_x - position.x)
@@ -95,7 +103,7 @@ func defeat_retreat() -> void:
 	if _patrol_tween:
 		_patrol_tween.kill()
 
-	move()
+	walk(24)
 	sprite.flip_h = false
 
 	var stagger_x = position.x - 80.0

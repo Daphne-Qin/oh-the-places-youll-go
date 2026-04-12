@@ -14,12 +14,12 @@ func _ready() -> void:
 # ---------------------------------------------------------------------------
 func horton_enter() -> void:
 	$Horton.position.x = -400
-	$Horton/AnimatedSprite2D.flip_h = false
-	$Horton/AnimatedSprite2D.play("walk_clover")
+	$Horton.flip_h(false)
+	$Horton.walk_clover(15)
 	var tween = create_tween()
 	tween.tween_property($Horton, "position:x", 300.0, 3.0).set_ease(Tween.EASE_OUT)
 	tween.finished.connect(func():
-		$Horton/AnimatedSprite2D.stop()
+		$Horton.idle_anxious_clover(15)
 		_horton_resting_x = $Horton.position.x
 	)
 
@@ -29,8 +29,8 @@ func horton_enter() -> void:
 func baron_enter() -> void:
 	$Baron.visible = true
 	$Baron.position = Vector2(1400.0, 520.0)
-	$Baron.move()
-	$Baron.sprite.flip_h = true  # face left on entry
+	$Baron.walk()
+	$Baron.flip_h(true)  # face left on entry
 
 	var tween = create_tween()
 	tween.tween_property($Baron, "position:x", 300, 8).set_ease(Tween.EASE_OUT)
@@ -51,18 +51,16 @@ func baron_chase_horton() -> void:
 	var flee_x = 600*_multiplier
 
 	# Horton flees
-	$Horton/AnimatedSprite2D.flip_h = _horton_resting_x > 0
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 24.0)
-	$Horton/AnimatedSprite2D.play("walk_clover")
+	$Horton.flip_h(_horton_resting_x > 0)
+	$Horton.walk_clover(24.0)
 	var horton_tween = create_tween()
 	horton_tween.tween_property($Horton, "position:x", flee_x, 2.2).set_ease(Tween.EASE_IN)
 
 	$Baron.stop_patrol()
 	var baron_tween = create_tween()
 	baron_tween.tween_property($Baron, "position:x", flee_x, 2.8).set_ease(Tween.EASE_IN)
-	$Baron.sprite.speed_scale = 2.5
-	$Baron.sprite.flip_h = _horton_resting_x > 0
-	$Baron.move()
+	$Baron.flip_h(_horton_resting_x > 0)
+	$Baron.walk(48)
 
 # ---------------------------------------------------------------------------
 # CHASE RESOLVED: Player intervenes — Baron backs off, Horton returns
@@ -74,8 +72,7 @@ func baron_back_off() -> void:
 	$Baron.sprite.speed_scale = 1.0
 	$Baron.start_patrol(600*_multiplier, 1000*_multiplier, 60)
 
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
-	$Horton/AnimatedSprite2D.stop()
+	$Horton.idle_anxious_clover(15)
 
 # ---------------------------------------------------------------------------
 # CHASE FAILED: Baron grabs the clover
@@ -87,14 +84,11 @@ func baron_grab_clover() -> void:
 	# Baron stops triumphant
 	$Baron.stop_patrol()
 	$Baron.sprite.speed_scale = 1.0
-	$Baron.stand()
+	$Baron.idle_clover(15)
 
 	# Horton slumps — stop walking, face forward
-	if is_instance_valid($Horton):
-		$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_noclover", 12.0)
-		$Horton/AnimatedSprite2D.play("walk_noclover")
-		$Horton/AnimatedSprite2D.stop()
-		$Horton/AnimatedSprite2D.flip_h = false
+	$Horton.idle_anxious_noclover(15)
+	$Horton.flip_h(false)
 
 # ---------------------------------------------------------------------------
 # BARON DROPS CLOVER: theatrical drop animation
@@ -105,7 +99,7 @@ func baron_drops_clover_visual() -> void:
 
 	# Small dramatic hop-down to indicate dropping something
 	$Baron.stop_patrol()
-	$Baron.stand()
+	$Baron.idle_noclover(15)
 	var orig_y = $Baron.position.y
 	var tween = create_tween()
 	tween.tween_property($Baron, "position:y", orig_y + 15.0, 0.12)
@@ -126,11 +120,9 @@ func horton_reclaim_clover() -> void:
 func horton_react_happy() -> void:
 	if not is_instance_valid($Horton):
 		return
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 24.0)
-	$Horton/AnimatedSprite2D.play("walk_clover")
+	$Horton.walk_clover(24)
 	await get_tree().create_timer(1.5).timeout
-	$Horton/AnimatedSprite2D.sprite_frames.set_animation_speed("walk_clover", 12.0)
-	$Horton/AnimatedSprite2D.stop()
+	$Horton.idle_happy_clover(15)
 
 # ---------------------------------------------------------------------------
 # Baron story-beat methods (called by horton_chat.gd via sprites_node)

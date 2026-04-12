@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bils18arxvle"
-path="res://.godot/imported/baron_stand.png-e4458f97f5fd9ea6dbc02f0d560d0875.ctex"
+uid="uid://cs624h7bv3sjx"
+path="res://.godot/imported/idle_happy_clover_21.png-b67a174cb877ac41278764cd58e1c8bd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/baron/baron_stand.png"
-dest_files=["res://.godot/imported/baron_stand.png-e4458f97f5fd9ea6dbc02f0d560d0875.ctex"]
+source_file="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_21.png"
+dest_files=["res://.godot/imported/idle_happy_clover_21.png-b67a174cb877ac41278764cd58e1c8bd.ctex"]
 
 [params]
 

@@ -776,3 +776,6 @@ func _on_font_size_changed(font_size: int) -> void:
 						var adjusted = font_size - 4 if i == 0 else font_size
 						lbl.add_theme_font_size_override("font_size", adjusted)
 	_typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
+
+func _exit_tree() -> void:
+	text_to_speech.stop_voice()

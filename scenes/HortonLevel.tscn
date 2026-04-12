@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://f50k0l8ns3wd" path="res://scripts/horton_level_sprites.gd" id="3_yp8v0"]
 [ext_resource type="PackedScene" uid="uid://dul3jtv58gj1x" path="res://scenes/Settings.tscn" id="4_icids"]
 [ext_resource type="PackedScene" uid="uid://blvvtbso067al" path="res://scenes/player.tscn" id="4_rrf0p"]
-[ext_resource type="PackedScene" uid="uid://5ib58hc2nf3j" path="res://scenes/Horton.tscn" id="7_crd7h"]
+[ext_resource type="PackedScene" uid="uid://dbspppe0v0mbs" path="res://scenes/Horton.tscn" id="7_crd7h"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="9_fgenl"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="10_rrf0p"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="11_7ucuf"]

@@ -457,6 +457,7 @@ func open_chat(mode: String = "horton") -> void:
 		game_phase = "active"
 
 	_input_field.grab_focus()
+	_scroll_to_bottom()
 	GameState.disable_movement()
 
 	if _patience_timer.is_stopped():
@@ -574,6 +575,10 @@ func _on_send_pressed() -> void:
 func _on_input_submitted(_text: String) -> void:
 	_send_player_message()
 
+func _await_queue_empty() -> void:
+	while _message_queue_busy or not _message_queue.is_empty():
+		await get_tree().create_timer(0.1).timeout
+
 func _send_player_message() -> void:
 	if game_phase in ["win", "fail_baron", "fail_whos", "baron_attacking"]:
 		return
@@ -584,6 +589,9 @@ func _send_player_message() -> void:
 	if text == "":
 		return
 	_input_field.text = ""
+
+	text_to_speech.stop_voice()
+	_message_queue.clear()
 
 	_add_message(text, "player")
 	shared_history.append({"label": "Player", "text": text})
@@ -607,6 +615,15 @@ func _send_player_message() -> void:
 	# Talking to the Baron restores patience (and delays patrol)
 	baron_patience = min(100.0, baron_patience + PATIENCE_RESTORE)
 	_update_baron_stage()
+
+	# Wait for queue BEFORE setting waiting flags
+	await _await_queue_empty()
+
+	# Guard: state may have changed while waiting
+	if not is_instance_valid(self):
+		return
+	if game_phase in ["win", "fail_baron", "fail_whos", "baron_attacking"]:
+		return
 
 	if chat_mode == "baron":
 		# Direct baron conversation — baron responds only, no Horton chain
@@ -855,6 +872,7 @@ func _trigger_jojo_finale() -> void:
 
 	waiting_for_horton = true
 	_show_typing("Horton is overcome with joy...")
+	await _await_queue_empty()
 	APIManager.send_message_to_horton(
 		"[The player just decoded JoJo's final message — ALL 5 WHO MESSAGES DECODED! JoJo's plan is working — every single Who is shouting together! You can HEAR them! React with transcendent, overwhelming joy. Include [HORTON_WIN].]",
 		shared_history,
@@ -873,6 +891,7 @@ func _trigger_baron_move() -> void:
 
 	waiting_for_baron = true
 	_show_typing("Baron Von Bitey is making his move!")
+	await _await_queue_empty()
 	APIManager.send_message_to_baron(
 		"[Time is up. The Cat arrives tonight and you need that clover for the Mischief Minestrone NOW. Grab the clover dramatically. Include [BARON_TAKES_CLOVER].]",
 		shared_history,
@@ -891,6 +910,7 @@ func _handle_horton_win() -> void:
 	await get_tree().create_timer(2.0).timeout
 	waiting_for_baron = true
 	_show_typing("Something is happening to the Baron...")
+	await _await_queue_empty()
 	APIManager.send_message_to_baron(
 		"[WHOVILLE CELEBRATION: A massive wave of joyful noise just hit you from the clover's direction — every Who shouting at once. You are physically STAGGERED and fall into a puddle (not one of your seventeen mud pools — a COMMON puddle). Retreat in magnificent denial. Include [BARON_RETREATS].]",
 		shared_history,
@@ -955,7 +975,7 @@ func _handle_whos_lost() -> void:
 # ---------------------------------------------------------------------------
 
 func _add_message(text: String, speaker: String, is_interjection: bool = false) -> void:
-	if GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+	if is_open and GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
 		_message_queue.append({"text": text, "speaker": speaker, "is_interjection": is_interjection})
 		if not _message_queue_busy:
 			_process_message_queue()
@@ -963,6 +983,7 @@ func _add_message(text: String, speaker: String, is_interjection: bool = false) 
 		_display_message(text, speaker, is_interjection)
 
 func _process_message_queue() -> void:
+	print("[HORTON_CHAT] queue: ", _message_queue)
 	if _message_queue.is_empty():
 		_message_queue_busy = false
 		return
@@ -972,7 +993,7 @@ func _process_message_queue() -> void:
 	_process_message_queue()
 
 func _display_message(text: String, speaker: String, is_interjection: bool = false) -> void:
-	if GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+	if is_open and GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
 		if speaker.begins_with('horton'):
 			text_to_speech.load_voice('horton', text)
 		else:
@@ -993,7 +1014,9 @@ func _display_message(text: String, speaker: String, is_interjection: bool = fal
 	_scroll_to_bottom()
 
 	# Now wait for playback to finish
-	if GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+	if is_open and GameState.tts_on and speaker in ['horton', 'baron', 'horton_to_baron', 'baron_to_horton']:
+		if not is_instance_valid(self):
+			return
 		var duration = text_to_speech.audio_player.stream.get_length()
 		await get_tree().create_timer(duration).timeout
 
@@ -1244,3 +1267,8 @@ func _on_font_size_changed(font_size: int) -> void:
 							# Interjection bubbles are built 2px smaller — preserve that
 							var font_size_int = font_size - 2 if lbl.get_theme_font_size("font_size") < 20 else font_size
 							lbl.add_theme_font_size_override("font_size", font_size_int)
+
+func _exit_tree() -> void:
+	text_to_speech.stop_voice()
+	_message_queue.clear()
+	_message_queue_busy = false

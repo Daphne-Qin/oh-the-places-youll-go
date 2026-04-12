@@ -134,7 +134,7 @@ func _load_chat_interface() -> void:
 func _input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and event.keycode == KEY_E):
 		return
-	if is_chase_active:
+	if is_chase_active or is_chase_buffer:
 		return
 
 	# Talk to Horton (only when Horton has the clover — normal flow)
@@ -209,6 +209,9 @@ func _start_next_chase_timer() -> void:
 		return
 	var stage = chat_instance.get_decode_stage() if (chat_instance and chat_instance.has_method("get_decode_stage")) else 0
 	var interval = max(CHASE_MIN_INTERVAL, CHASE_BASE_INTERVAL - float(stage) * 3.0)
+	# give more wait time if they can speak since TTS takes a while
+	if GameState.tts_on:
+		interval *= 2
 	print("[LEVEL] Next baron chase in %.1fs (decode_stage=%d)" % [interval, stage])
 	chase_timer.wait_time = interval
 	chase_timer.start()
@@ -221,7 +224,7 @@ func _on_chase_timer_timeout() -> void:
 		_start_next_chase_timer()
 		return
 	# if TTS on, wait for the current speaker
-	if GameState.tts_on:
+	if GameState.tts_on and chat_instance:
 		await get_tree().create_timer(chat_instance.text_to_speech.audio_length).timeout
 	_start_chase()
 
@@ -313,6 +316,7 @@ func _update_interaction_label() -> void:
 # ---------------------------------------------------------------------------
 func _on_horton_trusts_player() -> void:
 	GameState.set_can_move(true)
+	$Node2D/Horton.idle_happy_clover(15)
 	_switch_music($Music/Success)
 	outcome_triggered = true
 	chase_timer.stop()
