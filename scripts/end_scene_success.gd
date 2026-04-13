@@ -95,7 +95,7 @@ func _horton_scene() -> void:
 
 func _baron_scene() -> void:
 	$BaronScene/Baron.scale = Vector2(0.75, 0.75)
-	$BaronScene/Baron.stand()
+	$BaronScene/Baron.idle_noclover(15)
 	
 	# let the user acclimate
 	await get_tree().create_timer(2).timeout

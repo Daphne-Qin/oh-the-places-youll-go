@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="3_0i1ki"]
 [ext_resource type="PackedScene" uid="uid://bjswr0mp7ymrq" path="res://scenes/tree_red.tscn" id="4_0u2qm"]
 [ext_resource type="Texture2D" uid="uid://dw3bkqjseycjk" path="res://assets/background/horton_forest.png" id="4_wx7db"]
-[ext_resource type="PackedScene" uid="uid://bevi2c8eisuoe" path="res://scenes/horton.tscn" id="5_psdmx"]
+[ext_resource type="PackedScene" uid="uid://dbspppe0v0mbs" path="res://scenes/horton.tscn" id="5_psdmx"]
 [ext_resource type="PackedScene" uid="uid://7i1j80m3i4cv" path="res://scenes/tree_purple.tscn" id="5_xcg4p"]
 [ext_resource type="PackedScene" uid="uid://cr26v3tfcmndt" path="res://scenes/tree_orange.tscn" id="6_edy2i"]
 [ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="11_xcg4p"]
