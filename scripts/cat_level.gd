@@ -49,7 +49,7 @@ func _on_cat_area_exited(body: Node2D) -> void:
 		if not level_complete:
 			$InteractionLabel.text = "Walk up to the Cat in the Hat!"
 		else:
-			$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
+			$InteractionLabel.text = "Open the storybook above to continue!"
 
 func _input(event: InputEvent) -> void:
 	if not is_near_cat:
@@ -89,6 +89,7 @@ func _on_cat_adventure_begins() -> void:
 	else:
 		# PATH A — Player made the deal
 		$InteractionLabel.text = "The Chest is open! The Truffula seed and the clover, connected to everything they belong to. The adventure begins! Open the storybook above to continue..."
+	GameState.unlock_level("end_success")
 	level_select.show()
 	print("[CAT_LEVEL] WIN — baron_path=%s" % str(GameState.baron_has_clover))
 

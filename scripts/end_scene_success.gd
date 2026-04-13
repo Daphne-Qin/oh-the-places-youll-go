@@ -73,6 +73,8 @@ func _horton_scene() -> void:
 	# let the user acclimate
 	await get_tree().create_timer(2).timeout
 	
+	$HortonScene/Horton.idle_happy_clover(15)
+	
 	# change this depending on what happens to the Whos
 	
 	text_to_speech.play_voice(tts_preload_dir + "horton0.mp3")

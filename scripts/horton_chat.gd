@@ -133,6 +133,7 @@ func _ready() -> void:
 		APIManager.baron_message_received.connect(_on_baron_response)
 		APIManager.baron_message_failed.connect(_on_baron_failed)
 	GameState.font_size_changed.connect(_on_font_size_changed)
+	GameState.scene_switch.connect(_on_scene_switch)
 
 	_patience_timer = Timer.new()
 	_patience_timer.wait_time = PATIENCE_TICK_SEC
@@ -618,7 +619,6 @@ func _send_player_message() -> void:
 	if lower == "mischief minestrone":
 		# Baron immediately drops the clover — test the clover-return path
 		_add_narrator_message("(Skip code accepted — Baron drops the clover!)")
-		baron_drops_clover.emit()
 		return
 
 	# Talking to the Baron restores patience (and delays patrol)
@@ -764,7 +764,6 @@ func _on_baron_response(message: String) -> void:
 		if sprites_node and sprites_node.has_method("baron_drops_clover_visual"):
 			sprites_node.baron_drops_clover_visual()
 		await get_tree().create_timer(0.8).timeout
-		baron_drops_clover.emit()
 		close_chat()
 		return
 
@@ -1287,6 +1286,12 @@ func _on_font_size_changed(font_size: int) -> void:
 							lbl.add_theme_font_size_override("font_size", font_size_int)
 
 func _exit_tree() -> void:
+	_message_queue.clear()
+	_message_queue_busy = false
+	_tts_timer.stop()
+	text_to_speech.stop_voice()
+	
+func _on_scene_switch():
 	_message_queue.clear()
 	_message_queue_busy = false
 	_tts_timer.stop()

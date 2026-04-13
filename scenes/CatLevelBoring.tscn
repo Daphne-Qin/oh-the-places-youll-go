@@ -77,10 +77,10 @@ autowrap_mode = 3
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Player" parent="Node2D" instance=ExtResource("5_gn1ad")]
-position = Vector2(859, 458)
+position = Vector2(865, 517)
 
 [node name="Cat" parent="Node2D" instance=ExtResource("6_8oxug")]
-position = Vector2(417, 376)
+position = Vector2(376, 426)
 
 [node name="Boundary" parent="Node2D" instance=ExtResource("7_rflal")]
 position = Vector2(0, 360)
@@ -89,10 +89,11 @@ position = Vector2(0, 360)
 position = Vector2(1280, 360)
 
 [node name="Baron" parent="Node2D" instance=ExtResource("8_qidcw")]
-position = Vector2(1647.9999, 351)
+position = Vector2(1610, 534)
 scale = Vector2(0.4, 0.4)
 
 [node name="Soup" type="Node2D" parent="Node2D"]
+visible = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Soup"]
 position = Vector2(629, 437)

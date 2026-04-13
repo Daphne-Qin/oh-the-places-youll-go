@@ -72,6 +72,10 @@ func _create_level_button(level_id: String, level_data: Dictionary) -> Button:
 
 	# Connect button press
 	button.pressed.connect(_on_level_button_pressed.bind(level_id))
+	
+	# hide boring and end failure first
+	if level_id == "cat_boring" or level_id == "end_failure":
+		button.hide()
 
 	return button
 
@@ -123,6 +127,14 @@ func _on_level_button_pressed(level_id: String) -> void:
 func _on_level_unlocked(level_id: String) -> void:
 	"""Called when a level is unlocked."""
 	_update_button_state(level_id)
+	
+	if level_id == "end_failure":
+		level_buttons["end_success"].hide()
+		level_buttons["end_fail"].show()
+	elif level_id == "cat_boring":
+		level_buttons["cat"].hide()
+		level_buttons["cat_boring"].show()
+		
 	# Could add unlock animation/sound here
 
 func _on_level_completed(level_id: String) -> void:

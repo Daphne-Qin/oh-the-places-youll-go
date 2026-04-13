@@ -25,6 +25,7 @@ signal font_size_changed(font_size: int)
 # Level unlock system
 signal level_unlocked(level_id: String)
 signal level_completed(level_id: String)
+signal scene_switch  # Fired before any scene transition
 
 # Level definitions: id -> {name, scene_path, unlocked, completed, map_position}
 var levels := {
@@ -53,6 +54,33 @@ var levels := {
 		"completed": false,
 		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
 		"map_position": Vector2(200, 300),
+		"icon": ""
+	},
+	"cat_boring": {
+		"name": "The Cat in the Hat",
+		"scene_path": "res://scenes/CatLevelBoring.tscn",
+		"unlocked": false,  # Unlocked after completing Horton
+		"completed": false,
+		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
+		"map_position": Vector2(200, 300),
+		"icon": ""
+	},
+	"end_success": {
+		"name": "The End?",
+		"scene_path": "res://scenes/EndSceneSuccess.tscn",
+		"unlocked": false,  # Unlocked after completing Horton
+		"completed": false,
+		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
+		"map_position": Vector2(100, 100),
+		"icon": ""
+	},
+	"end_failure": {
+		"name": "The End?",
+		"scene_path": "res://scenes/EndSceneFailure.tscn",
+		"unlocked": false,  # Unlocked after completing Horton
+		"completed": false,
+		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
+		"map_position": Vector2(100, 100),
 		"icon": ""
 	}
 }
@@ -149,6 +177,8 @@ func go_to_level(level_id: String) -> void:
 		if level_id == "cat":
 			scene_path = "res://scenes/CatLevelBoring.tscn" if baron_has_clover else "res://scenes/CatLevel.tscn"
 		print("[GameState] Navigating to level: %s (scene: %s)" % [level_id, scene_path])
+		scene_switch.emit()
+		await get_tree().process_frame  # Give listeners one frame to clean up
 		get_tree().change_scene_to_file(scene_path)
 	else:
 		print("[GameState] Level is locked: ", level_id)

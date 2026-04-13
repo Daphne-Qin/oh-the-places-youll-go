@@ -55,9 +55,7 @@ func _baron_walk_in() -> void:
 	var tween = create_tween()
 	tween.tween_property(baron, "global_position:x", target_x, max(0.1, duration))
 	await tween.finished
-	if is_instance_valid(baron):
-		baron.idle_clover()
-		baron.flip_h(false)
+	baron.idle_clover()
 	$InteractionLabel.text = "Baron Von Bitey has arrived with the clover! Walk up to the Cat."
 
 func _on_cat_area_entered(body: Node2D) -> void:
@@ -105,7 +103,8 @@ func _on_cat_adventure_begins() -> void:
 	if chat_instance:
 		await get_tree().create_timer(3.0).timeout
 		chat_instance.hide()
-	$InteractionLabel.text = "The Cat tore up the job application. The Chest is open. The forest returns. Open the storybook above to continue..."
+	$InteractionLabel.text = "The Cat tore up the job application. The Chest is open. The forest returns!"
+	GameState.unlock_level("end_success")
 	level_select.show()
 	print("[CAT_LEVEL_BORING] WIN — Cat rejected the Baron's job application!")
 
@@ -113,7 +112,8 @@ func _on_cat_bored_out() -> void:
 	GameState.enable_movement()
 	if chat_instance:
 		chat_instance.hide()
-	$InteractionLabel.text = "The Cat signed the contract. Baron Von Bitey smiles. Try again from the storybook."
+	$InteractionLabel.text = "The Cat signed the contract. Baron Von Bitey smiles..."
+	GameState.unlock_level("end_failure")
 	level_select.show()
 	print("[CAT_LEVEL_BORING] FAIL — Baron closed the deal.")
 

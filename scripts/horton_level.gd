@@ -300,7 +300,7 @@ func _on_baron_wins() -> void:
 	is_chase_active = false
 	is_chase_buffer = false
 	GameState.baron_has_clover = true   # ensure set regardless of which path triggered
-	GameState.unlock_level("cat")
+	GameState.unlock_level("cat_boring")
 	print("[HortonLevel] FAIL 1 — Baron took the clover! Routing to Cat (Boring) level.")
 	if chat_instance:
 		await get_tree().create_timer(3.5).timeout
