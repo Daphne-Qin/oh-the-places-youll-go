@@ -55,9 +55,7 @@ func _baron_walk_in() -> void:
 	var tween = create_tween()
 	tween.tween_property(baron, "global_position:x", target_x, max(0.1, duration))
 	await tween.finished
-	if is_instance_valid(baron):
-		baron.idle_clover()
-		baron.flip_h(false)
+	baron.idle_clover()
 	$InteractionLabel.text = "Baron Von Bitey has arrived with the clover! Walk up to the Cat."
 
 func _on_cat_area_entered(body: Node2D) -> void:

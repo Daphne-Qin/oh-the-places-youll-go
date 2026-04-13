@@ -105,8 +105,7 @@ grow_vertical = 2
 texture = ExtResource("4_wx7db")
 
 [node name="Horton" parent="HortonScene" instance=ExtResource("5_psdmx")]
-position = Vector2(585, 452)
-script = null
+position = Vector2(599, 464)
 
 [node name="TreeRed" parent="HortonScene" instance=ExtResource("4_0u2qm")]
 position = Vector2(169, 379)

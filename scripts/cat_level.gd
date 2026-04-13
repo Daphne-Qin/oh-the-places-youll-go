@@ -49,7 +49,7 @@ func _on_cat_area_exited(body: Node2D) -> void:
 		if not level_complete:
 			$InteractionLabel.text = "Walk up to the Cat in the Hat!"
 		else:
-			$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
+			$InteractionLabel.text = "Open the storybook above to continue!"
 
 func _input(event: InputEvent) -> void:
 	if not is_near_cat:

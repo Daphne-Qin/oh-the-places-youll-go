@@ -110,6 +110,7 @@ func _ready() -> void:
 		APIManager.baron_message_received.connect(_on_baron_response)
 		APIManager.baron_message_failed.connect(_on_baron_failed)
 	GameState.font_size_changed.connect(_on_font_size_changed)
+	GameState.scene_switch.connect(_on_scene_switch)
 	visible = false
 	print("[CAT_CHAT] Ready.")
 
@@ -849,4 +850,7 @@ func _on_font_size_changed(font_size: int) -> void:
 	_typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
 
 func _exit_tree() -> void:
+	text_to_speech.stop_voice()
+
+func _on_scene_switch():
 	text_to_speech.stop_voice()
