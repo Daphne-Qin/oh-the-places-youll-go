@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cyc761ogomt64"]
+[gd_scene load_steps=13 format=3 uid="uid://cyc761ogomt64"]
 
 [ext_resource type="Script" uid="uid://de1qm6tywp0jc" path="res://scripts/cat_level_boring.gd" id="1_omgxc"]
 [ext_resource type="Texture2D" uid="uid://ddaa3uy6uoquy" path="res://assets/background/cat_livingroom_boring.png" id="2_omgxc"]
@@ -9,6 +9,27 @@
 [ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="7_rflal"]
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="8_qidcw"]
 [ext_resource type="AudioStream" uid="uid://s2h50qj5g0ac" path="res://assets/audio/music/Clockwork Cupcake Catastrophe.mp3" id="9_7niq8"]
+[ext_resource type="Texture2D" uid="uid://gq6ixwmd1jlr" path="res://assets/sprites/soup/soup.png" id="9_883e3"]
+[ext_resource type="Texture2D" uid="uid://gcifrkw8hvwo" path="res://assets/sprites/soup/soup_empty.png" id="10_kmjcd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gn1ad"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_883e3")
+}],
+"loop": true,
+"name": &"soup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_kmjcd")
+}],
+"loop": true,
+"name": &"soup_empty",
+"speed": 5.0
+}]
 
 [node name="CatLevelBoring" type="Control"]
 layout_mode = 3
@@ -70,6 +91,14 @@ position = Vector2(1280, 360)
 [node name="Baron" parent="Node2D" instance=ExtResource("8_qidcw")]
 position = Vector2(1647.9999, 351)
 scale = Vector2(0.4, 0.4)
+
+[node name="Soup" type="Node2D" parent="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D/Soup"]
+position = Vector2(629, 437)
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_gn1ad")
+animation = &"soup"
 
 [node name="Music" type="Node" parent="."]
 

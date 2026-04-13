@@ -1,0 +1,113 @@
+[gd_scene load_steps=9 format=3 uid="uid://dj5loqvvhntt0"]
+
+[ext_resource type="Script" uid="uid://bynlv6q3db0dn" path="res://scripts/end_scene_failure.gd" id="1_i40q3"]
+[ext_resource type="FontFile" uid="uid://mvpjblq8dq57" path="res://assets/fonts/Seuss-G4Ra.ttf" id="2_kmv8d"]
+[ext_resource type="Texture2D" uid="uid://cemoth1scwq6n" path="res://assets/cutscenes/grand_monotony.png" id="3_i40q3"]
+[ext_resource type="Texture2D" uid="uid://c8cr872m5vdmh" path="res://assets/cutscenes/mud.png" id="4_bhr15"]
+[ext_resource type="Texture2D" uid="uid://bb5pvkgtkfx8t" path="res://assets/cutscenes/shooting_stars.png" id="5_w217s"]
+[ext_resource type="AudioStream" uid="uid://rok37wsvjfd3" path="res://assets/audio/music/The Clockwork Teardrop Parade.mp3" id="7_w217s"]
+[ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="11_kxcmb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fv0ke"]
+content_margin_left = 50.0
+content_margin_right = 50.0
+bg_color = Color(0.71, 0.630125, 0.5183, 0.78431374)
+border_width_top = 5
+border_color = Color(0, 0, 0, 1)
+
+[node name="EndSceneFailure" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i40q3")
+
+[node name="Captions" type="Label" parent="."]
+z_index = 10
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -170.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("2_kmv8d")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_fv0ke")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Backdrop" type="ColorRect" parent="."]
+z_index = -10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="GrandMonotonyScene" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="GrandMonotonyScene"]
+z_index = -5
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_i40q3")
+
+[node name="MudScene" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MudScene"]
+z_index = -5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_bhr15")
+
+[node name="ShootingStarsScene" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="ShootingStarsScene"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_w217s")
+
+[node name="TextToSpeech" parent="." instance=ExtResource("11_kxcmb")]
+
+[node name="Music" type="Node" parent="."]
+
+[node name="Default" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("7_w217s")
+bus = &"Music"

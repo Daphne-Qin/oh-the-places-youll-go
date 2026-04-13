@@ -129,7 +129,7 @@ script = ExtResource("1_iw5hr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jutkn")
-animation = &"idle_noclover"
+animation = &"idle_clover"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

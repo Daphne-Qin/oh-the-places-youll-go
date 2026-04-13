@@ -3,7 +3,7 @@ extends Control
 @onready var captions: Label = $Captions
 @onready var text_to_speech: Node = $TextToSpeech
 
-var tts_preload_dir = "res://assets/audio/text_to_speech_preloaded/"
+var tts_preload_dir = "res://assets/audio/text_to_speech_preloaded/end_scene_success/"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -32,11 +32,6 @@ func _ready() -> void:
 	
 	# make music louder
 	GameState.toggle_background_volume_dim(false)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 
 func _transition(prev_scene: Control, next_scene: Control, next_function: Callable) -> void:
@@ -90,7 +85,6 @@ func _horton_scene() -> void:
 	
 	text_to_speech.play_voice(tts_preload_dir + "horton2.mp3")
 	captions.text = "Safe on their clover, standing up tall!"
-	await get_tree().create_timer(text_to_speech.audio_length + 1).timeout
 
 
 func _baron_scene() -> void:
@@ -110,4 +104,3 @@ func _baron_scene() -> void:
 	
 	text_to_speech.play_voice(tts_preload_dir + "baron2.mp3")
 	captions.text = "His scheming is done, brave and bold!"
-	await get_tree().create_timer(text_to_speech.audio_length + 1).timeout
