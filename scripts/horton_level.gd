@@ -125,7 +125,6 @@ func _load_chat_interface() -> void:
 	chat_instance.horton_trusts_player.connect(_on_horton_trusts_player)
 	chat_instance.baron_wins.connect(_on_baron_wins)
 	chat_instance.whos_lost.connect(_on_whos_lost)
-	chat_instance.baron_drops_clover.connect(_on_baron_drops_clover)
 	print("[LEVEL] Chat interface loaded.")
 
 # ---------------------------------------------------------------------------
@@ -147,15 +146,7 @@ func _input(event: InputEvent) -> void:
 			chat_instance.open_chat("horton")
 		print("[LEVEL] Horton chat opened")
 
-	# Talk to Baron (only when Baron has the clover — negotiate to get it back)
-	elif is_near_baron and clover_state == "baron":
-		if chat_instance == null:
-			_load_chat_interface()
-		await get_tree().process_frame
-		chat_instance.show()
-		if chat_instance.has_method("open_chat"):
-			chat_instance.open_chat("baron")
-		print("[LEVEL] Baron chat opened")
+	# Baron has the clover — no more negotiation, level is already lost
 
 # ---------------------------------------------------------------------------
 # _process — chase resolution + clover handoff proximity
@@ -170,10 +161,7 @@ func _process(_delta: float) -> void:
 			_resolve_chase(true)
 		return
 
-	# Player carrying clover back to Horton
-	if clover_state == "player":
-		if player.global_position.distance_to(horton.global_position) < 160.0:
-			_return_clover_to_horton()
+	pass  # no clover-return mechanic — baron_wins goes straight to Cat level
 
 # ---------------------------------------------------------------------------
 # Horton area signals
@@ -262,32 +250,10 @@ func _resolve_chase(player_made_it: bool) -> void:
 		_start_next_chase_timer()
 	else:
 		print("[LEVEL] Chase resolved — Baron grabs the clover!")
-		clover_state = "baron"
-		if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("set_clover_state"):
-			chat_instance.set_clover_state("baron")
 		$Node2D.baron_grab_clover()
-		interaction_label.text = "Baron Von Bitey grabbed the clover! Get close to him and press [E] to negotiate!"
-
-# ---------------------------------------------------------------------------
-# Clover handoff — Baron drops clover
-# ---------------------------------------------------------------------------
-func _on_baron_drops_clover() -> void:
-	# Player is already near Baron (they were chatting), so give clover to player
-	clover_state = "player"
-	if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("set_clover_state"):
-		chat_instance.set_clover_state("player")
-	$Node2D.baron_drops_clover_visual()
-	interaction_label.text = "Baron dropped the clover! Bring it back to Horton!"
-	print("[LEVEL] Baron dropped the clover — player now holds it.")
-
-func _return_clover_to_horton() -> void:
-	clover_state = "horton"
-	if chat_instance and is_instance_valid(chat_instance) and chat_instance.has_method("set_clover_state"):
-		chat_instance.set_clover_state("horton")
-	$Node2D.horton_reclaim_clover()
-	interaction_label.text = "Horton has the clover! Continue decoding the Who messages..."
-	_start_next_chase_timer()
-	print("[LEVEL] Clover returned to Horton.")
+		# Treat this exactly like the chat-driven baron_wins outcome
+		GameState.baron_has_clover = true
+		_on_baron_wins()
 
 # ---------------------------------------------------------------------------
 # Interaction label helper
@@ -304,12 +270,7 @@ func _update_interaction_label() -> void:
 			else:
 				interaction_label.text = "Walk up to Horton the Elephant!"
 		"baron":
-			if is_near_baron:
-				interaction_label.text = "Press [E] to talk to Baron Von Bitey!"
-			else:
-				interaction_label.text = "Baron Von Bitey has the clover — get close to him!"
-		"player":
-			interaction_label.text = "Bring the clover back to Horton!"
+			interaction_label.text = "Baron Von Bitey grabbed the clover and is heading to the Cat's house!"
 
 # ---------------------------------------------------------------------------
 # Outcome handlers
@@ -329,23 +290,37 @@ func _on_horton_trusts_player() -> void:
 	level_select.show()
 
 func _on_baron_wins() -> void:
+	if outcome_triggered:
+		return
 	GameState.set_can_move(true)
 	outcome_triggered = true
 	chase_timer.stop()
 	chase_resolve_timer.stop()
-	print("[HortonLevel] FAIL 1 — Baron took the clover!")
+	chase_buffer_timer.stop()
+	is_chase_active = false
+	is_chase_buffer = false
+	GameState.baron_has_clover = true   # ensure set regardless of which path triggered
+	GameState.unlock_level("cat")
+	print("[HortonLevel] FAIL 1 — Baron took the clover! Routing to Cat (Boring) level.")
 	if chat_instance:
-		await get_tree().create_timer(4.0).timeout
+		await get_tree().create_timer(3.5).timeout
 		chat_instance.hide()
-	interaction_label.text = "Baron Von Bitey has taken the clover for his soup... The Whos are in terrible danger. Try again."
+	interaction_label.text = "Baron Von Bitey has taken the clover and is heading straight to the Cat's house. Get there before it's too late — open the storybook above."
+	level_select.show()
 
 func _on_whos_lost() -> void:
+	if outcome_triggered:
+		return
 	GameState.set_can_move(true)
 	outcome_triggered = true
 	chase_timer.stop()
 	chase_resolve_timer.stop()
+	chase_buffer_timer.stop()
+	is_chase_active = false
+	GameState.unlock_level("cat")   # Let player continue to Cat level even on this fail
 	print("[HortonLevel] FAIL 2 — The Whos were lost.")
 	if chat_instance:
 		await get_tree().create_timer(4.0).timeout
 		chat_instance.hide()
-	interaction_label.text = "The messages went undecoded for too long... The Whos needed your help. Try again."
+	interaction_label.text = "The messages went undecoded for too long... Hurry to the Cat's house. Open the storybook above."
+	level_select.show()
