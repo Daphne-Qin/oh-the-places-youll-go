@@ -464,7 +464,6 @@ scale = Vector2(0.4, 0.4)
 script = ExtResource("1_njgcu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(1937.4998, 1177.4999)
 sprite_frames = SubResource("SpriteFrames_yelc1")
 animation = &"soup_drink"
 
