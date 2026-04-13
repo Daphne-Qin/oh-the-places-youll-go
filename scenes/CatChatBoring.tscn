@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b20wd5dsb0qui"]
+
+[ext_resource type="Script" uid="uid://pr2074nda6b8" path="res://scripts/cat_chat_boring.gd" id="1_rlitv"]
+[ext_resource type="PackedScene" uid="uid://dlulxqr8ypjyh" path="res://scenes/speech_to_text.tscn" id="2_jdk7f"]
+[ext_resource type="PackedScene" uid="uid://btscgh4enexa5" path="res://scenes/text_to_speech.tscn" id="3_72lec"]
+
+[node name="CatChatBoring" type="Control"]
+z_index = 100
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rlitv")
+
+[node name="SpeechToText" parent="." instance=ExtResource("2_jdk7f")]
+
+[node name="TextToSpeech" parent="." instance=ExtResource("3_72lec")]
+
+[connection signal="voice_loaded" from="TextToSpeech" to="." method="_on_text_to_speech_voice_loaded"]
