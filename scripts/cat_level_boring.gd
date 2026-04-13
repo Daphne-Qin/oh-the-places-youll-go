@@ -1,42 +1,64 @@
 extends Control
 
-## Cat in the Hat Level Controller
-## Player talks to the Cat and gets recruited for the next adventure
+## Cat Level — Boring Path (baron_has_clover = true)
+## Cat has drunk the Mischief Minestrone and is agreeable / soup-compliant.
+## Baron walks in from offscreen with the clover and his job application.
+## Player must wake the Cat up via: chaos argument, Lorax lie callback, or compliance mirror.
 
 @onready var player: CharacterBody2D = $Node2D/Player
 @onready var cat: Area2D = $Node2D/Cat
+@onready var baron: Area2D = $Node2D/Baron
 @onready var current_music: AudioStreamPlayer = null
-@onready var level_complete = false
 
 var is_near_cat: bool = false
+var level_complete: bool = false
 var chat_instance: Control = null
 var level_select: Control = null
 
 func _ready() -> void:
 	GameState.enable_movement()
-	
-	cat.idle()
-	
+
+	# Cat has had the soup — play soup_drink animation, then settle into idle
+	cat.soup_drink()
+
 	_switch_music($Music/Default)
 
-	# Fix InteractionLabel — anchor to bottom center
-	var label = $InteractionLabel
-	label.text = "Walk up to the Cat in the Hat!"
+	$InteractionLabel.text = "The Cat in the Hat seems... different today."
 
-	# Camera limits (single screen)
+	# Camera (single screen)
 	var camera = $Node2D/Player/Camera2D
-	camera.limit_left = 0
-	camera.limit_right = 1280
-	camera.limit_top = 0
+	camera.limit_left   = 0
+	camera.limit_right  = 1280
+	camera.limit_top    = 0
 	camera.limit_bottom = 720
 
-	# Connect Cat area signals
+	# Connect Cat area signals for E-key interaction
 	cat.body_entered.connect(_on_cat_area_entered)
 	cat.body_exited.connect(_on_cat_area_exited)
 
-	# Level selector (hidden until win)
+	# Level selector (hidden until win/fail)
 	level_select = GameState.load_top_scene("res://scenes/LevelSelector.tscn")
 	level_select.hide()
+
+	# Walk Baron in from the right after a short delay
+	await get_tree().create_timer(1.5).timeout
+	_baron_walk_in()
+
+func _baron_walk_in() -> void:
+	if not is_instance_valid(baron):
+		return
+	baron.walk()
+	baron.flip_h(true)   # facing left (walking toward center)
+	var target_x = 980.0
+	var distance = baron.global_position.x - target_x
+	var duration = distance / 90.0   # ~90 px/s
+	var tween = create_tween()
+	tween.tween_property(baron, "global_position:x", target_x, max(0.1, duration))
+	await tween.finished
+	if is_instance_valid(baron):
+		baron.idle_clover()
+		baron.flip_h(false)
+	$InteractionLabel.text = "Baron Von Bitey has arrived with the clover! Walk up to the Cat."
 
 func _on_cat_area_entered(body: Node2D) -> void:
 	if body == player:
@@ -49,7 +71,7 @@ func _on_cat_area_exited(body: Node2D) -> void:
 		if not level_complete:
 			$InteractionLabel.text = "Walk up to the Cat in the Hat!"
 		else:
-			$InteractionLabel.text = "The adventure begins! Open the storybook above to continue!"
+			$InteractionLabel.text = "The Cat tore up the job application. Open the storybook above to continue!"
 
 func _input(event: InputEvent) -> void:
 	if not is_near_cat:
@@ -61,17 +83,15 @@ func _input(event: InputEvent) -> void:
 		chat_instance.show()
 		if chat_instance.has_method("open_chat"):
 			chat_instance.open_chat()
-		print("[CAT_LEVEL] Chat opened")
+		print("[CAT_LEVEL_BORING] Chat opened")
 
 func _load_chat_interface() -> void:
 	chat_instance = GameState.load_top_scene("res://scenes/CatChatBoring.tscn")
 	chat_instance.hide()
 	if chat_instance.has_signal("cat_adventure_begins"):
 		chat_instance.cat_adventure_begins.connect(_on_cat_adventure_begins)
-		print("[CAT_LEVEL] Connected cat_adventure_begins signal")
 	if chat_instance.has_signal("cat_bored_out"):
 		chat_instance.cat_bored_out.connect(_on_cat_bored_out)
-		print("[CAT_LEVEL] Connected cat_bored_out signal")
 
 func _on_cat_adventure_begins() -> void:
 	GameState.set_can_move(true)
@@ -79,26 +99,23 @@ func _on_cat_adventure_begins() -> void:
 	level_complete = true
 	if has_node("Music/Success"):
 		_switch_music($Music/Success)
+	# Cat woke up — idle animation
+	if is_instance_valid(cat):
+		cat.idle()
 	if chat_instance:
 		await get_tree().create_timer(3.0).timeout
 		chat_instance.hide()
-	# Two endings depending on whether Baron had the clover
-	if GameState.baron_has_clover:
-		# PATH B — Cat rejected Baron's job application
-		$InteractionLabel.text = "The Cat tore up the job application. The Chest is open. The forest returns. Open the storybook above to continue..."
-	else:
-		# PATH A — Player made the deal
-		$InteractionLabel.text = "The Chest is open! The Truffula seed and the clover, connected to everything they belong to. The adventure begins! Open the storybook above to continue..."
+	$InteractionLabel.text = "The Cat tore up the job application. The Chest is open. The forest returns. Open the storybook above to continue..."
 	level_select.show()
-	print("[CAT_LEVEL] WIN — baron_path=%s" % str(GameState.baron_has_clover))
+	print("[CAT_LEVEL_BORING] WIN — Cat rejected the Baron's job application!")
 
 func _on_cat_bored_out() -> void:
 	GameState.enable_movement()
 	if chat_instance:
 		chat_instance.hide()
-	$InteractionLabel.text = "The Cat has dismissed you. The storybook can take you somewhere else..."
+	$InteractionLabel.text = "The Cat signed the contract. Baron Von Bitey smiles. Try again from the storybook."
 	level_select.show()
-	print("[CAT_LEVEL] FAIL — opening level select for retry.")
+	print("[CAT_LEVEL_BORING] FAIL — Baron closed the deal.")
 
 # ---------------------------------------------------------------------------
 # Music crossfade

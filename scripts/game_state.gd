@@ -145,7 +145,10 @@ func go_to_level(level_id: String) -> void:
 	if is_level_unlocked(level_id):
 		current_level = level_id
 		var scene_path = levels[level_id].scene_path
-		print("[GameState] Navigating to level: ", level_id)
+		# Cat level routes to Boring or Fun version based on Horton outcome
+		if level_id == "cat":
+			scene_path = "res://scenes/CatLevelBoring.tscn" if baron_has_clover else "res://scenes/CatLevel.tscn"
+		print("[GameState] Navigating to level: %s (scene: %s)" % [level_id, scene_path])
 		get_tree().change_scene_to_file(scene_path)
 	else:
 		print("[GameState] Level is locked: ", level_id)

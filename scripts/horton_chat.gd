@@ -19,9 +19,9 @@ var _tts_timer: Timer
 # Signals
 # ---------------------------------------------------------------------------
 signal horton_trusts_player   # WIN — Whoville saved, Baron defeated
-signal baron_wins             # FAIL 1 — Baron took the clover (ran out of patience)
+signal baron_taking_clover    # FAIL 1 early — fires IMMEDIATELY when baron starts taking (before delay)
+signal baron_wins             # FAIL 1 — fires after cutscene delay, level shows map
 signal whos_lost              # FAIL 2 — Whos lost (messages ignored too long)
-signal baron_drops_clover     # Baron drops clover — player gets it, must return to Horton
 
 # ---------------------------------------------------------------------------
 # The 5 garbled Who messages (indexed by decode_stage 0-4)
@@ -87,6 +87,7 @@ var chat_mode: String = "horton"   # "horton" | "baron"
 
 # Decode mechanic
 var decode_stage: int = 0          # 0-5 (5 = all decoded)
+var consecutive_wrong: int = 0     # 3 in a row → Baron takes clover
 
 # Horton engagement
 var horton_engagement: int = 0
@@ -668,6 +669,7 @@ func _on_horton_response(message: String) -> void:
 	# Check: did player decode the current message?
 	if "[MESSAGE_DECODED]" in message and not outcome_triggered:
 		decode_stage += 1
+		consecutive_wrong = 0   # reset on success
 		print("[HORTON_CHAT] Message decoded! decode_stage=", decode_stage)
 		_update_decode_progress()
 		_add_narrator_message("★ Who message decoded! (" + str(decode_stage) + "/5) — " + DECODE_HINTS[decode_stage - 1])
@@ -680,6 +682,17 @@ func _on_horton_response(message: String) -> void:
 			if game_phase == "active":
 				_add_narrator_message("Horton strains to hear... a new fragment is forming from Whoville!")
 		return
+
+	# Track consecutive wrong attempts — 3 misses in a row and Baron takes his chance
+	if not _is_interjection_react and chat_mode == "horton" and game_phase == "active" and not outcome_triggered:
+		consecutive_wrong += 1
+		print("[HORTON_CHAT] consecutive_wrong=", consecutive_wrong)
+		if consecutive_wrong >= 3:
+			outcome_triggered = true
+			_add_narrator_message("Three failed attempts — Baron Von Bitey has seen enough. He moves!")
+			await get_tree().create_timer(1.0).timeout
+			_trigger_baron_move()
+			return
 
 	# Classic win / fail markers
 	# Note: outcome_triggered is set true before _trigger_jojo_finale() fires,

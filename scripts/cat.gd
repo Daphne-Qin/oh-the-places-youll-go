@@ -20,7 +20,7 @@ func idle(speed: float = 10.0) -> void:
 	sprite.sprite_frames.set_animation_speed("walk", speed)
 	sprite.play("idle")
 
-func soup_drnk(speed: float = 10.0) -> void:
+func soup_drink(speed: float = 10.0) -> void:
 	"""Plays the soup drink animation exactly once, and stops at the last frame."""
 	sprite.sprite_frames.set_animation_speed("soup_drink", speed)
 	sprite.sprite_frames.set_animation_loop("soup_drink", false)
