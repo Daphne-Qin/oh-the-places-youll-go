@@ -22,6 +22,7 @@ signal horton_trusts_player   # WIN — Whoville saved, Baron defeated
 signal baron_taking_clover    # FAIL 1 early — fires IMMEDIATELY when baron starts taking (before delay)
 signal baron_wins             # FAIL 1 — fires after cutscene delay, level shows map
 signal whos_lost              # FAIL 2 — Whos lost (messages ignored too long)
+signal baron_drops_clover     # Path B recovery — Baron drops clover after Cat dinner reveal
 
 # ---------------------------------------------------------------------------
 # The 5 garbled Who messages (indexed by decode_stage 0-4)
@@ -615,10 +616,12 @@ func _send_player_message() -> void:
 		_add_narrator_message("(Skip code accepted — triggering Horton win!)")
 		_trigger_jojo_finale()
 		return
-	if lower == "mischief minestrone":
-		# Baron immediately drops the clover — test the clover-return path
-		_add_narrator_message("(Skip code accepted — Baron drops the clover!)")
-		baron_drops_clover.emit()
+	if lower == "mischief minestrone" or lower == "give baron the clover for mischief":
+		# Skip code: immediately trigger baron-wins path → unlocks boring Cat level
+		if not outcome_triggered:
+			outcome_triggered = true
+			_add_narrator_message("(Skip code accepted — Baron takes the clover! Routing to Cat (Boring) level...)")
+			_handle_baron_wins()
 		return
 
 	# Talking to the Baron restores patience (and delays patrol)
@@ -769,8 +772,9 @@ func _on_baron_response(message: String) -> void:
 		return
 
 	# Baron patience fails → grabs clover
-	if "[BARON_TAKES_CLOVER]" in message and not outcome_triggered:
-		outcome_triggered = true
+	# Check game_phase instead of outcome_triggered: _trigger_baron_move sets outcome_triggered=true
+	# before the API call, so "not outcome_triggered" would always be false by the time we get here.
+	if "[BARON_TAKES_CLOVER]" in message and game_phase == "baron_attacking":
 		_handle_baron_wins()
 		return
 
@@ -907,6 +911,7 @@ func _trigger_jojo_finale() -> void:
 # ---------------------------------------------------------------------------
 func _trigger_baron_move() -> void:
 	game_phase = "baron_attacking"
+	baron_taking_clover.emit()   # stop level chase timers immediately, before API call
 	_add_message("*The Baron's patience has finally snapped! His dinner reservation will NOT be missed...*", "baron", true)
 	await get_tree().create_timer(1.5).timeout
 
@@ -962,6 +967,7 @@ func _handle_baron_wins() -> void:
 	game_phase = "fail_baron"
 	_patience_timer.stop()
 	_interjection_timer.stop()
+	baron_taking_clover.emit()   # fires IMMEDIATELY so level stops all chase timers
 
 	if sprites_node and sprites_node.has_method("baron_make_move_for_clover"):
 		sprites_node.baron_make_move_for_clover()

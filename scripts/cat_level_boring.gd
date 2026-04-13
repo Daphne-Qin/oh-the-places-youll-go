@@ -99,23 +99,21 @@ func _on_cat_adventure_begins() -> void:
 	level_complete = true
 	if has_node("Music/Success"):
 		_switch_music($Music/Success)
-	# Cat woke up — idle animation
 	if is_instance_valid(cat):
 		cat.idle()
 	if chat_instance:
 		await get_tree().create_timer(3.0).timeout
 		chat_instance.hide()
-	$InteractionLabel.text = "The Cat tore up the job application. The Chest is open. The forest returns. Open the storybook above to continue..."
-	level_select.show()
-	print("[CAT_LEVEL_BORING] WIN — Cat rejected the Baron's job application!")
+	print("[CAT_LEVEL_BORING] WIN — transitioning to EndSceneSuccess")
+	await get_tree().create_timer(0.5).timeout
+	get_tree().change_scene_to_file("res://scenes/EndSceneSuccess.tscn")
 
 func _on_cat_bored_out() -> void:
-	GameState.enable_movement()
 	if chat_instance:
 		chat_instance.hide()
-	$InteractionLabel.text = "The Cat signed the contract. Baron Von Bitey smiles. Try again from the storybook."
-	level_select.show()
-	print("[CAT_LEVEL_BORING] FAIL — Baron closed the deal.")
+	print("[CAT_LEVEL_BORING] FAIL — Baron closed the deal — transitioning to EndSceneFailure")
+	await get_tree().create_timer(1.0).timeout
+	get_tree().change_scene_to_file("res://scenes/EndSceneFailure.tscn")
 
 # ---------------------------------------------------------------------------
 # Music crossfade

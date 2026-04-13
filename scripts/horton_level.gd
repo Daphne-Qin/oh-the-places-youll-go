@@ -123,6 +123,7 @@ func _load_chat_interface() -> void:
 	if chat_instance.has_method("set_sprites_node"):
 		chat_instance.set_sprites_node($Node2D)
 	chat_instance.horton_trusts_player.connect(_on_horton_trusts_player)
+	chat_instance.baron_taking_clover.connect(_on_baron_taking_clover)
 	chat_instance.baron_wins.connect(_on_baron_wins)
 	chat_instance.whos_lost.connect(_on_whos_lost)
 	print("[LEVEL] Chat interface loaded.")
@@ -134,6 +135,8 @@ func _input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and event.keycode == KEY_E):
 		return
 	if is_chase_active or is_chase_buffer:
+		return
+	if outcome_triggered:
 		return
 
 	# Talk to Horton (only when Horton has the clover — normal flow)
@@ -289,8 +292,24 @@ func _on_horton_trusts_player() -> void:
 	interaction_label.text = "The Whos are saved! An elephant's faithful, one hundred percent. Open the storybook above to continue..."
 	level_select.show()
 
-func _on_baron_wins() -> void:
+func _on_baron_taking_clover() -> void:
+	# Fires IMMEDIATELY when baron starts taking (before the cutscene delay in chat)
+	# Stop all chase machinery right away so nothing re-fires during the delay
 	if outcome_triggered:
+		return
+	outcome_triggered = true
+	chase_timer.stop()
+	chase_resolve_timer.stop()
+	chase_buffer_timer.stop()
+	is_chase_active = false
+	is_chase_buffer = false
+	GameState.baron_has_clover = true
+
+func _on_baron_wins() -> void:
+	# outcome_triggered may already be true from _on_baron_taking_clover — that's fine,
+	# we still need to do the UI/level-select work here.
+	# Guard only against double baron_wins (use a separate flag via level_select visibility).
+	if level_select and level_select.visible:
 		return
 	GameState.set_can_move(true)
 	outcome_triggered = true

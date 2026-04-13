@@ -3,9 +3,10 @@ extends Control
 ## Cat in the Hat Chat UI — Dual Path System
 ## PATH A (baron_has_clover=false): 7-beat deal negotiation, deal_progress 0→3
 ##   WIN: deal_progress >= 3 → cat_adventure_begins
-## PATH B (baron_has_clover=true): Cat ate Baron's soup, is compliant/boring
-##   WIN: cat_wakeup_stage >= 3 → cat_adventure_begins
-##   Methods: targeted chaos / catch Baron's lie / make Cat notice his own compliance
+## PATH B (baron_has_clover=true): Cat ate Baron's soup — dual meter race
+##   cat_awakeness 0-100 (player pushes this up) vs baron_persuasion 0-100 (auto-ticks up)
+##   WIN: cat_awakeness >= 75 → Cat wakes, tears up job application → cat_adventure_begins
+##   LOSE: baron_persuasion >= 100 → Cat signs, hat goes gray → cat_bored_out
 
 
 # speech to text
@@ -45,7 +46,8 @@ const BEAT_NAMES := [
 # Deal / wakeup stage labels
 # ---------------------------------------------------------------------------
 const DEAL_STAGES   := ["Skeptical", "Intrigued", "Convinced", "Deal Closed!"]
-const WAKEUP_STAGES := ["...agreeable. Too agreeable.", "Flickering...", "Waking up...", "FULLY AWAKE!"]
+const WAKEUP_STAGES  := ["...agreeable. Too agreeable.", "Flickering...", "Waking up...", "FULLY AWAKE!"]
+const BARON_STAGES   := ["Pitching...", "Cat is nodding...", "Pen in hand...", "DEAL SIGNED"]
 
 # ---------------------------------------------------------------------------
 # UI nodes (built in _build_ui)
@@ -60,6 +62,7 @@ var _send_button: Button
 var _mic_button: Button
 var _cat_status: Label
 var _progress_label: Label
+var _baron_label: Label
 var _beat_label: Label
 
 # ---------------------------------------------------------------------------
@@ -81,6 +84,8 @@ var narrative_beat: int = 0            # 0–6
 # Path B — wakeup mechanic
 var cat_wakeup_stage: int = 0          # 0→3 (soup-compliant → fully awake)
 var baron_speak_counter: int = 0       # how many Cat turns have elapsed in Path B
+var baron_persuasion: int = 0          # 0–100: auto-ticks up; wins at 100
+var baron_persuasion_stage: int = 0    # 0–3: lose-arc stage for narration
 var last_player_message: String = ""
 
 # Shared tracking
@@ -199,6 +204,14 @@ func _build_ui() -> void:
 	_progress_label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.4, 1.0))
 	_progress_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	meters_col.add_child(_progress_label)
+
+	_baron_label = Label.new()
+	_baron_label.text = ""
+	_baron_label.add_theme_font_size_override("font_size", 11)
+	_baron_label.add_theme_color_override("font_color", Color(0.8, 0.45, 1.0, 1.0))
+	_baron_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_baron_label.visible = false
+	meters_col.add_child(_baron_label)
 
 	var close_btn = Button.new()
 	close_btn.text = "✕"
@@ -391,6 +404,7 @@ func _request_cat_response(user_message: String) -> void:
 		"player_has_seed":     player_has_seed,
 		"baron_has_clover":    is_baron_path,
 		"baron_arriving_soon": false,
+		"baron_persuasion":    baron_persuasion,
 		"times_player_bored_you": times_player_bored_you
 	}
 	APIManager.send_message_to_cat(user_message, conversation_history, game_state)
@@ -468,6 +482,9 @@ func _on_cat_response(raw: String) -> void:
 	if happiness_delta < 0 and chaos_delta <= 0:
 		consecutive_boring += 1
 		times_player_bored_you = consecutive_boring
+		# In Path B a boring turn lets the Baron's pitch sink in deeper
+		if is_baron_path:
+			_advance_baron_persuasion(5)
 	else:
 		consecutive_boring = 0
 
@@ -507,9 +524,9 @@ func _on_cat_response(raw: String) -> void:
 			return
 
 	# ----------------------------------------------------------------
-	# LOSE: too boring
+	# LOSE: too boring (Path A only — Path B loss is baron_persuasion)
 	# ----------------------------------------------------------------
-	if flags.get("bored_out", false) or consecutive_boring >= 5:
+	if not is_baron_path and (flags.get("bored_out", false) or consecutive_boring >= 5):
 		outcome_triggered = true
 		_lock_input()
 		await get_tree().create_timer(2.0).timeout
@@ -517,14 +534,11 @@ func _on_cat_response(raw: String) -> void:
 		return
 
 	# ----------------------------------------------------------------
-	# LOSE — Path B only: Baron signs the deal (Cat never woke up)
+	# LOSE — Path B only: Baron signs the deal (LLM shortcut flag)
+	# Treating this as a big persuasion spike — let _advance_baron_persuasion handle narration
 	# ----------------------------------------------------------------
 	if is_baron_path and flags.get("baron_signed_deal", false):
-		outcome_triggered = true
-		_lock_input()
-		_add_narrator_message("The Baron produces a fountain pen. The Cat nods pleasantly. The contract is signed.")
-		await get_tree().create_timer(2.5).timeout
-		cat_bored_out.emit()
+		_advance_baron_persuasion(100)   # instant max
 		return
 
 	# ----------------------------------------------------------------
@@ -573,6 +587,8 @@ func _on_baron_response(raw: String) -> void:
 		conversation_history.append({"label": "Baron", "text": dialogue})
 		await get_tree().process_frame
 		_scroll_container.scroll_vertical = int(_scroll_container.get_v_scroll_bar().max_value)
+		# Every time Baron gets an unchallenged pitch in, his persuasion ticks up
+		_advance_baron_persuasion(12)
 
 func _on_baron_failed(_error: String) -> void:
 	# Baron silence is fine — just skip his turn
@@ -647,6 +663,45 @@ func _add_narrator_message(text: String) -> void:
 	await get_tree().process_frame
 	_scroll_container.scroll_vertical = int(_scroll_container.get_v_scroll_bar().max_value)
 
+# ---------------------------------------------------------------------------
+# Baron persuasion meter (Path B only)
+# ---------------------------------------------------------------------------
+func _advance_baron_persuasion(amount: int) -> void:
+	if not is_baron_path or outcome_triggered:
+		return
+
+	baron_persuasion = min(baron_persuasion + amount, 100)
+	_update_meters()
+
+	# Stage thresholds: 0→1 at 25, 1→2 at 60, 2→3 at 100
+	var new_stage: int
+	if baron_persuasion >= 100:
+		new_stage = 3
+	elif baron_persuasion >= 60:
+		new_stage = 2
+	elif baron_persuasion >= 25:
+		new_stage = 1
+	else:
+		new_stage = 0
+
+	if new_stage > baron_persuasion_stage:
+		baron_persuasion_stage = new_stage
+		match baron_persuasion_stage:
+			1:
+				_add_narrator_message("The Cat begins finishing the Baron's sentences — but in the Baron's voice, not his own.")
+			2:
+				_add_narrator_message("The Baron slides the job application across the table. The Cat picks up the pen.")
+			3:
+				# Loss — Cat signs
+				if not outcome_triggered:
+					outcome_triggered = true
+					_lock_input()
+					_add_narrator_message("The Cat signs. The hat droops. The stripes go gray.")
+					await get_tree().create_timer(1.0).timeout
+					_add_narrator_message("\"And that was the day chaos got a corporate sponsor.\"")
+					await get_tree().create_timer(2.5).timeout
+					cat_bored_out.emit()
+
 func _update_meters() -> void:
 	if is_baron_path:
 		# PATH B — show Cat wakeup stage
@@ -661,6 +716,22 @@ func _update_meters() -> void:
 				_progress_label.add_theme_color_override("font_color", Color(1.0, 0.6, 0.1, 1.0))
 			3:
 				_progress_label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3, 1.0))
+
+		# Baron persuasion bar — ▓ filled, ░ empty
+		var filled := int(baron_persuasion / 10)
+		var bar := "▓".repeat(filled) + "░".repeat(10 - filled)
+		var b_stage_idx = clamp(baron_persuasion_stage, 0, BARON_STAGES.size() - 1)
+		_baron_label.text = "Baron: %s  %d%%  %s" % [bar, baron_persuasion, BARON_STAGES[b_stage_idx]]
+		_baron_label.visible = true
+		match baron_persuasion_stage:
+			0:
+				_baron_label.add_theme_color_override("font_color", Color(0.7, 0.5, 0.9, 1.0))
+			1:
+				_baron_label.add_theme_color_override("font_color", Color(0.9, 0.6, 0.2, 1.0))
+			2:
+				_baron_label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3, 1.0))
+			3:
+				_baron_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 1.0))
 
 		# Status line
 		match cat_wakeup_stage:
