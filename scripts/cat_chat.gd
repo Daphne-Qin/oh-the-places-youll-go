@@ -379,6 +379,28 @@ func _send_player_message() -> void:
 	var text = _input_field.text.strip_edges()
 	if text.is_empty() or waiting_for_cat or outcome_triggered:
 		return
+
+	# ---- Skip codes ----
+	var lower = text.to_lower()
+	if lower == "one fish two fish":
+		_input_field.text = ""
+		if not outcome_triggered:
+			outcome_triggered = true
+			_lock_input()
+			_add_narrator_message("(Skip code accepted — Cat wins! Adventure begins!)")
+			await get_tree().create_timer(1.0).timeout
+			cat_adventure_begins.emit()
+		return
+	if lower == "i do not like them sam i am":
+		_input_field.text = ""
+		if not outcome_triggered:
+			outcome_triggered = true
+			_lock_input()
+			_add_narrator_message("(Skip code accepted — Cat loses! Boring ending...)")
+			await get_tree().create_timer(1.0).timeout
+			cat_bored_out.emit()
+		return
+
 	_input_field.text = ""
 	player_turn_count += 1
 	last_player_message = text
