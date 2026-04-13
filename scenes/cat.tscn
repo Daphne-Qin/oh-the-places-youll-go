@@ -367,7 +367,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"soup_drink",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -466,6 +466,8 @@ script = ExtResource("1_njgcu")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_yelc1")
 animation = &"soup_drink"
+frame = 53
+frame_progress = 0.150743
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-7.5000367, 74.99997)
