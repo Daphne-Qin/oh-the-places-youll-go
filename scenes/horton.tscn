@@ -1,104 +1,506 @@
-[gd_scene load_steps=99 format=3 uid="uid://dbspppe0v0mbs"]
+[gd_scene load_steps=197 format=3 uid="uid://dbspppe0v0mbs"]
 
 [ext_resource type="Script" uid="uid://y8ue88hru06o" path="res://scripts/horton.gd" id="1_1u062"]
 [ext_resource type="Texture2D" uid="uid://bjsvl70anvhv4" path="res://assets/sprites/horton/walk_clover/walk_clover_00.png" id="1_lqle6"]
 [ext_resource type="Texture2D" uid="uid://bftn1m4d4243l" path="res://assets/sprites/horton/walk_clover/walk_clover_01.png" id="2_1u062"]
+[ext_resource type="Texture2D" uid="uid://dvuy6qvgaaeos" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_00.png" id="2_hr3yq"]
 [ext_resource type="Texture2D" uid="uid://3khxukdd0wrj" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_00.png" id="2_nf34s"]
 [ext_resource type="Texture2D" uid="uid://bcxt5r6r51brb" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_01.png" id="3_eknho"]
 [ext_resource type="Texture2D" uid="uid://dtbrqfw3jltg" path="res://assets/sprites/horton/walk_clover/walk_clover_02.png" id="3_jmpoe"]
+[ext_resource type="Texture2D" uid="uid://b68onp463j82v" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_01.png" id="3_q0tw2"]
 [ext_resource type="Texture2D" uid="uid://cfjth3ftxnwmw" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_02.png" id="4_5k11n"]
 [ext_resource type="Texture2D" uid="uid://dosxmxtwu64hh" path="res://assets/sprites/horton/walk_clover/walk_clover_03.png" id="4_awkrr"]
+[ext_resource type="Texture2D" uid="uid://dtk6oungrklx1" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_02.png" id="4_bke2t"]
 [ext_resource type="Texture2D" uid="uid://c0pxsmgk5pkwj" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_03.png" id="5_d1ks1"]
 [ext_resource type="Texture2D" uid="uid://btqreiu0s4jmj" path="res://assets/sprites/horton/walk_clover/walk_clover_04.png" id="5_iga46"]
+[ext_resource type="Texture2D" uid="uid://b24fa35mh1oka" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_03.png" id="5_ql7lw"]
 [ext_resource type="Texture2D" uid="uid://d4hg5wlq2mvh2" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_04.png" id="6_ekx1x"]
+[ext_resource type="Texture2D" uid="uid://crfcls1sgft0t" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_04.png" id="6_mebc2"]
 [ext_resource type="Texture2D" uid="uid://c300cahyd0ebn" path="res://assets/sprites/horton/walk_clover/walk_clover_05.png" id="6_sxvo0"]
 [ext_resource type="Texture2D" uid="uid://dluijpnvhmtol" path="res://assets/sprites/horton/walk_clover/walk_clover_06.png" id="7_7gcob"]
+[ext_resource type="Texture2D" uid="uid://c75aos1mspm5q" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_05.png" id="7_ig3av"]
 [ext_resource type="Texture2D" uid="uid://c8n0qhn7aj3vv" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_05.png" id="7_ok3us"]
 [ext_resource type="Texture2D" uid="uid://c4euoygcljpr7" path="res://assets/sprites/horton/walk_clover/walk_clover_07.png" id="8_vdncy"]
+[ext_resource type="Texture2D" uid="uid://dace4rey0jepe" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_06.png" id="8_x2eff"]
 [ext_resource type="Texture2D" uid="uid://dkfhrchd3negh" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_06.png" id="8_y8oad"]
 [ext_resource type="Texture2D" uid="uid://digwpho4aqm2y" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_07.png" id="9_1hmji"]
+[ext_resource type="Texture2D" uid="uid://dhgpeqlcsonie" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_07.png" id="9_g46tg"]
 [ext_resource type="Texture2D" uid="uid://cs6sr5gafcrtx" path="res://assets/sprites/horton/walk_clover/walk_clover_08.png" id="9_tmfgf"]
 [ext_resource type="Texture2D" uid="uid://drlg6bsmq1ghi" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_08.png" id="10_rbnsx"]
+[ext_resource type="Texture2D" uid="uid://birakyylmvttc" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_08.png" id="10_xp41c"]
 [ext_resource type="Texture2D" uid="uid://bmcn7aslfjbvp" path="res://assets/sprites/horton/walk_clover/walk_clover_09.png" id="10_yxi58"]
+[ext_resource type="Texture2D" uid="uid://jnu5kjeeig2b" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_09.png" id="11_1cebb"]
 [ext_resource type="Texture2D" uid="uid://b6m6tjqaob2ro" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_09.png" id="11_gm5po"]
 [ext_resource type="Texture2D" uid="uid://b0hucr823faeg" path="res://assets/sprites/horton/walk_clover/walk_clover_10.png" id="11_wbloq"]
 [ext_resource type="Texture2D" uid="uid://daupg0x5gxpuf" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_10.png" id="12_d0xtn"]
 [ext_resource type="Texture2D" uid="uid://dgjyp1oljknrm" path="res://assets/sprites/horton/walk_clover/walk_clover_11.png" id="12_f4ldy"]
+[ext_resource type="Texture2D" uid="uid://oh8ff7ol3woc" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_10.png" id="12_iiu21"]
+[ext_resource type="Texture2D" uid="uid://dihish6f5367a" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_11.png" id="13_cr108"]
 [ext_resource type="Texture2D" uid="uid://cf44gp784e06s" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_11.png" id="13_i6xsr"]
 [ext_resource type="Texture2D" uid="uid://chaj1ynp7rrx3" path="res://assets/sprites/horton/walk_clover/walk_clover_12.png" id="13_im0fw"]
 [ext_resource type="Texture2D" uid="uid://dmrjsbshv0ogt" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_12.png" id="14_4vf7h"]
 [ext_resource type="Texture2D" uid="uid://oui5eqmf0tm2" path="res://assets/sprites/horton/walk_clover/walk_clover_13.png" id="14_ph23r"]
+[ext_resource type="Texture2D" uid="uid://btqua8kruk5fp" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_12.png" id="14_pjl6l"]
 [ext_resource type="Texture2D" uid="uid://cqo33536gd7rj" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_13.png" id="15_3mqfx"]
 [ext_resource type="Texture2D" uid="uid://csx0vv0i0ctiq" path="res://assets/sprites/horton/walk_clover/walk_clover_14.png" id="15_fr0p5"]
+[ext_resource type="Texture2D" uid="uid://kajn1qjiax5g" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_13.png" id="15_t6r0b"]
+[ext_resource type="Texture2D" uid="uid://cooepcj771uvx" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_14.png" id="16_caj5g"]
 [ext_resource type="Texture2D" uid="uid://bd8le5p7cm8cf" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_14.png" id="16_v3pne"]
 [ext_resource type="Texture2D" uid="uid://bwtvuc36cyxc0" path="res://assets/sprites/horton/walk_clover/walk_clover_15.png" id="16_x3kvx"]
+[ext_resource type="Texture2D" uid="uid://daqgqr77sd3a5" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_15.png" id="17_3brsl"]
 [ext_resource type="Texture2D" uid="uid://nyajs6y6jflt" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_15.png" id="17_mvssp"]
 [ext_resource type="Texture2D" uid="uid://dneciotxeo1a6" path="res://assets/sprites/horton/walk_clover/walk_clover_16.png" id="17_owfex"]
 [ext_resource type="Texture2D" uid="uid://cr0hbnrhqponr" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_16.png" id="18_0f0oj"]
 [ext_resource type="Texture2D" uid="uid://dor6i8excnipa" path="res://assets/sprites/horton/walk_clover/walk_clover_17.png" id="18_nkhio"]
+[ext_resource type="Texture2D" uid="uid://dxetdjv1c41ls" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_16.png" id="18_uq6hx"]
+[ext_resource type="Texture2D" uid="uid://bhcj1b2oaa2fq" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_17.png" id="19_0pkae"]
 [ext_resource type="Texture2D" uid="uid://bqnew7n5qlh3b" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_17.png" id="19_fowl6"]
 [ext_resource type="Texture2D" uid="uid://44qymtp6offj" path="res://assets/sprites/horton/walk_clover/walk_clover_18.png" id="19_unkey"]
 [ext_resource type="Texture2D" uid="uid://bab8lb43et3jd" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_18.png" id="20_5ssqv"]
 [ext_resource type="Texture2D" uid="uid://dwbvlnakeqmbi" path="res://assets/sprites/horton/walk_clover/walk_clover_19.png" id="20_ajgdi"]
+[ext_resource type="Texture2D" uid="uid://b65xgd8o12r1r" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_18.png" id="20_xeudm"]
+[ext_resource type="Texture2D" uid="uid://dbsrp7r0atsxo" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_19.png" id="21_3d3jh"]
 [ext_resource type="Texture2D" uid="uid://cvhqvi5kphw21" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_19.png" id="21_hqiad"]
 [ext_resource type="Texture2D" uid="uid://b2jg1a3ctqvml" path="res://assets/sprites/horton/walk_clover/walk_clover_20.png" id="21_x17it"]
 [ext_resource type="Texture2D" uid="uid://cdmb3c77spjyk" path="res://assets/sprites/horton/walk_clover/walk_clover_21.png" id="22_oh17o"]
 [ext_resource type="Texture2D" uid="uid://cxsw8hc752fr2" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_20.png" id="22_u2qtu"]
+[ext_resource type="Texture2D" uid="uid://bjpahmu6gle64" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_20.png" id="22_ububw"]
+[ext_resource type="Texture2D" uid="uid://cr47ueg6uilry" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_21.png" id="23_8dy12"]
 [ext_resource type="Texture2D" uid="uid://buk77ep8v6vgg" path="res://assets/sprites/horton/walk_clover/walk_clover_22.png" id="23_a77hv"]
 [ext_resource type="Texture2D" uid="uid://cs624h7bv3sjx" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_21.png" id="23_hq6nf"]
+[ext_resource type="Texture2D" uid="uid://cmbgiixpwxtyi" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_22.png" id="24_4sbh1"]
 [ext_resource type="Texture2D" uid="uid://dvnbxacs7wpmj" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_22.png" id="24_ryrbv"]
 [ext_resource type="Texture2D" uid="uid://dnxhu0vn2a2qd" path="res://assets/sprites/horton/walk_clover/walk_clover_23.png" id="24_yy2ma"]
 [ext_resource type="Texture2D" uid="uid://bxl7jf1bcl0mr" path="res://assets/sprites/horton/walk_clover/walk_clover_24.png" id="25_b8km8"]
+[ext_resource type="Texture2D" uid="uid://frlmfdm0x3oi" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_23.png" id="25_hbp4g"]
 [ext_resource type="Texture2D" uid="uid://cvjntcyf5el80" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_23.png" id="25_khaa6"]
 [ext_resource type="Texture2D" uid="uid://bu0oabfu5ta1f" path="res://assets/sprites/horton/walk_clover/walk_clover_25.png" id="26_asa6u"]
 [ext_resource type="Texture2D" uid="uid://cnjxy1uf7ee8s" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_24.png" id="26_cwvn1"]
+[ext_resource type="Texture2D" uid="uid://cgcqq30mcek8u" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_24.png" id="26_kp8yp"]
 [ext_resource type="Texture2D" uid="uid://dhacetpl7iix1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_00.png" id="27_5cwcr"]
 [ext_resource type="Texture2D" uid="uid://d4f7ugijvw4gc" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_25.png" id="27_ib5ub"]
+[ext_resource type="Texture2D" uid="uid://q2tj2cwgde3g" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_25.png" id="27_pby8a"]
+[ext_resource type="Texture2D" uid="uid://ttnvhs3ovpym" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_26.png" id="28_4uneh"]
 [ext_resource type="Texture2D" uid="uid://bvgf5hn21ub5e" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_01.png" id="28_tifhd"]
 [ext_resource type="Texture2D" uid="uid://nu8dfgu1klx0" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_26.png" id="28_v2p7r"]
 [ext_resource type="Texture2D" uid="uid://c311x34jfcxoh" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_02.png" id="29_3qbdr"]
 [ext_resource type="Texture2D" uid="uid://dpiawentonv2x" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_27.png" id="29_gbkdx"]
+[ext_resource type="Texture2D" uid="uid://bwspqa3p2ehoq" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_27.png" id="29_vh6g1"]
 [ext_resource type="Texture2D" uid="uid://c3ei7o00n5lk0" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_28.png" id="30_4aoag"]
 [ext_resource type="Texture2D" uid="uid://hku50o3polwa" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_03.png" id="30_k8xap"]
+[ext_resource type="Texture2D" uid="uid://d1rblxm4v3gbk" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_28.png" id="30_o1uvj"]
 [ext_resource type="Texture2D" uid="uid://bli7c6bjd8sde" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_04.png" id="31_3co75"]
+[ext_resource type="Texture2D" uid="uid://copse2soaeod4" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_29.png" id="31_dslej"]
 [ext_resource type="Texture2D" uid="uid://bjck4qemvuwmv" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_29.png" id="31_xyqsw"]
 [ext_resource type="Texture2D" uid="uid://bt44ftt4twts5" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_05.png" id="32_2o2lu"]
 [ext_resource type="Texture2D" uid="uid://db2hkcxg8qu3s" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_30.png" id="32_exvti"]
+[ext_resource type="Texture2D" uid="uid://brdu7vhmo86vx" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_30.png" id="32_qdqbd"]
 [ext_resource type="Texture2D" uid="uid://2vpb5i2kjuq" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_31.png" id="33_2tgek"]
+[ext_resource type="Texture2D" uid="uid://bg7y8gdu14t65" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_31.png" id="33_3aay1"]
 [ext_resource type="Texture2D" uid="uid://x0ido7jg3pia" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_06.png" id="33_sxt33"]
 [ext_resource type="Texture2D" uid="uid://b0qcebmto5bfc" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_32.png" id="34_2udcq"]
 [ext_resource type="Texture2D" uid="uid://ca40yi6hho4wc" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_07.png" id="34_4gqkg"]
+[ext_resource type="Texture2D" uid="uid://b5vniuwxaxuo4" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_32.png" id="34_uemf7"]
 [ext_resource type="Texture2D" uid="uid://3rofg3g1jc06" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_08.png" id="35_2hv7d"]
 [ext_resource type="Texture2D" uid="uid://q7ap5nhoydid" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_33.png" id="35_lvvan"]
+[ext_resource type="Texture2D" uid="uid://chkr274hdjemu" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_33.png" id="35_m00fm"]
 [ext_resource type="Texture2D" uid="uid://bxt7vwlndlom3" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_09.png" id="36_565kx"]
+[ext_resource type="Texture2D" uid="uid://qhbp2k2qr74i" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_34.png" id="36_hu55h"]
 [ext_resource type="Texture2D" uid="uid://djtko5rxia5ox" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_34.png" id="36_t1uxx"]
 [ext_resource type="Texture2D" uid="uid://8jr5jrxgqsdi" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_35.png" id="37_1ypel"]
+[ext_resource type="Texture2D" uid="uid://rriq5gn2s3bs" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_35.png" id="37_4qlqe"]
 [ext_resource type="Texture2D" uid="uid://iokuuompu056" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_10.png" id="37_84nus"]
 [ext_resource type="Texture2D" uid="uid://bwq4fds84sbjp" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_36.png" id="38_atq0e"]
+[ext_resource type="Texture2D" uid="uid://cdqclvtsyfuex" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_36.png" id="38_g50tr"]
 [ext_resource type="Texture2D" uid="uid://cqnboxvl36i30" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_11.png" id="38_ifdf1"]
 [ext_resource type="Texture2D" uid="uid://w5fqaee8ibbv" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_37.png" id="39_6grtn"]
 [ext_resource type="Texture2D" uid="uid://dy1qoc2anjbb5" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_12.png" id="39_l8ypv"]
+[ext_resource type="Texture2D" uid="uid://c2sgdt7qgqapm" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_37.png" id="39_pap63"]
+[ext_resource type="Texture2D" uid="uid://b0sd5gl8lakge" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_39.png" id="40_0dnus"]
 [ext_resource type="Texture2D" uid="uid://b8st26pwoqpgx" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_13.png" id="40_06sra"]
 [ext_resource type="Texture2D" uid="uid://bs7gls2a01c8d" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_38.png" id="40_aheh6"]
+[ext_resource type="Texture2D" uid="uid://c4jl21o8l6wpo" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_38.png" id="40_q0tw2"]
+[ext_resource type="Texture2D" uid="uid://b3qk3cpukugq7" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_40.png" id="41_7y6wd"]
 [ext_resource type="Texture2D" uid="uid://pmahmo72g0ky" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_14.png" id="41_d2goj"]
 [ext_resource type="Texture2D" uid="uid://58sbdn7gev6" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_39.png" id="41_kars2"]
 [ext_resource type="Texture2D" uid="uid://8i4litb3hgs4" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_40.png" id="42_o5qaa"]
+[ext_resource type="Texture2D" uid="uid://dldgb3ovuarky" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_41.png" id="42_rmc2v"]
 [ext_resource type="Texture2D" uid="uid://dqt8udqsm8v36" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_15.png" id="42_w3xpn"]
 [ext_resource type="Texture2D" uid="uid://bi8y04r8u7sbk" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_41.png" id="43_akr55"]
+[ext_resource type="Texture2D" uid="uid://ds7iofj2dn0no" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_42.png" id="43_e1f0q"]
 [ext_resource type="Texture2D" uid="uid://wq5e6hwpescq" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_16.png" id="43_honp3"]
+[ext_resource type="Texture2D" uid="uid://b845y544rx06q" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_43.png" id="44_75rut"]
 [ext_resource type="Texture2D" uid="uid://bqbt645ya8qpr" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_42.png" id="44_ch40t"]
 [ext_resource type="Texture2D" uid="uid://scv7ub34hwa3" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_17.png" id="44_l6snr"]
+[ext_resource type="Texture2D" uid="uid://cmec1e1klyx5y" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_44.png" id="45_3qjkv"]
 [ext_resource type="Texture2D" uid="uid://dpa0hpek6m6kb" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_18.png" id="45_ge13y"]
 [ext_resource type="Texture2D" uid="uid://b2vlwxi2i1f7i" path="res://assets/sprites/horton/idle_happy_clover/idle_happy_clover_43.png" id="45_i1srr"]
+[ext_resource type="Texture2D" uid="uid://dy3vkbvmufdc4" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_45.png" id="46_fupnt"]
 [ext_resource type="Texture2D" uid="uid://bqx3wgyc3gcb" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_19.png" id="46_nf34s"]
 [ext_resource type="Texture2D" uid="uid://d0qlxguiui4a1" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_20.png" id="47_eknho"]
+[ext_resource type="Texture2D" uid="uid://b38vc1vv8nwdv" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_46.png" id="47_ujlly"]
 [ext_resource type="Texture2D" uid="uid://cvlkyrap286vk" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_21.png" id="48_5k11n"]
+[ext_resource type="Texture2D" uid="uid://b71xdyaq7pru5" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_47.png" id="48_r36ij"]
+[ext_resource type="Texture2D" uid="uid://dvt0v1f82a8g8" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_48.png" id="49_8bo30"]
 [ext_resource type="Texture2D" uid="uid://ch0ifcqnnftgv" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_22.png" id="49_d1ks1"]
+[ext_resource type="Texture2D" uid="uid://ce8urv6yliusu" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_49.png" id="50_3hi5x"]
 [ext_resource type="Texture2D" uid="uid://4uplbssiwk6x" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_23.png" id="50_ekx1x"]
+[ext_resource type="Texture2D" uid="uid://60jag36qp6yp" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_50.png" id="51_lvpvu"]
 [ext_resource type="Texture2D" uid="uid://d14y42dn57ima" path="res://assets/sprites/horton/walk_noclover/horton_walk_noclover_24.png" id="51_ok3us"]
+[ext_resource type="Texture2D" uid="uid://ce2nce5ln7djs" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_51.png" id="52_ebrqd"]
+[ext_resource type="Texture2D" uid="uid://ufiyou7xrvdv" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_52.png" id="53_qg3md"]
+[ext_resource type="Texture2D" uid="uid://cvrboesi6tphw" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_53.png" id="54_civcn"]
+[ext_resource type="Texture2D" uid="uid://cug5tve1t3t6i" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_54.png" id="55_qakuv"]
+[ext_resource type="Texture2D" uid="uid://cyhd3srr6ktb6" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_55.png" id="56_3bupf"]
+[ext_resource type="Texture2D" uid="uid://bmpsvckessn6" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_56.png" id="57_fr4bh"]
+[ext_resource type="Texture2D" uid="uid://csa3asq4ocuuv" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_57.png" id="58_etkt3"]
+[ext_resource type="Texture2D" uid="uid://wfx62mybcfvy" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_58.png" id="59_tce0k"]
+[ext_resource type="Texture2D" uid="uid://cvgaahbq8v7xo" path="res://assets/sprites/horton/idle_anxious_clover/idle_anxious_clover_59.png" id="60_k1cl8"]
+[ext_resource type="Texture2D" uid="uid://b86hqe5ypexyh" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_00.png" id="62_7y6wd"]
+[ext_resource type="Texture2D" uid="uid://ctin8vjd7wxtu" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_01.png" id="63_rmc2v"]
+[ext_resource type="Texture2D" uid="uid://boum708h1vv8h" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_02.png" id="64_e1f0q"]
+[ext_resource type="Texture2D" uid="uid://ditycy2rmqkst" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_03.png" id="65_75rut"]
+[ext_resource type="Texture2D" uid="uid://djms0opjms52j" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_04.png" id="66_3qjkv"]
+[ext_resource type="Texture2D" uid="uid://6w7ff65nwsj2" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_05.png" id="67_fupnt"]
+[ext_resource type="Texture2D" uid="uid://b5cov56jnck1s" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_06.png" id="68_ujlly"]
+[ext_resource type="Texture2D" uid="uid://buytji8jr00er" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_07.png" id="69_r36ij"]
+[ext_resource type="Texture2D" uid="uid://cfmuv7s5bwjcy" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_08.png" id="70_8bo30"]
+[ext_resource type="Texture2D" uid="uid://budmtx1i0frd" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_09.png" id="71_3hi5x"]
+[ext_resource type="Texture2D" uid="uid://lalanvpleuyv" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_10.png" id="72_lvpvu"]
+[ext_resource type="Texture2D" uid="uid://d3ubsl88j8w5o" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_11.png" id="73_ebrqd"]
+[ext_resource type="Texture2D" uid="uid://bbune5tupwee5" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_12.png" id="74_qg3md"]
+[ext_resource type="Texture2D" uid="uid://cuikgwasay131" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_13.png" id="75_civcn"]
+[ext_resource type="Texture2D" uid="uid://yq0r46egv6ow" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_14.png" id="76_qakuv"]
+[ext_resource type="Texture2D" uid="uid://cjo80kffi416n" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_15.png" id="77_3bupf"]
+[ext_resource type="Texture2D" uid="uid://cysf5mcpt10lv" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_16.png" id="78_fr4bh"]
+[ext_resource type="Texture2D" uid="uid://c5tu23ongl0kw" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_17.png" id="79_etkt3"]
+[ext_resource type="Texture2D" uid="uid://d0mr3u8awshlg" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_18.png" id="80_tce0k"]
+[ext_resource type="Texture2D" uid="uid://c7l46jnfmaemd" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_19.png" id="81_k1cl8"]
+[ext_resource type="Texture2D" uid="uid://dnibj6tu38noq" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_20.png" id="82_jhpmp"]
+[ext_resource type="Texture2D" uid="uid://dhcr468kyyl8t" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_21.png" id="83_gyrqk"]
+[ext_resource type="Texture2D" uid="uid://chgvoypcl5y8" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_22.png" id="84_darbu"]
+[ext_resource type="Texture2D" uid="uid://duip7xqjup7yj" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_23.png" id="85_ma5u0"]
+[ext_resource type="Texture2D" uid="uid://c1sb8cv1wrfr6" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_24.png" id="86_th0ot"]
+[ext_resource type="Texture2D" uid="uid://r8f208ukk7qi" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_25.png" id="87_jajc6"]
+[ext_resource type="Texture2D" uid="uid://78nosatjvfwm" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_26.png" id="88_fajgv"]
+[ext_resource type="Texture2D" uid="uid://b2rtfhqh0rc08" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_27.png" id="89_cnglv"]
+[ext_resource type="Texture2D" uid="uid://dsrsou8tqyvv7" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_28.png" id="90_1skfi"]
+[ext_resource type="Texture2D" uid="uid://cvgj728o24gqh" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_29.png" id="91_lhc8g"]
+[ext_resource type="Texture2D" uid="uid://p84c1rqfy44t" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_30.png" id="92_gtb3n"]
+[ext_resource type="Texture2D" uid="uid://dfyb6mnvnj46p" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_31.png" id="93_qm3ol"]
+[ext_resource type="Texture2D" uid="uid://jnk2h800qvi6" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_32.png" id="94_exqkh"]
+[ext_resource type="Texture2D" uid="uid://b8n7f0vk3eqlm" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_33.png" id="95_wsu8j"]
+[ext_resource type="Texture2D" uid="uid://bidq0h84wk0ax" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_34.png" id="96_elt54"]
+[ext_resource type="Texture2D" uid="uid://cuuqapxhfpea2" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_35.png" id="97_c8q1l"]
+[ext_resource type="Texture2D" uid="uid://cpxeqo4eyth2p" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_36.png" id="98_05fkn"]
+[ext_resource type="Texture2D" uid="uid://dbu7ybf4emgs2" path="res://assets/sprites/horton/idle_anxious_noclover/idle_anxious_noclover_37.png" id="99_pj17s"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fgenl"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hr3yq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q0tw2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bke2t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ql7lw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mebc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ig3av")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_x2eff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_g46tg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_xp41c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_1cebb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_iiu21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_cr108")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_pjl6l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_t6r0b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_caj5g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_3brsl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_uq6hx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_0pkae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_xeudm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_3d3jh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_ububw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8dy12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_4sbh1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_hbp4g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_kp8yp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_pby8a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_4uneh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_vh6g1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_o1uvj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_dslej")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_qdqbd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_3aay1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_uemf7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_m00fm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_hu55h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_4qlqe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_g50tr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_pap63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_q0tw2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_0dnus")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_7y6wd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_rmc2v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_e1f0q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_75rut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_3qjkv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_fupnt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_ujlly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_r36ij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_8bo30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_3hi5x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_lvpvu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_ebrqd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_qg3md")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_civcn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_qakuv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_3bupf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_fr4bh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_etkt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_tce0k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_k1cl8")
+}],
+"loop": true,
+"name": &"idle_anxious_clover",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("62_7y6wd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_rmc2v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_e1f0q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_75rut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_3qjkv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_fupnt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_ujlly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_r36ij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_8bo30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_3hi5x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_lvpvu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_ebrqd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_qg3md")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_civcn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_qakuv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_3bupf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_fr4bh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_etkt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_tce0k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_k1cl8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_jhpmp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_gyrqk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_darbu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_ma5u0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_th0ot")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_jajc6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_fajgv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_cnglv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_1skfi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_lhc8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_gtb3n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_qm3ol")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_exqkh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_wsu8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_elt54")
+}, {
+"duration": 1.0,
+"texture": ExtResource("97_c8q1l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_05fkn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_pj17s")
+}],
+"loop": true,
+"name": &"idle_anxious_noclover",
+"speed": 20.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_nf34s")
@@ -412,8 +814,8 @@ metadata/_edit_group_ = true
 position = Vector2(13.266665, 0)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_fgenl")
-animation = &"idle_happy_clover"
-frame_progress = 0.6913996
+animation = &"idle_anxious_clover"
+frame_progress = 0.9378405
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(20.666687, -4.666992)
