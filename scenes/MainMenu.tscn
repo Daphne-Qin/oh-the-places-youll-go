@@ -64,7 +64,7 @@ theme_override_constants/separation = 20
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_1")
-text = "Start Demo"
+text = "Start Game"
 icon_alignment = 1
 
 [node name="QuitButton" type="Button" parent="MenuLayer/ButtonContainer"]
