@@ -77,7 +77,7 @@ autowrap_mode = 3
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Player" parent="Node2D" instance=ExtResource("5_gn1ad")]
-position = Vector2(865, 517)
+position = Vector2(743, 516)
 
 [node name="Cat" parent="Node2D" instance=ExtResource("6_8oxug")]
 position = Vector2(376, 426)

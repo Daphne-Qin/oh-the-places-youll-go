@@ -67,6 +67,71 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("27_2axak")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_62l23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_pcgp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_bbjdp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_xpud0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_8mt13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_kaepo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_s03pr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_txebl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_vxqth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_drbpy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_c1l7n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_tuwko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_cstgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_mpj3u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_ewrrf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_508dk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_25ble")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_3aafb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_mqfkt")
+}],
+"loop": true,
+"name": &"walk_clover",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_iw5hr")
 }, {
 "duration": 1.0,
@@ -136,71 +201,6 @@ animations = [{
 "texture": ExtResource("25_qj2wq")
 }],
 "loop": true,
-"name": &"walk_clover",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("27_2axak")
-}, {
-"duration": 1.0,
-"texture": ExtResource("28_62l23")
-}, {
-"duration": 1.0,
-"texture": ExtResource("29_pcgp2")
-}, {
-"duration": 1.0,
-"texture": ExtResource("30_bbjdp")
-}, {
-"duration": 1.0,
-"texture": ExtResource("31_xpud0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("32_8mt13")
-}, {
-"duration": 1.0,
-"texture": ExtResource("33_kaepo")
-}, {
-"duration": 1.0,
-"texture": ExtResource("34_s03pr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("35_txebl")
-}, {
-"duration": 1.0,
-"texture": ExtResource("36_vxqth")
-}, {
-"duration": 1.0,
-"texture": ExtResource("37_drbpy")
-}, {
-"duration": 1.0,
-"texture": ExtResource("38_c1l7n")
-}, {
-"duration": 1.0,
-"texture": ExtResource("39_tuwko")
-}, {
-"duration": 1.0,
-"texture": ExtResource("40_cstgb")
-}, {
-"duration": 1.0,
-"texture": ExtResource("41_mpj3u")
-}, {
-"duration": 1.0,
-"texture": ExtResource("42_ewrrf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("43_508dk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("44_25ble")
-}, {
-"duration": 1.0,
-"texture": ExtResource("45_3aafb")
-}, {
-"duration": 1.0,
-"texture": ExtResource("46_mqfkt")
-}],
-"loop": true,
 "name": &"walk_noclover",
 "speed": 20.0
 }]
@@ -214,8 +214,7 @@ script = ExtResource("1_iw5hr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jutkn")
-animation = &"idle_clover"
-frame_progress = 0.5391723
+animation = &"walk_clover"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

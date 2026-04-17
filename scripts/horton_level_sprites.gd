@@ -120,7 +120,7 @@ func horton_reclaim_clover() -> void:
 func horton_react_happy() -> void:
 	if not is_instance_valid($Horton):
 		return
-	$Horton.walk_clover(24)
+	$Horton.walk_noclover(24)
 	await get_tree().create_timer(1.5).timeout
 	$Horton.idle_happy_clover(15)
 
