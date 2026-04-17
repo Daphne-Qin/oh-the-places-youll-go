@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="8_qidcw"]
 [ext_resource type="Texture2D" uid="uid://gq6ixwmd1jlr" path="res://assets/sprites/soup/soup.png" id="9_883e3"]
 [ext_resource type="Texture2D" uid="uid://gcifrkw8hvwo" path="res://assets/sprites/soup/soup_empty.png" id="10_kmjcd"]
-[ext_resource type="AudioStream" uid="uid://q4pboi4q0qht" path="res://assets/audio/music/Parlor Shade Carousel.mp3" id="11_883e3"]
+[ext_resource type="AudioStream" uid="uid://bw0vjhlp7mt4i" path="res://assets/audio/music/Moonlight in the Empty Wing.mp3" id="11_883e3"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gn1ad"]
 animations = [{
