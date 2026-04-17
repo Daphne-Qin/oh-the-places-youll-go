@@ -8,9 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://c11ntw4wepndr" path="res://scenes/cat.tscn" id="6_8oxug"]
 [ext_resource type="PackedScene" uid="uid://ne31jf842w8k" path="res://scenes/boundary.tscn" id="7_rflal"]
 [ext_resource type="PackedScene" uid="uid://nwghmka30tu4" path="res://scenes/baron.tscn" id="8_qidcw"]
-[ext_resource type="AudioStream" uid="uid://s2h50qj5g0ac" path="res://assets/audio/music/Clockwork Cupcake Catastrophe.mp3" id="9_7niq8"]
 [ext_resource type="Texture2D" uid="uid://gq6ixwmd1jlr" path="res://assets/sprites/soup/soup.png" id="9_883e3"]
 [ext_resource type="Texture2D" uid="uid://gcifrkw8hvwo" path="res://assets/sprites/soup/soup_empty.png" id="10_kmjcd"]
+[ext_resource type="AudioStream" uid="uid://q4pboi4q0qht" path="res://assets/audio/music/Parlor Shade Carousel.mp3" id="11_883e3"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gn1ad"]
 animations = [{
@@ -104,5 +104,5 @@ animation = &"soup"
 [node name="Music" type="Node" parent="."]
 
 [node name="Default" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource("9_7niq8")
+stream = ExtResource("11_883e3")
 bus = &"Music"

@@ -29,7 +29,7 @@ func horton_enter() -> void:
 func baron_enter() -> void:
 	$Baron.visible = true
 	$Baron.position = Vector2(1400.0, 520.0)
-	$Baron.walk()
+	$Baron.walk_noclover()
 	$Baron.flip_h(true)  # face left on entry
 
 	var tween = create_tween()
@@ -60,7 +60,7 @@ func baron_chase_horton() -> void:
 	var baron_tween = create_tween()
 	baron_tween.tween_property($Baron, "position:x", flee_x, 2.8).set_ease(Tween.EASE_IN)
 	$Baron.flip_h(_horton_resting_x > 0)
-	$Baron.walk(48)
+	$Baron.walk_noclover(48)
 
 # ---------------------------------------------------------------------------
 # CHASE RESOLVED: Player intervenes — Baron backs off, Horton returns

@@ -12,6 +12,7 @@ extends Control
 # speech to text
 @onready var speech_to_text: Node = $SpeechToText
 @onready var text_to_speech: Node = $TextToSpeech
+var _tts_timer: Timer
 
 # ---------------------------------------------------------------------------
 # Signals
@@ -65,6 +66,9 @@ var _progress_label: Label
 var _baron_label: Label
 var _beat_label: Label
 
+var _message_queue: Array = []
+var _message_queue_busy: bool = false
+
 # ---------------------------------------------------------------------------
 # State
 # ---------------------------------------------------------------------------
@@ -111,6 +115,12 @@ func _ready() -> void:
 		APIManager.baron_message_failed.connect(_on_baron_failed)
 	GameState.font_size_changed.connect(_on_font_size_changed)
 	GameState.scene_switch.connect(_on_scene_switch)
+
+	_tts_timer = Timer.new()
+	_tts_timer.one_shot = true
+	_tts_timer.autostart = false
+	add_child(_tts_timer)
+
 	visible = false
 	print("[CAT_CHAT] Ready.")
 
@@ -379,6 +389,11 @@ func _send_player_message() -> void:
 	var text = _input_field.text.strip_edges()
 	if text.is_empty() or waiting_for_cat or outcome_triggered:
 		return
+	
+	text_to_speech.stop_voice()
+	_message_queue.clear()
+	_message_queue_busy = false
+	_tts_timer.stop()
 
 	# ---- Skip codes ----
 	var lower = text.to_lower()
@@ -625,11 +640,33 @@ func _lock_input() -> void:
 	_send_button.disabled = true
 
 func _add_message(text: String, sender: String, bg_color: Color) -> void:
+	if is_open and GameState.tts_on and sender != "You":
+		_message_queue.append({"text": text, "sender": sender, "bg_color": bg_color})
+		if not _message_queue_busy:
+			_process_message_queue()
+	else:
+		_display_message(text, sender, bg_color)
+
+func _process_message_queue() -> void:
+	print("[BARON_CHAT] queue: ", _message_queue)
+	if _message_queue.is_empty():
+		_message_queue_busy = false
+		_enable_stt()
+		return
+	_message_queue_busy = true
+	var msg = _message_queue.pop_front()
+	await _display_message(msg.text, msg.sender, msg.bg_color)
+	_process_message_queue()
+
+func _display_message(text: String, sender: String, bg_color: Color) -> void:
 	# if not player, load the voice
-	if GameState.tts_on and sender != "You":
+	if is_open and GameState.tts_on and sender != "You":
 		_disable_stt()
-		text_to_speech.load_voice('cat', text)
-		_show_typing_indicator("*hat tilts thoughtfully...*")
+		text_to_speech.load_voice(sender.to_lower(), text)
+		if sender.to_lower() == "cat":
+			_show_typing_indicator("*hat tilts thoughtfully...*")
+		elif sender.to_lower() == "baron von bitey":
+			_show_typing_indicator("*scheming up a response...*")
 		await text_to_speech.voice_loaded
 		_hide_typing_indicator()
 
@@ -669,6 +706,15 @@ func _add_message(text: String, sender: String, bg_color: Color) -> void:
 	_messages_container.add_child(panel)
 	await get_tree().process_frame
 	_scroll_container.scroll_vertical = int(_scroll_container.get_v_scroll_bar().max_value)
+
+	# Now wait for playback to finish
+	if is_open and GameState.tts_on and sender != "You":
+		if not is_instance_valid(self):
+			return
+		var duration = text_to_speech.audio_length
+		_tts_timer.wait_time = duration
+		_tts_timer.start()
+		await _tts_timer.timeout
 
 func _add_narrator_message(text: String) -> void:
 	var lbl = Label.new()
@@ -872,7 +918,13 @@ func _on_font_size_changed(font_size: int) -> void:
 	_typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
 
 func _exit_tree() -> void:
+	_message_queue.clear()
+	_message_queue_busy = false
+	_tts_timer.stop()
 	text_to_speech.stop_voice()
-
+	
 func _on_scene_switch():
+	_message_queue.clear()
+	_message_queue_busy = false
+	_tts_timer.stop()
 	text_to_speech.stop_voice()

@@ -1,31 +1,51 @@
-[gd_scene load_steps=29 format=3 uid="uid://nwghmka30tu4"]
+[gd_scene load_steps=49 format=3 uid="uid://nwghmka30tu4"]
 
 [ext_resource type="Texture2D" uid="uid://bils18arxvle" path="res://assets/sprites/baron/baron_idle_noclover.png" id="1_72dp4"]
 [ext_resource type="Script" uid="uid://cbghbtssjnia7" path="res://scripts/baron.gd" id="1_iw5hr"]
 [ext_resource type="Texture2D" uid="uid://c1dn8jargque2" path="res://assets/sprites/baron/baron_idle_clover.png" id="2_0mbwf"]
-[ext_resource type="Texture2D" uid="uid://ccebimgf47qob" path="res://assets/sprites/baron/baron_walk_00.png" id="2_iw5hr"]
-[ext_resource type="Texture2D" uid="uid://m8kkhbx7ws0h" path="res://assets/sprites/baron/baron_walk_01.png" id="3_m7ull"]
-[ext_resource type="Texture2D" uid="uid://cg1a4iox6il5j" path="res://assets/sprites/baron/baron_walk_02.png" id="4_y1u3m"]
-[ext_resource type="Texture2D" uid="uid://hht1jstkrc6q" path="res://assets/sprites/baron/baron_walk_03.png" id="5_eto8j"]
-[ext_resource type="Texture2D" uid="uid://cqdbpj48ejwag" path="res://assets/sprites/baron/baron_walk_04.png" id="7_y1u3m"]
-[ext_resource type="Texture2D" uid="uid://56nr8db6b7hw" path="res://assets/sprites/baron/baron_walk_05.png" id="8_eto8j"]
-[ext_resource type="Texture2D" uid="uid://v3bv4wo6d3e8" path="res://assets/sprites/baron/baron_walk_06.png" id="9_h10ox"]
-[ext_resource type="Texture2D" uid="uid://b0dwmsma23k21" path="res://assets/sprites/baron/baron_walk_07.png" id="10_0mbwf"]
-[ext_resource type="Texture2D" uid="uid://b5dkk665y8hxp" path="res://assets/sprites/baron/baron_walk_08.png" id="11_lyoay"]
-[ext_resource type="Texture2D" uid="uid://djf4gbwunt8jf" path="res://assets/sprites/baron/baron_walk_09.png" id="12_0th55"]
-[ext_resource type="Texture2D" uid="uid://yq8p15x5c64f" path="res://assets/sprites/baron/baron_walk_10.png" id="13_auxqd"]
-[ext_resource type="Texture2D" uid="uid://dhnccpac6b0l3" path="res://assets/sprites/baron/baron_walk_11.png" id="14_vnm6x"]
-[ext_resource type="Texture2D" uid="uid://lakc5ynlfujp" path="res://assets/sprites/baron/baron_walk_12.png" id="15_lea8u"]
-[ext_resource type="Texture2D" uid="uid://yllkub72u1sl" path="res://assets/sprites/baron/baron_walk_13.png" id="16_7rl44"]
-[ext_resource type="Texture2D" uid="uid://844or3nei6ci" path="res://assets/sprites/baron/baron_walk_14.png" id="17_8i2f5"]
-[ext_resource type="Texture2D" uid="uid://bbymll3ll0k4a" path="res://assets/sprites/baron/baron_walk_15.png" id="18_3su3m"]
-[ext_resource type="Texture2D" uid="uid://ce5qd27se178y" path="res://assets/sprites/baron/baron_walk_16.png" id="19_8c0mt"]
-[ext_resource type="Texture2D" uid="uid://10q42y4r0ju8" path="res://assets/sprites/baron/baron_walk_17.png" id="20_ub8yl"]
-[ext_resource type="Texture2D" uid="uid://cq1s3wo2fb0tx" path="res://assets/sprites/baron/baron_walk_18.png" id="21_5skvl"]
-[ext_resource type="Texture2D" uid="uid://ommvm0u1daav" path="res://assets/sprites/baron/baron_walk_19.png" id="22_bfl5p"]
-[ext_resource type="Texture2D" uid="uid://dy5n2wewuuri7" path="res://assets/sprites/baron/baron_walk_20.png" id="23_vnjw5"]
-[ext_resource type="Texture2D" uid="uid://b7vx6rc8k8pss" path="res://assets/sprites/baron/baron_walk_21.png" id="24_hbv6u"]
-[ext_resource type="Texture2D" uid="uid://di4oe4j0gc80e" path="res://assets/sprites/baron/baron_walk_22.png" id="25_qj2wq"]
+[ext_resource type="Texture2D" uid="uid://ccebimgf47qob" path="res://assets/sprites/baron/walk_noclover/walk_noclover_00.png" id="2_iw5hr"]
+[ext_resource type="Texture2D" uid="uid://m8kkhbx7ws0h" path="res://assets/sprites/baron/walk_noclover/walk_noclover_01.png" id="3_m7ull"]
+[ext_resource type="Texture2D" uid="uid://cg1a4iox6il5j" path="res://assets/sprites/baron/walk_noclover/walk_noclover_02.png" id="4_y1u3m"]
+[ext_resource type="Texture2D" uid="uid://hht1jstkrc6q" path="res://assets/sprites/baron/walk_noclover/walk_noclover_03.png" id="5_eto8j"]
+[ext_resource type="Texture2D" uid="uid://cqdbpj48ejwag" path="res://assets/sprites/baron/walk_noclover/walk_noclover_04.png" id="7_y1u3m"]
+[ext_resource type="Texture2D" uid="uid://56nr8db6b7hw" path="res://assets/sprites/baron/walk_noclover/walk_noclover_05.png" id="8_eto8j"]
+[ext_resource type="Texture2D" uid="uid://v3bv4wo6d3e8" path="res://assets/sprites/baron/walk_noclover/walk_noclover_06.png" id="9_h10ox"]
+[ext_resource type="Texture2D" uid="uid://b0dwmsma23k21" path="res://assets/sprites/baron/walk_noclover/walk_noclover_07.png" id="10_0mbwf"]
+[ext_resource type="Texture2D" uid="uid://b5dkk665y8hxp" path="res://assets/sprites/baron/walk_noclover/walk_noclover_08.png" id="11_lyoay"]
+[ext_resource type="Texture2D" uid="uid://djf4gbwunt8jf" path="res://assets/sprites/baron/walk_noclover/walk_noclover_09.png" id="12_0th55"]
+[ext_resource type="Texture2D" uid="uid://yq8p15x5c64f" path="res://assets/sprites/baron/walk_noclover/walk_noclover_10.png" id="13_auxqd"]
+[ext_resource type="Texture2D" uid="uid://dhnccpac6b0l3" path="res://assets/sprites/baron/walk_noclover/walk_noclover_11.png" id="14_vnm6x"]
+[ext_resource type="Texture2D" uid="uid://lakc5ynlfujp" path="res://assets/sprites/baron/walk_noclover/walk_noclover_12.png" id="15_lea8u"]
+[ext_resource type="Texture2D" uid="uid://yllkub72u1sl" path="res://assets/sprites/baron/walk_noclover/walk_noclover_13.png" id="16_7rl44"]
+[ext_resource type="Texture2D" uid="uid://844or3nei6ci" path="res://assets/sprites/baron/walk_noclover/walk_noclover_14.png" id="17_8i2f5"]
+[ext_resource type="Texture2D" uid="uid://bbymll3ll0k4a" path="res://assets/sprites/baron/walk_noclover/walk_noclover_15.png" id="18_3su3m"]
+[ext_resource type="Texture2D" uid="uid://ce5qd27se178y" path="res://assets/sprites/baron/walk_noclover/walk_noclover_16.png" id="19_8c0mt"]
+[ext_resource type="Texture2D" uid="uid://10q42y4r0ju8" path="res://assets/sprites/baron/walk_noclover/walk_noclover_17.png" id="20_ub8yl"]
+[ext_resource type="Texture2D" uid="uid://cq1s3wo2fb0tx" path="res://assets/sprites/baron/walk_noclover/walk_noclover_18.png" id="21_5skvl"]
+[ext_resource type="Texture2D" uid="uid://ommvm0u1daav" path="res://assets/sprites/baron/walk_noclover/walk_noclover_19.png" id="22_bfl5p"]
+[ext_resource type="Texture2D" uid="uid://dy5n2wewuuri7" path="res://assets/sprites/baron/walk_noclover/walk_noclover_20.png" id="23_vnjw5"]
+[ext_resource type="Texture2D" uid="uid://b7vx6rc8k8pss" path="res://assets/sprites/baron/walk_noclover/walk_noclover_21.png" id="24_hbv6u"]
+[ext_resource type="Texture2D" uid="uid://di4oe4j0gc80e" path="res://assets/sprites/baron/walk_noclover/walk_noclover_22.png" id="25_qj2wq"]
+[ext_resource type="Texture2D" uid="uid://c1pv72ppk1y4q" path="res://assets/sprites/baron/walk_clover/walk_clover_00.png" id="27_2axak"]
+[ext_resource type="Texture2D" uid="uid://m65py886mfd2" path="res://assets/sprites/baron/walk_clover/walk_clover_01.png" id="28_62l23"]
+[ext_resource type="Texture2D" uid="uid://bwj7oq46nex8f" path="res://assets/sprites/baron/walk_clover/walk_clover_02.png" id="29_pcgp2"]
+[ext_resource type="Texture2D" uid="uid://i2ahvfxddbb3" path="res://assets/sprites/baron/walk_clover/walk_clover_03.png" id="30_bbjdp"]
+[ext_resource type="Texture2D" uid="uid://nvlkjjm520s2" path="res://assets/sprites/baron/walk_clover/walk_clover_04.png" id="31_xpud0"]
+[ext_resource type="Texture2D" uid="uid://c8e1123q7bbpx" path="res://assets/sprites/baron/walk_clover/walk_clover_05.png" id="32_8mt13"]
+[ext_resource type="Texture2D" uid="uid://uaikiqt61way" path="res://assets/sprites/baron/walk_clover/walk_clover_06.png" id="33_kaepo"]
+[ext_resource type="Texture2D" uid="uid://dq3mcbgftgmto" path="res://assets/sprites/baron/walk_clover/walk_clover_07.png" id="34_s03pr"]
+[ext_resource type="Texture2D" uid="uid://b4t4ypol2cxc6" path="res://assets/sprites/baron/walk_clover/walk_clover_08.png" id="35_txebl"]
+[ext_resource type="Texture2D" uid="uid://cas32dbuog600" path="res://assets/sprites/baron/walk_clover/walk_clover_09.png" id="36_vxqth"]
+[ext_resource type="Texture2D" uid="uid://chxv62bedfpqu" path="res://assets/sprites/baron/walk_clover/walk_clover_10.png" id="37_drbpy"]
+[ext_resource type="Texture2D" uid="uid://d3q1k42o2gmjr" path="res://assets/sprites/baron/walk_clover/walk_clover_11.png" id="38_c1l7n"]
+[ext_resource type="Texture2D" uid="uid://okc5msx3lkno" path="res://assets/sprites/baron/walk_clover/walk_clover_12.png" id="39_tuwko"]
+[ext_resource type="Texture2D" uid="uid://dx8nyrxrwfgrh" path="res://assets/sprites/baron/walk_clover/walk_clover_13.png" id="40_cstgb"]
+[ext_resource type="Texture2D" uid="uid://c2bpf41c7cv82" path="res://assets/sprites/baron/walk_clover/walk_clover_14.png" id="41_mpj3u"]
+[ext_resource type="Texture2D" uid="uid://cx1vmudclnqpm" path="res://assets/sprites/baron/walk_clover/walk_clover_15.png" id="42_ewrrf"]
+[ext_resource type="Texture2D" uid="uid://cwjenuvpt4inc" path="res://assets/sprites/baron/walk_clover/walk_clover_16.png" id="43_508dk"]
+[ext_resource type="Texture2D" uid="uid://p01m5pxfoxax" path="res://assets/sprites/baron/walk_clover/walk_clover_17.png" id="44_25ble"]
+[ext_resource type="Texture2D" uid="uid://c60733w5rrlvj" path="res://assets/sprites/baron/walk_clover/walk_clover_18.png" id="45_3aafb"]
+[ext_resource type="Texture2D" uid="uid://8sdb43fwu76y" path="res://assets/sprites/baron/walk_clover/walk_clover_19.png" id="46_mqfkt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jutkn"]
 animations = [{
@@ -116,7 +136,72 @@ animations = [{
 "texture": ExtResource("25_qj2wq")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"walk_clover",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_2axak")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_62l23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_pcgp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_bbjdp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_xpud0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_8mt13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_kaepo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_s03pr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_txebl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_vxqth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_drbpy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_c1l7n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_tuwko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_cstgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_mpj3u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_ewrrf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_508dk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_25ble")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_3aafb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_mqfkt")
+}],
+"loop": true,
+"name": &"walk_noclover",
 "speed": 20.0
 }]
 
@@ -130,6 +215,7 @@ script = ExtResource("1_iw5hr")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jutkn")
 animation = &"idle_clover"
+frame_progress = 0.5391723
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

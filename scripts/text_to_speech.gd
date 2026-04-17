@@ -22,7 +22,8 @@ var voice_models = {
 	'cat': '7adb7f509d224dc388d09e01795ab0ac',
 	'horton': 'f3f61e8ceb924f3482afb76ab0f86829',
 	'bitey': '75c860b53da84405aa49718cdda8c83e',
-	'baron': '75c860b53da84405aa49718cdda8c83e' # bitey/baron used interchangably so are the same
+	'baron': '75c860b53da84405aa49718cdda8c83e', # bitey/baron used interchangably so are the same
+	'baron von bitey': '75c860b53da84405aa49718cdda8c83e' # same thing here
 }
 
 func _ready():
@@ -51,6 +52,7 @@ func _process_request(character: String, text: String):
 	
 	# send to Fish Audio
 	print("[TTS] Sending %d characters to Fish Audio model %s..." % [text.length(), character])
+	print("[TTS] Full sent text:", text)
 	var err = $HTTPRequest.request(
 		"https://api.fish.audio/v1/tts",
 		[
@@ -128,7 +130,7 @@ func load_voice(character: String, text: String):
 	
 	_pending_character = character
 	var regex = RegEx.new()
-	regex.compile("\\*[^*]*\\s[^*]*\\*")
+	regex.compile(r"\*[^*\s]+(?:\s+[^*\s]+)+\*")
 	_pending_text = regex.sub(text, "", true)
 	_pending_text = _pending_text.replace("*", "")
 	attempts = 0

@@ -14,12 +14,15 @@ var is_near_cat: bool = false
 var level_complete: bool = false
 var chat_instance: Control = null
 var level_select: Control = null
+var animation_finished: bool = false
 
 func _ready() -> void:
 	GameState.enable_movement()
+	# this is so that I can get the correct chat when I load the scene isolated...
+	GameState.baron_has_clover = true
 
 	# Cat has had the soup — play soup_drink animation, then settle into idle
-	cat.soup_drink()
+	cat.idle()
 
 	_switch_music($Music/Default)
 
@@ -42,12 +45,14 @@ func _ready() -> void:
 
 	# Walk Baron in from the right after a short delay
 	await get_tree().create_timer(1.5).timeout
-	_baron_walk_in()
+	await _baron_walk_in()
+	cat.soup_drink()
+	baron.idle_noclover()
+	animation_finished = true
 
 func _baron_walk_in() -> void:
 	if not is_instance_valid(baron):
 		return
-	baron.walk()
 	baron.flip_h(true)   # facing left (walking toward center)
 	var target_x = 980.0
 	var distance = baron.global_position.x - target_x
@@ -55,13 +60,14 @@ func _baron_walk_in() -> void:
 	var tween = create_tween()
 	tween.tween_property(baron, "global_position:x", target_x, max(0.1, duration))
 	await tween.finished
-	baron.idle_clover()
+	baron.walk_clover()
 	$InteractionLabel.text = "Baron Von Bitey has arrived with the clover! Walk up to the Cat."
 
 func _on_cat_area_entered(body: Node2D) -> void:
 	if body == player:
 		is_near_cat = true
-		$InteractionLabel.text = "Press [E] to talk to the Cat in the Hat!"
+		if animation_finished:
+			$InteractionLabel.text = "Press [E] to talk to the Cat in the Hat!"
 
 func _on_cat_area_exited(body: Node2D) -> void:
 	if body == player:
@@ -75,6 +81,8 @@ func _input(event: InputEvent) -> void:
 	if not is_near_cat:
 		return
 	if event is InputEventKey and event.pressed and event.keycode == KEY_E:
+		if not animation_finished:
+			return
 		if chat_instance == null:
 			_load_chat_interface()
 			await get_tree().process_frame
