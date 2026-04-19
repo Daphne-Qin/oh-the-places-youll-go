@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.101960786, 0.3019608, 0.101960786, 0.47843137)
 border_width_left = 3
-border_width_top = 3git
+border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.9, 0.6, 0.2, 1)
@@ -133,7 +133,7 @@ size_flags_horizontal = 3
 placeholder_text = "Type your message to the Lorax..."
 
 [node name="TTSSkipButton" type="Button" parent="ChatPanel/VBox/InputPanel"]
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_2")
@@ -156,4 +156,8 @@ text = "🎙"
 
 [node name="TextToSpeech" parent="." instance=ExtResource("4_7jtgw")]
 
+[connection signal="pressed" from="ChatPanel/VBox/Header/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="text_submitted" from="ChatPanel/VBox/InputPanel/InputField" to="." method="_on_input_field_text_submitted"]
+[connection signal="pressed" from="ChatPanel/VBox/InputPanel/TTSSkipButton" to="." method="_on_tts_skip_button_pressed"]
+[connection signal="pressed" from="ChatPanel/VBox/InputPanel/SendButton" to="." method="_on_send_button_pressed"]
 [connection signal="voice_loaded" from="TextToSpeech" to="." method="_on_text_to_speech_voice_loaded"]
