@@ -23,6 +23,9 @@ var tts_on = true
 var stt_on = false
 var font_size = 18
 
+# tts toggle signal
+signal tts_toggled(on: bool)
+
 # font size signal
 signal font_size_changed(font_size: int)
 
@@ -128,6 +131,7 @@ func toggle_background_volume_dim(value: bool) -> void:
 
 func toggle_tts(value: bool) -> void:
 	tts_on = value
+	tts_toggled.emit(value)
 
 func toggle_stt(value: bool) -> void:
 	stt_on = value
