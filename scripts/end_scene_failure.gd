@@ -3,6 +3,10 @@ extends Control
 @onready var captions: Label = $Captions
 @onready var text_to_speech: Node = $TextToSpeech
 
+# fade overlay
+@onready var fade_canvas: CanvasLayer
+@onready var fade_overlay: ColorRect
+
 var tts_preload_dir = "res://assets/audio/text_to_speech_preloaded/end_scene_failure/"
 
 # Called when the node enters the scene tree for the first time.
@@ -12,45 +16,61 @@ func _ready() -> void:
 			scene.hide()
 	captions.hide()
 	
+	# setup fade canvas
+	fade_canvas = CanvasLayer.new()
+	fade_canvas.layer = 5000
+	add_child(fade_canvas)
+	
+	fade_overlay = ColorRect.new()
+	fade_overlay.color = Color.BLACK
+	fade_overlay.color.a = 0.0
+	fade_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	fade_overlay.z_index = 5000
+	fade_canvas.add_child(fade_overlay)
+	
+	fade_canvas.hide()
+	
 	# make music quieter
 	GameState.toggle_background_volume_dim(true)
 	
 	# play music
 	$Music/Default.play()
 	
-	# Lorax scene
-	_transition(null, $GrandMonotonyScene, _grand_monotony_scene)
-	await get_tree().create_timer(35).timeout
-	
-	# Horton scene
-	_transition($GrandMonotonyScene, $MudScene, _mud_scene)
-	await get_tree().create_timer(35).timeout
-	
-	# Baron scene
-	_transition($MudScene, $ShootingStarsScene, _shooting_stars_scene)
-	await get_tree().create_timer(35).timeout	
+	# Grand Monotony scene
+	await _transition(null, $GrandMonotonyScene)
+	await _grand_monotony_scene()
+
+	# Mud scene
+	await _transition($GrandMonotonyScene, $MudScene)
+	await _mud_scene()
+
+	# Shooting Star scene
+	await _transition($MudScene, $ShootingStarsScene)
+	await _shooting_stars_scene()
 	
 	# make music louder
 	GameState.toggle_background_volume_dim(false)
 
 
-func _transition(prev_scene: Control, next_scene: Control, next_function: Callable) -> void:
+func _transition(prev_scene: Control, next_scene: Control) -> void:
+	fade_canvas.show()
+	
 	# if there was a previous scene, fade it out
 	if prev_scene:
 		# Fade out
-		var tween = create_tween()
-		tween.tween_property(prev_scene, "modulate:a", 0.0, 2.0)
-		await tween.finished
+		var fade_tween = create_tween()
+		fade_tween.tween_property(fade_overlay, "color:a", 1.0, 1.0)
+		await fade_tween.finished
 		prev_scene.hide()
-
-	# Prepare next scene invisible, then fade in
-	next_scene.modulate.a = 0.0
+	
+	# make next scene fade in
 	next_scene.show()
-	next_function.call()
+	var fade_tween = create_tween()
+	fade_tween.tween_property(fade_overlay, "color:a", 0.0, 1.0)
+	await fade_tween.finished
+	
+	fade_canvas.hide()
 
-	var tween2 = create_tween()
-	tween2.tween_property(next_scene, "modulate:a", 1.0, 2.0)
-	await tween2.finished
 
 func _grand_monotony_scene() -> void:
 	# let the user acclimate

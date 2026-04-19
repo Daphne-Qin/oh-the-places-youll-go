@@ -3,11 +3,13 @@ extends Control
 ## Level Selector - Clickable map to navigate between levels
 ## Dynamically creates level buttons based on GameState.levels
 
-@onready var map_container: Control = $Map
+@onready var map_container: Control = $MapCanvas/Map
+@onready var map_image: TextureRect = $MapCanvas/Map/TextureRect
 var level_buttons: Dictionary = {}  # level_id -> Button node
 
 func _ready() -> void:
-	$Map.hide()
+	$MapCanvas.hide()
+	$ButtonCanvas.hide()
 	# Create level buttons when ready
 	_create_level_buttons()
 	# Connect to level unlock signals to update button states
@@ -115,7 +117,7 @@ func _on_level_button_pressed(level_id: String) -> void:
 	print("[LevelSelector] Level clicked: ", level_id)
 	if GameState.is_level_unlocked(level_id):
 		# Close the map first
-		$Map.hide()
+		$MapCanvas.hide()
 		# Small delay for visual feedback
 		await get_tree().create_timer(0.2).timeout
 		# Navigate to level
@@ -140,13 +142,18 @@ func _on_level_unlocked(level_id: String) -> void:
 func _on_level_completed(level_id: String) -> void:
 	"""Called when a level is completed."""
 	_update_button_state(level_id)
-	$Map/TextureRect.texture = GameState.levels[level_id]["map_sprite"]
+	$ButtonCanvas.show()
+	map_image.texture = GameState.levels[level_id]["map_sprite"]
 
 func _on_open_selector_button_pressed() -> void:
 	"""Toggle map visibility."""
-	if $Map.visible:
-		$Map.hide()
+	if $MapCanvas.visible:
+		$MapCanvas.hide()
 	else:
 		# Refresh button states when opening
 		_update_all_button_states()
-		$Map.show()
+		$MapCanvas.show()
+
+func start_button() -> void:
+	'''The start menu will call this'''
+	$MapCanvas.show()

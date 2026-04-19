@@ -46,7 +46,7 @@ grow_vertical = 2
 script = ExtResource("1_46duy")
 
 [node name="OpenButton" type="CanvasLayer" parent="."]
-layer = 2000
+layer = 3000
 
 [node name="OpenButton" type="Button" parent="OpenButton"]
 offset_left = 15.0
@@ -58,7 +58,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="SettingsMenu" type="CanvasLayer" parent="."]
-layer = 1999
+layer = 2999
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="SettingsMenu"]

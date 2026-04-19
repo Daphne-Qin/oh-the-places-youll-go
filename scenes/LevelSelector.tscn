@@ -13,8 +13,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_emkfd")
 
-[node name="Map" type="Control" parent="."]
-layout_mode = 1
+[node name="ButtonCanvas" type="CanvasLayer" parent="."]
+layer = 2000
+
+[node name="OpenSelectorButton" type="Button" parent="ButtonCanvas"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -136.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = 136.0
+grow_horizontal = 0
+icon = ExtResource("2_lm2ad")
+icon_alignment = 1
+expand_icon = true
+
+[node name="MapCanvas" type="CanvasLayer" parent="."]
+layer = 1999
+
+[node name="Map" type="Control" parent="MapCanvas"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,7 +41,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_group_ = true
 
-[node name="ColorRect" type="ColorRect" parent="Map"]
+[node name="ColorRect" type="ColorRect" parent="MapCanvas/Map"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,7 +49,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="Map"]
+[node name="TextureRect" type="TextureRect" parent="MapCanvas/Map"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -46,18 +65,4 @@ grow_vertical = 2
 texture = ExtResource("1_8ixoo")
 expand_mode = 1
 
-[node name="OpenSelectorButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -136.0
-offset_top = 15.0
-offset_right = -15.0
-offset_bottom = 136.0
-grow_horizontal = 0
-icon = ExtResource("2_lm2ad")
-icon_alignment = 1
-expand_icon = true
-
-[connection signal="pressed" from="OpenSelectorButton" to="." method="_on_open_selector_button_pressed"]
+[connection signal="pressed" from="ButtonCanvas/OpenSelectorButton" to="." method="_on_open_selector_button_pressed"]

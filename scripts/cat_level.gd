@@ -84,7 +84,7 @@ func _on_cat_adventure_begins() -> void:
 		chat_instance.hide()
 	print("[CAT_LEVEL] WIN — baron_path=%s — transitioning to EndSceneSuccess" % str(GameState.baron_has_clover))
 	await get_tree().create_timer(0.5).timeout
-	get_tree().change_scene_to_file("res://scenes/EndSceneSuccess.tscn")
+	GameState.transition_to_scene("res://scenes/EndSceneSuccess.tscn")
 
 func _on_cat_bored_out() -> void:
 	GameState.enable_movement()

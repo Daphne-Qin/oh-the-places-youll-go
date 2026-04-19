@@ -112,14 +112,14 @@ func _on_cat_adventure_begins() -> void:
 		chat_instance.hide()
 	print("[CAT_LEVEL_BORING] WIN — transitioning to EndSceneSuccess")
 	await get_tree().create_timer(0.5).timeout
-	get_tree().change_scene_to_file("res://scenes/EndSceneSuccess.tscn")
+	GameState.transition_to_scene("res://scenes/EndSceneSuccess.tscn")
 
 func _on_cat_bored_out() -> void:
 	if chat_instance:
 		chat_instance.hide()
 	print("[CAT_LEVEL_BORING] FAIL — Baron closed the deal — transitioning to EndSceneFailure")
 	await get_tree().create_timer(1.0).timeout
-	get_tree().change_scene_to_file("res://scenes/EndSceneFailure.tscn")
+	GameState.transition_to_scene("res://scenes/EndSceneFailure.tscn")
 
 # ---------------------------------------------------------------------------
 # Music crossfade
