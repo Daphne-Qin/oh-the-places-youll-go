@@ -928,6 +928,7 @@ func _kill_tts() -> void:
 	text_to_speech.stop_voice()
 	_tts_timer.stop()
 	_tts_skip_button.disabled = true
+	_enable_stt()
 
 func _on_font_size_changed(font_size: int) -> void:
 	"""Update font size on all existing message bubbles."""

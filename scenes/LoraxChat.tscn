@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkarciyqkys6f"]
+[gd_scene load_steps=9 format=3 uid="uid://dkarciyqkys6f"]
 
 [ext_resource type="Script" uid="uid://byrgbmpqr47wi" path="res://scripts/lorax_chat.gd" id="1_1"]
 [ext_resource type="Texture2D" uid="uid://cdwony7tg5i6i" path="res://assets/sprites/lorax/angry.png" id="2_h0vkm"]
@@ -17,8 +17,20 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgvwi"]
+content_margin_left = 15.0
+bg_color = Color(0, 0, 0, 0.5019608)
+corner_radius_bottom_left = 20
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
 bg_color = Color(0.9, 0.6, 0.2, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jtgw"]
+bg_color = Color(0.9019608, 0.6, 0.2, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -128,8 +140,10 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="InputField" type="LineEdit" parent="ChatPanel/VBox/InputPanel"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_vgvwi")
 placeholder_text = "Type your message to the Lorax..."
 
 [node name="TTSSkipButton" type="Button" parent="ChatPanel/VBox/InputPanel"]
@@ -148,8 +162,10 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_2")
 text = "Send"
 
 [node name="MicButton" type="Button" parent="ChatPanel/VBox/InputPanel"]
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_7jtgw")
 text = "🎙"
 
 [node name="SpeechToText" parent="." instance=ExtResource("3_sbnvr")]
