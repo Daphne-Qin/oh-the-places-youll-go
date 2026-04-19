@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://cyc761ogomt64"]
+[gd_scene load_steps=14 format=3 uid="uid://cyc761ogomt64"]
 
 [ext_resource type="Script" uid="uid://de1qm6tywp0jc" path="res://scripts/cat_level_boring.gd" id="1_omgxc"]
+[ext_resource type="Texture2D" uid="uid://dfbam773vdre6" path="res://assets/background/cat_livingroom.png" id="2_kmjcd"]
 [ext_resource type="Texture2D" uid="uid://ddaa3uy6uoquy" path="res://assets/background/cat_livingroom_boring.png" id="2_omgxc"]
 [ext_resource type="PackedScene" uid="uid://dul3jtv58gj1x" path="res://scenes/Settings.tscn" id="3_883e3"]
 [ext_resource type="FontFile" uid="uid://dq3xq2fgk6qoq" path="res://assets/fonts/Grinchmas-z86B0.ttf" id="4_kmjcd"]
@@ -40,8 +41,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_omgxc")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Background1" type="TextureRect" parent="."]
 modulate = Color(0.7016299, 0.7016299, 0.7016299, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_kmjcd")
+expand_mode = 3
+
+[node name="Background2" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
