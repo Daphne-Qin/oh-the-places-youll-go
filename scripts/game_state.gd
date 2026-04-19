@@ -132,6 +132,8 @@ func toggle_background_volume_dim(value: bool) -> void:
 func toggle_tts(value: bool) -> void:
 	tts_on = value
 	tts_toggled.emit(value)
+	# negl I give up I'm just going to mute the entire bus LMAO
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("TTS"), !value)
 
 func toggle_stt(value: bool) -> void:
 	stt_on = value

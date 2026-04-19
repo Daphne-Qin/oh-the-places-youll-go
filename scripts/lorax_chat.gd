@@ -71,14 +71,13 @@ func _ready() -> void:
 
 	# toggle skip button visibility
 	tts_skip_button.visible = GameState.tts_on
+	tts_skip_button.disabled = true
 
 	# set TTS timer
 	_tts_timer = Timer.new()
 	_tts_timer.one_shot = true
 	_tts_timer.autostart = false
 	add_child(_tts_timer)
-
-	tts_skip_button.disabled = true
 
 	# connect signals
 	speech_to_text.received.connect(_on_text_received)

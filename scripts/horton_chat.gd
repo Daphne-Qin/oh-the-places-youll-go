@@ -73,6 +73,7 @@ var _baron_status: Label
 var _horton_section: PanelContainer
 var _baron_section: PanelContainer
 var _decode_progress: Label
+var _tts_skip_button: Button
 
 var _message_queue: Array = []
 var _message_queue_busy: bool = false
@@ -128,6 +129,7 @@ func _ready() -> void:
 	print("[HORTON_CHAT] Initializing...")
 	_build_ui()
 
+	# connect signals
 	if APIManager:
 		APIManager.horton_message_received.connect(_on_horton_response)
 		APIManager.horton_message_failed.connect(_on_horton_failed)
@@ -135,13 +137,16 @@ func _ready() -> void:
 		APIManager.baron_message_failed.connect(_on_baron_failed)
 	GameState.font_size_changed.connect(_on_font_size_changed)
 	GameState.scene_switch.connect(_on_scene_switch)
+	GameState.tts_toggled.connect(_on_tts_toggled)
 
+	# set Baron patience timer
 	_patience_timer = Timer.new()
 	_patience_timer.wait_time = PATIENCE_TICK_SEC
 	_patience_timer.autostart = false
 	_patience_timer.timeout.connect(_on_patience_tick)
 	add_child(_patience_timer)
 
+	# set Baron interjection timer
 	_interjection_timer = Timer.new()
 	_interjection_timer.wait_time = 40.0
 	_interjection_timer.autostart = false
@@ -149,6 +154,7 @@ func _ready() -> void:
 	_interjection_timer.timeout.connect(_on_interjection_timer_timeout)
 	add_child(_interjection_timer)
 
+	# set TTS timer
 	_tts_timer = Timer.new()
 	_tts_timer.one_shot = true
 	_tts_timer.autostart = false
@@ -398,6 +404,17 @@ func _build_ui() -> void:
 	_input_field.text_submitted.connect(_on_input_submitted)
 	input_panel.add_child(_input_field)
 
+	_tts_skip_button = Button.new()
+	_tts_skip_button.text = "Skip Speech"
+	_tts_skip_button.custom_minimum_size = Vector2(80, 0)
+	_tts_skip_button.add_theme_font_size_override("font_size", 15)
+	_tts_skip_button.pressed.connect(_send_player_message)
+	input_panel.add_child(_tts_skip_button)
+	# toggle skip button visibility
+	_tts_skip_button.visible = GameState.tts_on
+	_tts_skip_button.disabled = true
+	_tts_skip_button.pressed.connect(_on_tts_skip_button_pressed)
+
 	_send_button = Button.new()
 	_send_button.text = "Send ▶"
 	_send_button.custom_minimum_size = Vector2(90, 0)
@@ -595,14 +612,14 @@ func _send_player_message() -> void:
 		return
 
 	var text = _input_field.text.strip_edges()
-	if text == "":
+	if text.is_empty():
 		return
 	_input_field.text = ""
 
-	text_to_speech.stop_voice()
+	# stop whatever TTS is going on
 	_message_queue.clear()
 	_message_queue_busy = false
-	_tts_timer.stop()
+	_kill_tts()
 
 	_add_message(text, "player")
 	shared_history.append({"label": "Player", "text": text})
@@ -1047,8 +1064,10 @@ func _display_message(text: String, speaker: String, is_interjection: bool = fal
 			return
 		var duration = text_to_speech.audio_length
 		_tts_timer.wait_time = duration
+		_tts_skip_button.disabled = false
 		_tts_timer.start()
 		await _tts_timer.timeout
+		_tts_skip_button.disabled = true
 
 func _add_narrator_message(text: String) -> void:
 	"""Centered system message (for decode events, chase warnings, etc.)"""
@@ -1262,6 +1281,12 @@ func _reset_conversation() -> void:
 	_update_horton_status()
 	_update_baron_status()
 
+func _kill_tts() -> void:
+	# stop whatever TTS is going on
+	text_to_speech.stop_voice()
+	_tts_timer.stop()
+	_tts_skip_button.disabled = true
+
 func _on_font_size_changed(font_size: int) -> void:
 	if not is_instance_valid(_messages_container):
 		return
@@ -1291,6 +1316,15 @@ func _on_font_size_changed(font_size: int) -> void:
 							# Interjection bubbles are built 2px smaller — preserve that
 							var font_size_int = font_size - 2 if lbl.get_theme_font_size("font_size") < 20 else font_size
 							lbl.add_theme_font_size_override("font_size", font_size_int)
+
+func _on_tts_skip_button_pressed() -> void:
+	_kill_tts()
+	_process_message_queue()
+
+func _on_tts_toggled(value: bool) -> void:
+	_tts_skip_button.visible = value
+	_kill_tts()
+	_process_message_queue()
 
 func _exit_tree() -> void:
 	_message_queue.clear()
