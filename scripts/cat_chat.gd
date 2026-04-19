@@ -291,10 +291,18 @@ func _build_ui() -> void:
 	_input_field.text_submitted.connect(_on_input_submitted)
 	input_row.add_child(_input_field)
 
+	var send_style = StyleBoxFlat.new()
+	send_style.bg_color = Color(0.88, 0, 0)
+	send_style.corner_radius_top_left     = 8
+	send_style.corner_radius_top_right    = 8
+	send_style.corner_radius_bottom_right = 8
+	send_style.corner_radius_bottom_left  = 8
+
 	_tts_skip_button = Button.new()
 	_tts_skip_button.text = "Skip Speech"
-	_tts_skip_button.custom_minimum_size = Vector2(80, 0)
+	_tts_skip_button.custom_minimum_size = Vector2(120, 0)
 	_tts_skip_button.add_theme_font_size_override("font_size", 15)
+	_tts_skip_button.add_theme_stylebox_override("normal", send_style)
 	_tts_skip_button.pressed.connect(_send_player_message)
 	input_row.add_child(_tts_skip_button)
 	# toggle skip button visibility
@@ -304,8 +312,9 @@ func _build_ui() -> void:
 
 	_send_button = Button.new()
 	_send_button.text = "Send ▶"
-	_send_button.custom_minimum_size = Vector2(80, 0)
+	_send_button.custom_minimum_size = Vector2(90, 0)
 	_send_button.add_theme_font_size_override("font_size", 15)
+	_send_button.add_theme_stylebox_override("normal", send_style)
 	_send_button.pressed.connect(_send_player_message)
 	input_row.add_child(_send_button)
 
@@ -316,6 +325,7 @@ func _build_ui() -> void:
 	_mic_button.custom_minimum_size = Vector2(44, 0)
 	_mic_button.add_theme_font_size_override("font_size", 18)
 	_mic_button.tooltip_text = "Voice Input"
+	_mic_button.add_theme_stylebox_override("normal", send_style)
 	_mic_button.pressed.connect(_toggle_voice)
 	_send_button.get_parent().add_child(_mic_button)
 
