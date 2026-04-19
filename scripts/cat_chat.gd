@@ -615,8 +615,10 @@ func _on_baron_response(raw: String) -> void:
 	if err == OK and json.data is Dictionary:
 		var data: Dictionary = json.data
 		dialogue = data.get("dialogue", raw)
-		# Strip any Horton-specific markers that might bleed through
-		dialogue = dialogue.replace("[MESSAGE_DECODED]", "").replace("[BARON_DROPS_CLOVER]", "").strip_edges()
+		# Strip any markers that might bleed through
+		for marker in ["[MESSAGE_DECODED]", "[BARON_DROPS_CLOVER]", "[BARON_TAKES_CLOVER]", "[BARON_RETREATS]", "[HORTON_WIN]", "[WHOS_LOST]", "[CAT_ADVENTURE_BEGINS]", "[CHEST_UNLOCKED]", "[BARON_SIGNED_DEAL]"]:
+			dialogue = dialogue.replace(marker, "")
+		dialogue = dialogue.strip_edges()
 	else:
 		dialogue = raw
 
