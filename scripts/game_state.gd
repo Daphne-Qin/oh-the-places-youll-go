@@ -7,6 +7,10 @@ extends Control
 # Set to false during cutscenes or dialogue
 @export var can_move: bool = true
 
+# fade overlay
+@onready var fade_canvas: CanvasLayer
+@onready var fade_overlay: ColorRect
+
 # Signal emitted when movement state changes
 signal movement_state_changed(can_move: bool)
 var lorax_level: Node
@@ -18,6 +22,9 @@ var background_volume = 100
 var tts_on = true
 var stt_on = false
 var font_size = 18
+
+# tts toggle signal
+signal tts_toggled(on: bool)
 
 # font size signal
 signal font_size_changed(font_size: int)
@@ -87,6 +94,21 @@ var levels := {
 
 var current_level: String = "lorax"
 
+func _ready() -> void:
+	# setup fade canvas
+	fade_canvas = CanvasLayer.new()
+	fade_canvas.layer = 5000
+	add_child(fade_canvas)
+	
+	fade_overlay = ColorRect.new()
+	fade_overlay.color = Color.BLACK
+	fade_overlay.color.a = 0.0
+	fade_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	fade_overlay.z_index = 5000
+	fade_canvas.add_child(fade_overlay)
+	
+	fade_canvas.hide()
+
 func set_can_move(value: bool) -> void:
 	"""Set whether the player can move and emit signal."""
 	if can_move != value:
@@ -109,6 +131,9 @@ func toggle_background_volume_dim(value: bool) -> void:
 
 func toggle_tts(value: bool) -> void:
 	tts_on = value
+	tts_toggled.emit(value)
+	# negl I give up I'm just going to mute the entire bus LMAO
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("TTS"), !value)
 
 func toggle_stt(value: bool) -> void:
 	stt_on = value
@@ -177,11 +202,42 @@ func go_to_level(level_id: String) -> void:
 		if level_id == "cat":
 			scene_path = "res://scenes/CatLevelBoring.tscn" if baron_has_clover else "res://scenes/CatLevel.tscn"
 		print("[GameState] Navigating to level: %s (scene: %s)" % [level_id, scene_path])
-		scene_switch.emit()
 		await get_tree().process_frame  # Give listeners one frame to clean up
-		get_tree().change_scene_to_file(scene_path)
+		transition_to_scene(scene_path)
 	else:
 		print("[GameState] Level is locked: ", level_id)
+
+
+func transition_to_scene(scene_path: String) -> void:
+	"""Smooth fade transition to another scene."""	
+	scene_switch.emit()
+	
+	var tts_idx = AudioServer.get_bus_index("TTS")
+	var tts_vol = AudioServer.get_bus_volume_linear(tts_idx)
+	AudioServer.set_bus_volume_linear(tts_idx, 0)
+	fade_canvas.show()
+	
+	# Fade out
+	var fade_tween = create_tween()
+	fade_tween.set_parallel(true)
+	fade_tween.tween_property(fade_overlay, "color:a", 1.0, 1.0)
+	var music_idx = AudioServer.get_bus_index("Music")
+	fade_tween.tween_method(
+		func(vol): AudioServer.set_bus_volume_linear(music_idx, vol),
+		AudioServer.get_bus_volume_linear(music_idx),
+		0.0,
+		1.0
+	)
+	await fade_tween.finished
+
+	# Change scene
+	get_tree().change_scene_to_file(scene_path)
+	
+	# reset fade
+	fade_canvas.hide()
+	fade_overlay.color.a = 0.0
+	set_background_volume(background_volume)
+	AudioServer.set_bus_volume_linear(tts_idx, tts_vol)
 
 func load_top_scene(scene_path: String) -> Control:
 	'''

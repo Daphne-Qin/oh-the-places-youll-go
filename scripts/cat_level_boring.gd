@@ -20,13 +20,18 @@ func _ready() -> void:
 	GameState.enable_movement()
 	# this is so that I can get the correct chat when I load the scene isolated...
 	GameState.baron_has_clover = true
-
+	
+	# ensure normal background is shown first
+	$Background1.show()
+	$Background2.show()
+	$Background2.modulate.a = 0.0
+	
 	# Cat has had the soup — play soup_drink animation, then settle into idle
 	cat.idle()
 
 	_switch_music($Music/Default)
 
-	$InteractionLabel.text = "The Cat in the Hat seems... different today."
+	$InteractionLabel.text = "An ominous feeling washes over you."
 
 	# Camera (single screen)
 	var camera = $Node2D/Player/Camera2D
@@ -48,6 +53,14 @@ func _ready() -> void:
 	await _baron_walk_in()
 	cat.soup_drink()
 	baron.idle_noclover()
+	# wait a little for the animation to play
+	await get_tree().create_timer(3.5).timeout
+	# transition to boring background
+	var fade_tween = create_tween()
+	fade_tween.set_parallel(true)
+	fade_tween.tween_property($Background1, "modulate:a", 0.0, 1.0)
+	fade_tween.tween_property($Background2, "modulate:a", 1.0, 1.0)
+	await fade_tween.finished
 	animation_finished = true
 
 func _baron_walk_in() -> void:
@@ -112,14 +125,14 @@ func _on_cat_adventure_begins() -> void:
 		chat_instance.hide()
 	print("[CAT_LEVEL_BORING] WIN — transitioning to EndSceneSuccess")
 	await get_tree().create_timer(0.5).timeout
-	get_tree().change_scene_to_file("res://scenes/EndSceneSuccess.tscn")
+	GameState.transition_to_scene("res://scenes/EndSceneSuccess.tscn")
 
 func _on_cat_bored_out() -> void:
 	if chat_instance:
 		chat_instance.hide()
 	print("[CAT_LEVEL_BORING] FAIL — Baron closed the deal — transitioning to EndSceneFailure")
 	await get_tree().create_timer(1.0).timeout
-	get_tree().change_scene_to_file("res://scenes/EndSceneFailure.tscn")
+	GameState.transition_to_scene("res://scenes/EndSceneFailure.tscn")
 
 # ---------------------------------------------------------------------------
 # Music crossfade

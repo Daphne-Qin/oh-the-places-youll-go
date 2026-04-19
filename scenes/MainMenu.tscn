@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://lresojblyp2w"]
+[gd_scene load_steps=7 format=3 uid="uid://lresojblyp2w"]
 
 [ext_resource type="Script" uid="uid://cnyxwqh425hn4" path="res://scripts/main_menu.gd" id="1_1"]
 [ext_resource type="Texture2D" uid="uid://b27mm8duxvln1" path="res://assets/background/otpywgART.png" id="2_0ykhv"]
 [ext_resource type="AudioStream" uid="uid://41mhvcly5nw" path="res://assets/audio/music/Curious Clockwork Kingdom.mp3" id="3_2wh52"]
 [ext_resource type="PackedScene" uid="uid://dul3jtv58gj1x" path="res://scenes/Settings.tscn" id="3_ow34m"]
+[ext_resource type="PackedScene" uid="uid://ceu3sl3dghb35" path="res://scenes/LevelSelector.tscn" id="5_l72w3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.2, 0.6, 0.3, 1)
@@ -33,6 +34,9 @@ texture = ExtResource("2_0ykhv")
 expand_mode = 2
 
 [node name="Settings" parent="." instance=ExtResource("3_ow34m")]
+layout_mode = 1
+
+[node name="LevelSelector" parent="." instance=ExtResource("5_l72w3")]
 layout_mode = 1
 
 [node name="MenuLayer" type="Control" parent="."]
@@ -76,3 +80,6 @@ text = "Quit"
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_2wh52")
 bus = &"Music"
+
+[connection signal="pressed" from="MenuLayer/ButtonContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MenuLayer/ButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]

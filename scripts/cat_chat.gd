@@ -65,6 +65,7 @@ var _cat_status: Label
 var _progress_label: Label
 var _baron_label: Label
 var _beat_label: Label
+var _tts_skip_button: Button
 
 var _message_queue: Array = []
 var _message_queue_busy: bool = false
@@ -108,6 +109,8 @@ var player_has_seed: bool = false
 func _ready() -> void:
 	print("[CAT_CHAT] Initializing...")
 	_build_ui()
+
+	# connect signals
 	if APIManager:
 		APIManager.cat_message_received.connect(_on_cat_response)
 		APIManager.cat_message_failed.connect(_on_cat_failed)
@@ -115,7 +118,9 @@ func _ready() -> void:
 		APIManager.baron_message_failed.connect(_on_baron_failed)
 	GameState.font_size_changed.connect(_on_font_size_changed)
 	GameState.scene_switch.connect(_on_scene_switch)
+	GameState.tts_toggled.connect(_on_tts_toggled)
 
+	# set TTS timer
 	_tts_timer = Timer.new()
 	_tts_timer.one_shot = true
 	_tts_timer.autostart = false
@@ -286,10 +291,30 @@ func _build_ui() -> void:
 	_input_field.text_submitted.connect(_on_input_submitted)
 	input_row.add_child(_input_field)
 
+	var send_style = StyleBoxFlat.new()
+	send_style.bg_color = Color(0.88, 0, 0)
+	send_style.corner_radius_top_left     = 8
+	send_style.corner_radius_top_right    = 8
+	send_style.corner_radius_bottom_right = 8
+	send_style.corner_radius_bottom_left  = 8
+
+	_tts_skip_button = Button.new()
+	_tts_skip_button.text = "Skip Speech"
+	_tts_skip_button.custom_minimum_size = Vector2(120, 0)
+	_tts_skip_button.add_theme_font_size_override("font_size", 15)
+	_tts_skip_button.add_theme_stylebox_override("normal", send_style)
+	_tts_skip_button.pressed.connect(_send_player_message)
+	input_row.add_child(_tts_skip_button)
+	# toggle skip button visibility
+	_tts_skip_button.visible = GameState.tts_on
+	_tts_skip_button.disabled = true
+	_tts_skip_button.pressed.connect(_on_tts_skip_button_pressed)
+
 	_send_button = Button.new()
 	_send_button.text = "Send ▶"
-	_send_button.custom_minimum_size = Vector2(80, 0)
+	_send_button.custom_minimum_size = Vector2(90, 0)
 	_send_button.add_theme_font_size_override("font_size", 15)
+	_send_button.add_theme_stylebox_override("normal", send_style)
 	_send_button.pressed.connect(_send_player_message)
 	input_row.add_child(_send_button)
 
@@ -300,6 +325,7 @@ func _build_ui() -> void:
 	_mic_button.custom_minimum_size = Vector2(44, 0)
 	_mic_button.add_theme_font_size_override("font_size", 18)
 	_mic_button.tooltip_text = "Voice Input"
+	_mic_button.add_theme_stylebox_override("normal", send_style)
 	_mic_button.pressed.connect(_toggle_voice)
 	_send_button.get_parent().add_child(_mic_button)
 
@@ -389,16 +415,16 @@ func _send_player_message() -> void:
 	var text = _input_field.text.strip_edges()
 	if text.is_empty() or waiting_for_cat or outcome_triggered:
 		return
+	_input_field.text = ""
 	
-	text_to_speech.stop_voice()
+	# stop whatever TTS is going on
 	_message_queue.clear()
 	_message_queue_busy = false
-	_tts_timer.stop()
+	_kill_tts()
 
 	# ---- Skip codes ----
 	var lower = text.to_lower()
 	if lower == "one fish two fish":
-		_input_field.text = ""
 		if not outcome_triggered:
 			outcome_triggered = true
 			_lock_input()
@@ -407,7 +433,6 @@ func _send_player_message() -> void:
 			cat_adventure_begins.emit()
 		return
 	if lower == "i do not like them sam i am":
-		_input_field.text = ""
 		if not outcome_triggered:
 			outcome_triggered = true
 			_lock_input()
@@ -416,7 +441,6 @@ func _send_player_message() -> void:
 			cat_bored_out.emit()
 		return
 
-	_input_field.text = ""
 	player_turn_count += 1
 	last_player_message = text
 	_add_message(text, "You", PLAYER_MSG)
@@ -715,8 +739,10 @@ func _display_message(text: String, sender: String, bg_color: Color) -> void:
 			return
 		var duration = text_to_speech.audio_length
 		_tts_timer.wait_time = duration
+		_tts_skip_button.disabled = false
 		_tts_timer.start()
 		await _tts_timer.timeout
+		_tts_skip_button.disabled = true
 
 func _add_narrator_message(text: String) -> void:
 	var lbl = Label.new()
@@ -897,6 +923,12 @@ func _on_text_to_speech_voice_loaded() -> void:
 	await get_tree().create_timer(text_to_speech.audio_length).timeout
 	_enable_stt()
 
+func _kill_tts() -> void:
+	# stop whatever TTS is going on
+	text_to_speech.stop_voice()
+	_tts_timer.stop()
+	_tts_skip_button.disabled = true
+
 func _on_font_size_changed(font_size: int) -> void:
 	"""Update font size on all existing message bubbles."""
 	if not _messages_container:
@@ -918,6 +950,15 @@ func _on_font_size_changed(font_size: int) -> void:
 						var adjusted = font_size - 4 if i == 0 else font_size
 						lbl.add_theme_font_size_override("font_size", adjusted)
 	_typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
+
+func _on_tts_skip_button_pressed() -> void:
+	_kill_tts()
+	_process_message_queue()
+
+func _on_tts_toggled(value: bool) -> void:
+	_tts_skip_button.visible = value
+	_kill_tts()
+	_process_message_queue()
 
 func _exit_tree() -> void:
 	_message_queue.clear()

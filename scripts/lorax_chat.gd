@@ -10,10 +10,12 @@ extends Control
 @onready var lorax_avatar: TextureRect = $ChatPanel/VBox/Header/LoraxAvatar
 @onready var typing_indicator: Label = $ChatPanel/VBox/ChatContainer/TypingIndicator
 @onready var mic_button: Button = $ChatPanel/VBox/InputPanel/MicButton
+@onready var tts_skip_button: Button = $ChatPanel/VBox/InputPanel/TTSSkipButton
 
 # STT and TTS
 @onready var speech_to_text: Node = $SpeechToText
 @onready var text_to_speech: Node = $TextToSpeech
+var _tts_timer: Timer
 
 @export var portrait_assets := {
 	"neutral": null,
@@ -66,20 +68,24 @@ func _ready() -> void:
 		return
 	
 	print("[LORAX_CHAT] All nodes found. Chat container: ", chat_container.name)
-	
+
+	# toggle skip button visibility
+	tts_skip_button.visible = GameState.tts_on
+	tts_skip_button.disabled = true
+
+	# set TTS timer
+	_tts_timer = Timer.new()
+	_tts_timer.one_shot = true
+	_tts_timer.autostart = false
+	add_child(_tts_timer)
+
 	# connect signals
-	send_button.pressed.connect(_on_send_pressed)
-	close_button.pressed.connect(_on_close_pressed)
-	input_field.text_submitted.connect(_on_input_submitted)
 	speech_to_text.received.connect(_on_text_received)
 	GameState.font_size_changed.connect(_on_font_size_changed)
 	GameState.scene_switch.connect(_on_scene_switch)
+	GameState.tts_toggled.connect(_on_tts_toggled)
 
 	# Voice input button
-	mic_button.text = "🎙"
-	mic_button.custom_minimum_size = Vector2(44, 0)
-	mic_button.add_theme_font_size_override("font_size", 18)
-	mic_button.tooltip_text = "Voice Input"
 	mic_button.pressed.connect(_toggle_voice)
 	send_button.get_parent().add_child(mic_button)
 
@@ -217,23 +223,25 @@ func _add_welcome_message_api() -> void:
 		[], game_state
 	)
 
-func _on_send_pressed() -> void:
+func _on_send_button_pressed() -> void:
 	"""Handle send button press."""
 	_send_message()
 
-func _on_close_pressed() -> void:
+func _on_close_button_pressed() -> void:
 	"""Handle close button press."""
 	close_chat()
 
-func _on_input_submitted(text: String) -> void:
+func _on_input_field_text_submitted(text: String) -> void:
 	"""Handle Enter key in input field."""
 	_send_message()
 
 func _send_message() -> void:
 	"""Send the user's message."""
 	var message = input_field.text.strip_edges()
-	if message == "":
+	if message.is_empty():
 		return
+	
+	_kill_tts()
 
 	# Don't allow messages if game is over
 	if game_state.current_phase == "complete" or game_state.current_phase == "kicked_out":
@@ -294,6 +302,17 @@ func _add_message(text: String, is_user: bool) -> void:
 	tween.set_parallel(true)
 	tween.tween_property(bubble, "modulate:a", 1.0, 0.2)
 	tween.tween_property(bubble, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT)
+
+	# Now wait for playback to finish
+	if is_open and GameState.tts_on and not is_user:
+		if not is_instance_valid(self):
+			return
+		var duration = text_to_speech.audio_length
+		_tts_timer.wait_time = duration
+		tts_skip_button.disabled = false
+		_tts_timer.start()
+		await _tts_timer.timeout
+		tts_skip_button.disabled = true
 
 func _create_message_bubble(text: String, is_user: bool) -> Control:
 	"""Create a styled message bubble."""
@@ -643,6 +662,12 @@ func _on_text_to_speech_voice_loaded() -> void:
 	await get_tree().create_timer(text_to_speech.audio_length).timeout
 	_enable_stt()
 
+func _kill_tts() -> void:
+	# stop whatever TTS is going on
+	text_to_speech.stop_voice()
+	_tts_timer.stop()
+	tts_skip_button.disabled = true
+
 func _on_font_size_changed(font_size: int) -> void:
 	"""Update font size on all existing message bubbles."""
 	if not chat_container:
@@ -660,6 +685,13 @@ func _on_font_size_changed(font_size: int) -> void:
 			if label is Label:
 				label.add_theme_font_size_override("font_size", font_size)
 	typing_indicator.add_theme_font_size_override("font_size", GameState.font_size - 3)
+
+func _on_tts_skip_button_pressed() -> void:
+	_kill_tts()
+
+func _on_tts_toggled(value: bool) -> void:
+	tts_skip_button.visible = value
+	_kill_tts()
 
 func _exit_tree() -> void:
 	text_to_speech.stop_voice()

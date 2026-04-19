@@ -132,6 +132,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Type your message to the Lorax..."
 
+[node name="TTSSkipButton" type="Button" parent="ChatPanel/VBox/InputPanel"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+text = "Skip Speech"
+icon_alignment = 1
+
 [node name="SendButton" type="Button" parent="ChatPanel/VBox/InputPanel"]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2

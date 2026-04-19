@@ -7,6 +7,7 @@ extends Control
 @onready var start_button: Button = $MenuLayer/ButtonContainer/StartButton
 @onready var quit_button: Button = $MenuLayer/ButtonContainer/QuitButton
 @onready var background_music: AudioStreamPlayer = $BackgroundMusic
+@onready var level_selector: Control = $LevelSelector
 
 # Wobble physics system - automatically finds all wobble nodes
 var wobble_elements: Array[Node2D] = []
@@ -97,17 +98,7 @@ func _play_menu_theme() -> void:
 
 func _on_start_button_pressed() -> void:
 	"""Handle Start Demo button press with smooth transition."""
-	print("Starting demo...")
-	
-	# Smooth button press animation
-	if start_button:
-		var tween = create_tween()
-		tween.tween_property(start_button, "scale", Vector2(0.95, 0.95), 0.1)
-		tween.tween_property(start_button, "scale", Vector2(1.0, 1.0), 0.1)
-		await tween.finished
-	
-	# Smooth scene transition
-	_transition_to_scene(LORAX_LEVEL_SCENE)
+	level_selector.start_button()
 
 func _on_quit_button_pressed() -> void:
 	"""Handle Quit button press with smooth transition."""
@@ -121,26 +112,3 @@ func _on_quit_button_pressed() -> void:
 		await tween.finished
 	
 	get_tree().quit()
-
-func _transition_to_scene(scene_path: String) -> void:
-	"""Smooth fade transition to another scene."""
-	# Create fade overlay
-	var fade_overlay = ColorRect.new()
-	fade_overlay.color = Color.BLACK
-	fade_overlay.color.a = 0.0
-	fade_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(fade_overlay)
-	
-	# Fade out
-	var fade_tween = create_tween()
-	fade_tween.tween_property(fade_overlay, "color:a", 1.0, 0.3)
-	
-	# Fade music out (if playing)
-	if background_music and background_music.playing:
-		fade_tween.tween_property(background_music, "volume_db", -40.0, 0.5)
-
-	await fade_tween.finished
-	
-	
-	# Change scene
-	get_tree().change_scene_to_file(scene_path)
