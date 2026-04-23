@@ -37,7 +37,7 @@ signal scene_switch  # Fired before any scene transition
 # Level definitions: id -> {name, scene_path, unlocked, completed, map_position}
 var levels := {
 	"lorax": {
-		"name": "The Lorax",
+		"name": "Truffula Forest",
 		"scene_path": "res://scenes/LoraxLevel.tscn",
 		"unlocked": true,  # First level always unlocked
 		"completed": false,
@@ -46,7 +46,7 @@ var levels := {
 		"icon": "res://assets/sprites/levelselect/icon_lorax.png"
 	},
 	"horton": {
-		"name": "Horton Hears a Who",
+		"name": "Whoville",
 		"scene_path": "res://scenes/HortonLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Lorax
 		"completed": false,
@@ -55,7 +55,7 @@ var levels := {
 		"icon": "res://assets/sprites/levelselect/icon_horton.png"
 	},
 	"cat": {
-		"name": "The Cat in the Hat",
+		"name": "Cat's Chaotic Mansion",
 		"scene_path": "res://scenes/CatLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Horton
 		"completed": false,
@@ -64,30 +64,12 @@ var levels := {
 		"icon": ""
 	},
 	"cat_boring": {
-		"name": "The Cat in the Hat",
+		"name": "Cat's Chaotic Cottage",
 		"scene_path": "res://scenes/CatLevelBoring.tscn",
 		"unlocked": false,  # Unlocked after completing Horton
 		"completed": false,
 		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
 		"map_position": Vector2(200, 300),
-		"icon": ""
-	},
-	"end_success": {
-		"name": "The End?",
-		"scene_path": "res://scenes/EndSceneSuccess.tscn",
-		"unlocked": false,  # Unlocked after completing Horton
-		"completed": false,
-		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
-		"map_position": Vector2(100, 100),
-		"icon": ""
-	},
-	"end_failure": {
-		"name": "The End?",
-		"scene_path": "res://scenes/EndSceneFailure.tscn",
-		"unlocked": false,  # Unlocked after completing Horton
-		"completed": false,
-		"map_sprite": preload("res://assets/sprites/levelselect/map3.png"),
-		"map_position": Vector2(100, 100),
 		"icon": ""
 	}
 }
