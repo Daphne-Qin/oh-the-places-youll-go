@@ -575,12 +575,13 @@ func _detect_emotion(message: String) -> String:
 func _handle_forest_access() -> void:
 	"""Handle player being granted access to the forest."""
 	print("[LORAX_CHAT] Player granted access to Truffula Forest!")
-	GameState.player_has_seed = true
-	player_granted_access.emit()
-	# Complete the Lorax level - this unlocks Truffula Forest and Horton!
-	GameState.complete_level("lorax")
 	# Add a final celebratory message
-	_add_message("🌳 The path to the Truffula Forest opens before you... 🌳", false)
+	await _add_message("🌳 The path to the Truffula Forest opens before you... 🌳", false)
+	await get_tree().create_timer(2.0).timeout
+	# Complete the Lorax level - this unlocks Truffula Forest and Horton!
+	GameState.player_has_seed = true
+	GameState.complete_level("lorax")
+	player_granted_access.emit()
 	# Disable input
 	input_field.editable = false
 	send_button.disabled = true
@@ -588,9 +589,9 @@ func _handle_forest_access() -> void:
 func _handle_kicked_out() -> void:
 	"""Handle player being kicked out."""
 	print("[LORAX_CHAT] Player kicked out!")
-	player_kicked_out.emit()
 	# Add a dismissal message
-	_add_message("🚫 The forest closes its paths to you. Come back when you've learned respect! 🚫", false)
+	await _add_message("🚫 The forest closes its paths to you. Come back when you've learned respect! 🚫", false)
+	player_kicked_out.emit()
 	# Disable input
 	input_field.editable = false
 	send_button.disabled = true
