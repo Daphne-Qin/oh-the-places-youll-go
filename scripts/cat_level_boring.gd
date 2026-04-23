@@ -74,7 +74,7 @@ func _baron_walk_in() -> void:
 	tween.tween_property(baron, "global_position:x", target_x, max(0.1, duration))
 	await tween.finished
 	baron.walk_clover()
-	$InteractionLabel.text = "Baron Von Bitey has arrived with the clover! Walk up to the Cat."
+	$InteractionLabel.text = "Baron has fed soup with the clover to the Cat! It's giving him control over the Cat and making him boring. Walk up to the Cat to converse."
 
 func _on_cat_area_entered(body: Node2D) -> void:
 	if body == player:
