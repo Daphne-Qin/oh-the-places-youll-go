@@ -116,7 +116,7 @@ var baron_interjection_text: String = ""
 var _is_interjection_react: bool = false
 
 # Sprites node reference (set by horton_level.gd)
-var sprites_node: Node = null
+var sprites_node: Node2D = null
 
 # Timers
 var _patience_timer: Timer
@@ -444,7 +444,7 @@ func _build_ui() -> void:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
-func set_sprites_node(node: Node) -> void:
+func set_sprites_node(node: Node2D) -> void:
 	sprites_node = node
 
 func get_decode_stage() -> int:
@@ -683,6 +683,7 @@ func _on_horton_response(message: String) -> void:
 	_add_message(display, "horton")
 	shared_history.append({"label": "Horton", "text": display})
 
+	var _was_interjection = _is_interjection_react
 	if not _is_interjection_react:
 		horton_engagement += 1
 	_is_interjection_react = false
@@ -707,7 +708,7 @@ func _on_horton_response(message: String) -> void:
 		return
 
 	# Track consecutive wrong attempts — 3 misses in a row and Baron takes his chance
-	if not _is_interjection_react and chat_mode == "horton" and game_phase == "active" and not outcome_triggered:
+	elif not _was_interjection and chat_mode == "horton" and game_phase == "active" and not outcome_triggered:
 		consecutive_wrong += 1
 		print("[HORTON_CHAT] consecutive_wrong=", consecutive_wrong)
 		if consecutive_wrong >= 3:
@@ -988,8 +989,8 @@ func _handle_baron_wins() -> void:
 	_interjection_timer.stop()
 	baron_taking_clover.emit()   # fires IMMEDIATELY so level stops all chase timers
 
-	if sprites_node and sprites_node.has_method("baron_make_move_for_clover"):
-		sprites_node.baron_make_move_for_clover()
+	if sprites_node and sprites_node.has_method("baron_grab_clover"):
+		sprites_node.baron_grab_clover()
 
 	_baron_status.text = "Has taken the clover for his soup!"
 	_update_horton_portrait_direct("anxious")
