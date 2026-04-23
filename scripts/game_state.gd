@@ -19,6 +19,7 @@ var player_has_seed: bool = false   # Cross-level: set true when Lorax gives pla
 
 # default settings
 var background_volume = 100
+var background_volume_dim = false
 var tts_on = true
 var stt_on = false
 var font_size = 18
@@ -55,7 +56,7 @@ var levels := {
 		"icon": "res://assets/sprites/levelselect/icon_horton.png"
 	},
 	"cat": {
-		"name": "Cat's Chaotic Mansion",
+		"name": "Cat's Chaotic Cottage",
 		"scene_path": "res://scenes/CatLevel.tscn",
 		"unlocked": false,  # Unlocked after completing Horton
 		"completed": false,
@@ -96,8 +97,8 @@ func set_can_move(value: bool) -> void:
 	if can_move != value:
 		can_move = value
 		movement_state_changed.emit(can_move)
-		
-func set_background_volume(value: int) -> void:
+
+func set_background_volume_helper(value: int) -> void:
 	'''
 	Accounts for TTS and STT being on
 	'''
@@ -105,11 +106,16 @@ func set_background_volume(value: int) -> void:
 	var idx = AudioServer.get_bus_index("Music")
 	AudioServer.set_bus_volume_linear(idx, effective_volume)
 
-func toggle_background_volume_dim(value: bool) -> void:
-	if value:
-		set_background_volume(min(20, background_volume))
+func set_background_volume(value: int) -> void:
+	background_volume = value
+	if background_volume_dim:
+		set_background_volume_helper(min(20, background_volume))
 	else:
-		set_background_volume(background_volume)
+		set_background_volume_helper(background_volume)
+
+func toggle_background_volume_dim(value: bool) -> void:
+	background_volume_dim = value
+	set_background_volume(background_volume)
 
 func toggle_tts(value: bool) -> void:
 	tts_on = value
