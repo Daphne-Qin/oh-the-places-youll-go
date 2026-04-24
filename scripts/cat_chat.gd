@@ -906,7 +906,7 @@ func _hide_typing_indicator() -> void:
 	var tween = create_tween()
 	tween.tween_property(_typing_indicator, "modulate:a", 0.0, 0.2)
 	await tween.finished
-	_typing_indicator.visible = false
+	_typing_indicator.text = ""
 	_typing_indicator.modulate.a = 1.0
 
 func _strip_json_markdown(text: String) -> String:
