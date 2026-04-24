@@ -136,6 +136,7 @@ func _on_level_unlocked(level_id: String) -> void:
 	elif level_id == "cat_boring":
 		level_buttons["cat"].hide()
 		level_buttons["cat_boring"].show()
+	map_image.texture = GameState.levels[level_id]["map_sprite"]
 		
 	# Could add unlock animation/sound here
 
@@ -143,7 +144,6 @@ func _on_level_completed(level_id: String) -> void:
 	"""Called when a level is completed."""
 	_update_button_state(level_id)
 	$ButtonCanvas.show()
-	map_image.texture = GameState.levels[level_id]["map_sprite"]
 
 func _on_open_selector_button_pressed() -> void:
 	"""Toggle map visibility."""
