@@ -581,6 +581,7 @@ func _handle_forest_access() -> void:
 	# Complete the Lorax level - this unlocks Truffula Forest and Horton!
 	GameState.player_has_seed = true
 	GameState.complete_level("lorax")
+	GameState.toggle_background_volume_dim(false)
 	player_granted_access.emit()
 	# Disable input
 	input_field.editable = false
@@ -591,6 +592,7 @@ func _handle_kicked_out() -> void:
 	print("[LORAX_CHAT] Player kicked out!")
 	# Add a dismissal message
 	await _add_message("🚫 The forest closes its paths to you. Come back when you've learned respect! 🚫", false)
+	GameState.toggle_background_volume_dim(false)
 	player_kicked_out.emit()
 	# Disable input
 	input_field.editable = false
