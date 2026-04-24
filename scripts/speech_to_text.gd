@@ -29,17 +29,19 @@ func _load_api_key() -> void:
 				print("[STT] API key loaded from .env")
 				return
 		file.close()
-	print("[STT] ERROR: No API key found! Create a .env file with HUGGINGFACE_API_KEY=your_key")
+	printerr("[STT] No API key found! Create a .env file with HUGGINGFACE_API_KEY=your_key")
 
 func _process_request(data):
 	# send to Whisper
-	print("Sending %d bytes to HuggingFace..." % data.size())
-	$HTTPRequest.request_raw(
+	print("[STT] Sending %d bytes to HuggingFace..." % data.size())
+	var err = $HTTPRequest.request_raw(
 		"https://router.huggingface.co/hf-inference/models/openai/whisper-large-v3-turbo",
 		["Authorization: Bearer %s" % api_key, "Content-Type: audio/wav"],
 		HTTPClient.METHOD_POST,
 		data
 	)
+	if err != OK:
+		printerr("[STT]: GET request failed", err)
 
 func _on_http_request_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var json = JSON.new()
@@ -79,7 +81,7 @@ func stop_recording():
 	var file := FileAccess.open(save_path, FileAccess.READ)
 	if file == null:
 		printerr("[STT]: Failed to open saved WAV at: ", save_path)
-		printerr("FileAccess error: ", FileAccess.get_open_error())
+		printerr("[STT] FileAccess error: ", FileAccess.get_open_error())
 		return
 	
 	_pending_data = file.get_buffer(file.get_length())
