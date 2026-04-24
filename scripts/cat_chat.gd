@@ -88,7 +88,6 @@ var narrative_beat: int = 0            # 0–6
 
 # Path B — wakeup mechanic
 var cat_wakeup_stage: int = 0          # 0→3 (soup-compliant → fully awake)
-var baron_speak_counter: int = 0       # how many Cat turns have elapsed in Path B
 var baron_persuasion: int = 0          # 0–100: auto-ticks up; wins at 100
 var baron_persuasion_stage: int = 0    # 0–3: lose-arc stage for narration
 var last_player_message: String = ""
@@ -355,8 +354,28 @@ func open_chat() -> void:
 
 		if is_baron_path:
 			# PATH B: Baron arrived first, Cat ate the soup, is compliant
-			_add_narrator_message("The Cat in the Hat answers the door — but something is wrong. He's very... polite.")
-			_request_cat_response("[INTRO] PATH B: You are in your soup-compliant state — calm, agreeable, unnervingly pleasant. The player has just arrived. The Baron is already inside, pitching his Grand Monotony project. Greet the player with excessive politeness. Mention that you're considering the Baron's business proposal. Something feels off about you.")
+			# --- Guaranteed story-so-far exposition (timed, sequential) ---
+			_lock_input()
+			_add_narrator_message("The Cat in the Hat is standing there. His hat is still. His eyes are half-closed. He's smiling at nothing in particular.")
+			await get_tree().create_timer(3.5).timeout
+			_add_narrator_message("A capybara in a purple velvet cape is spreading charts across the living room table.")
+			await get_tree().create_timer(3.5).timeout
+			_add_narrator_message("That's Baron Von Bitey. He wants to build identical resorts — The Grand Monotony — everywhere in the Seuss universe. The last thing in his way is the Truffula Forest.")
+			await get_tree().create_timer(4.0).timeout
+			_add_narrator_message("To destroy the forest overnight, he needs chaos magic. He needs the Cat.")
+			await get_tree().create_timer(3.5).timeout
+			_add_narrator_message("So he made a soup — the Mischief Minestrone — brewed with a very special clover. The Cat drank it. The clover — and the entire Who civilization living on it — went down with the soup.")
+			await get_tree().create_timer(4.0).timeout
+			_add_narrator_message("The Whos are trapped inside the Cat. Horton can't hear them anymore. The Baron is one signature away from destroying the forest with nobody left to stop him.")
+			await get_tree().create_timer(4.0).timeout
+			_add_narrator_message("If you can wake the Cat up... he might just cough the clover back up. Cats do that.")
+			await get_tree().create_timer(3.0).timeout
+			_unlock_input()
+			# Baron speaks first — he's mid-pitch when the player walks in
+			var baron_intro_state = {"at_cat_house": true, "cat_wakeup_stage": 0, "player_turn_count": 0}
+			APIManager.send_message_to_baron("[AT_CAT_HOUSE] You are mid-pitch to the Cat when Timmy — that meddling child from Horton's meadow — walks in. React with annoyed recognition: call them out as another one of the ANNOYING COMP 460 students who keep interfering with your plans, then pivot back to the Cat. 2 sentences max.", [], baron_intro_state)
+			# Cat greets drowsily after Baron's pitch
+			_request_cat_response("[INTRO] PATH B SOUP-DRUNK: You are deeply drowsy from the Mischief Minestrone soup. You are mid-hosting — the Baron is behind you laying out charts. You just answered the door and found the player standing there. Greet them with slow, drifting warmth — sentences trail off, you almost nod off mid-greeting, you introduce the Baron vaguely and then lose your train of thought. Do NOT explain the soup or what happened — you don't know anything is wrong. Just be obviously, worryingly out of it.")
 		else:
 			# PATH A: Player arrived before Baron
 			_add_narrator_message("The Cat in the Hat appears — hat first, naturally.")
@@ -517,11 +536,11 @@ func _on_cat_response(raw: String) -> void:
 		new_wakeup = int(data.get("cat_waking", cat_wakeup_stage))
 		flags = data.get("flags", {})
 	else:
-		dialogue = raw
+		# JSON failed — never show raw output (avoids prompt leaking)
 		if "[CAT_ADVENTURE_BEGINS]" in raw or "[CHEST_UNLOCKED]" in raw:
-			dialogue = raw.replace("[CAT_ADVENTURE_BEGINS]", "").replace("[CHEST_UNLOCKED]", "").strip_edges()
 			flags["chest_unlocked"] = true
-		happiness_delta = 5
+		dialogue = "*hat tilts thoughtfully...*"
+		happiness_delta = 0
 
 	_add_message(dialogue, "Cat", CAT_MSG)
 	conversation_history.append({"label": "Cat", "text": dialogue})
@@ -579,9 +598,13 @@ func _on_cat_response(raw: String) -> void:
 			outcome_triggered = true
 			_lock_input()
 			_add_narrator_message("Something shifts in the Cat's eyes. The hat tilts. The real Cat is back.")
-			await get_tree().create_timer(2.0).timeout
+			await get_tree().create_timer(3.0).timeout
 			_add_narrator_message("He turns to the Baron. 'The job application,' he says, 'is rejected.'")
-			await get_tree().create_timer(2.5).timeout
+			await get_tree().create_timer(3.0).timeout
+			_add_narrator_message("Then he coughs. A very specific kind of cough. A cat kind of cough.")
+			await get_tree().create_timer(3.0).timeout
+			_add_narrator_message("The clover lands on the table — intact. From somewhere impossibly tiny, a sound rises. Hundreds of voices, all at once. The Whos are back.")
+			await get_tree().create_timer(5.0).timeout
 			cat_adventure_begins.emit()
 			return
 
@@ -604,14 +627,10 @@ func _on_cat_response(raw: String) -> void:
 		return
 
 	# ----------------------------------------------------------------
-	# Path B: Baron weighs in after every 2 Cat turns (every turn when waking up)
+	# Path B: Baron reacts every Cat turn — he's actively pitching the whole time
 	# ----------------------------------------------------------------
 	if is_baron_path and not waiting_for_cat:
-		baron_speak_counter += 1
-		var threshold = 1 if cat_wakeup_stage >= 2 else 2
-		if baron_speak_counter >= threshold:
-			baron_speak_counter = 0
-			_request_baron_pitch()
+		_request_baron_pitch()
 
 func _on_cat_failed(error: String) -> void:
 	waiting_for_cat = false
@@ -664,6 +683,10 @@ func _on_baron_failed(_error: String) -> void:
 func _lock_input() -> void:
 	_input_field.editable = false
 	_send_button.disabled = true
+
+func _unlock_input() -> void:
+	_input_field.editable = true
+	_send_button.disabled = false
 
 func _add_message(text: String, sender: String, bg_color: Color) -> void:
 	if is_open and GameState.tts_on and sender != "You":
@@ -786,17 +809,21 @@ func _advance_baron_persuasion(amount: int) -> void:
 		match baron_persuasion_stage:
 			1:
 				_add_narrator_message("The Cat begins finishing the Baron's sentences — but in the Baron's voice, not his own.")
+				await get_tree().create_timer(2.0).timeout
+				_add_narrator_message("The plan: turn the entire Truffula Forest into The Grand Monotony — identical resorts, horizon to horizon. The Cat's chaos magic strips the forest overnight. The Lorax can't stop it. Horton can't stop it. Nobody can.")
 			2:
-				_add_narrator_message("The Baron slides the job application across the table. The Cat picks up the pen.")
+				_add_narrator_message("The Baron slides the job application across the table. 'Creative Director.' The Cat picks up the pen.")
+				await get_tree().create_timer(2.0).timeout
+				_add_narrator_message("If he signs, the forest is gone by morning. The Whos — still inside the Cat — go with it.")
 			3:
 				# Loss — Cat signs
 				if not outcome_triggered:
 					outcome_triggered = true
 					_lock_input()
-					_add_narrator_message("The Cat signs. The hat droops. The stripes go gray.")
-					await get_tree().create_timer(1.0).timeout
+					_add_narrator_message("The Cat signs. The hat droops. The stripes go gray. The clover — and everything on it — stays exactly where it is.")
+					await get_tree().create_timer(3.0).timeout
 					_add_narrator_message("\"And that was the day chaos got a corporate sponsor.\"")
-					await get_tree().create_timer(2.5).timeout
+					await get_tree().create_timer(5.0).timeout
 					cat_bored_out.emit()
 
 func _update_meters() -> void:
@@ -916,6 +943,23 @@ func _strip_json_markdown(text: String) -> String:
 		var end = s.rfind("```")
 		if end != -1:
 			s = s.substr(0, end)
+	s = s.strip_edges()
+	# If there's preamble text before the JSON object, find and extract just the object
+	var brace_start = s.find("{")
+	if brace_start > 0:
+		s = s.substr(brace_start)
+		var depth := 0
+		var end_pos := -1
+		for i in range(s.length()):
+			if s[i] == '{':
+				depth += 1
+			elif s[i] == '}':
+				depth -= 1
+				if depth == 0:
+					end_pos = i
+					break
+		if end_pos != -1:
+			s = s.substr(0, end_pos + 1)
 	return s.strip_edges()
 
 func _on_text_to_speech_voice_loaded() -> void:
