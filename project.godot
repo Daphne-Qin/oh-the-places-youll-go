@@ -13,7 +13,7 @@ config_version=5
 config/name="oh-the-places-youll-go"
 run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://tuq1y3jqc2vr"
 
 [audio]
 
@@ -49,3 +49,4 @@ move_right={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=2
+textures/vram_compression/import_etc2_astc=true
